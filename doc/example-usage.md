@@ -41,7 +41,7 @@ You can STYLE the widget using the STYLE argument:
 ">Show me! clean</button>
 ```
 
-Current preset STYLE valuess: `'rich' | 'choice' | 'clean' | 'naked'`
+Current preset STYLE values: `'rich' | 'choice' | 'clean' | 'naked'`
 
 See [Using the STYLE argument](example-style.md) for more detail.
 
@@ -64,11 +64,16 @@ You can set OPTIONS for the widget:
 ">Show me! large-bc</button>
 ```
 
-Note that USER saved preferences take precedence over STYLE or OPTIONS settings.
-
-You can call  `$kompl.reset()` when your document has loaded to clear USER saved preferences.
-
 See [Using the OPTIONS argument](example-options.md) for more OPTIONS.
+
+
+### User Preferences
+
+If you give your users access to the widget controls, they can change the placement and size of the widget.
+
+These User preferences will take precedence over your STYLE or OPTIONS settings.
+
+You can call  `$kompl.reset()` when your document has loaded to clear User saved preferences.
 
 
 ## Multiple Compilations
@@ -77,19 +82,16 @@ You can use JavaScript to manage several compilations on the same page. For exam
 
 ```html
 <head>
-
 <script>
 
 var $cars = [
   '/mercedes/',
-  '/bently/',
   '/porsche/',
   '/2cv/',
 ]
 
 var $fruit = [
   '/apples/',
-  '/pears/',
   '/peaches/',
   '/cream/',
 ]
@@ -103,12 +105,12 @@ function play_kompl( $list ) {
 }
 
 </script>
-
 </head>
-
 <body>
-  <a href='#' class="my-button" onclick="play_kompl($cars)">Show me Cars</a><br>
-  <a href='#' class="my-button" onclick="play_kompl($fruit)">Show me Food</a><br>
+
+<a href='#' class="my-button" onclick="play_kompl($cars)">Show me Cars</a><br>
+<a href='#' class="my-button" onclick="play_kompl($fruit)">Show me Food</a><br>
+
 </body>
 
 ```
