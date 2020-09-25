@@ -6,7 +6,7 @@ A website navigation widget - guide your users through a curated compilation of 
 
 ## Installation
 
-* Head over to [releases](./releases) - download the `.zip` file
+* Head over to [releases](https://github.com/jaguart/kompl/releases) - download the `.zip` file
 * Unzip the contents into a folder that is accessible from your website - e.g. `public/`
 * Add `<script src='/kompl.bundle.js'></script>` into the `<head>` on all pages on your site, **after JQuery**
 
