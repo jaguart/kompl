@@ -1,8 +1,8 @@
 {
   "name": "kompl",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "description": "Web widget to PLAY a Compilation",
-  "author": "Jeff Armstrong <jeff@jamatic.com> (https://jeff.jamatic.com/)",
+  "author": "Jeff <jeff@jaguart.tech> (https://jaguart.tech/)",
   "license": "MIT",
   "source": "src/main.ts",
   "main": "dist/kompl.bundle.js",
@@ -32,19 +32,19 @@
     "bundle-assets": "echo TODO"
   },
   "watch": {
-    "build-ts": { 
+    "build-ts": {
       "patterns": "src",
       "extensions": "ts"
     },
-    "build-css": { 
+    "build-css": {
       "patterns": "src",
       "extensions": "css"
     },
-    "build-html": { 
+    "build-html": {
       "patterns": "src",
       "extensions": "html"
     },
-    "build-assets": { 
+    "build-assets": {
       "patterns": "src",
       "extensions": "svg,png,jpg,gif,ico"
     }
