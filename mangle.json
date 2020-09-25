@@ -1,0 +1,31 @@
+{
+  "help": {
+    "umm": "Does not seem to work with terser in microbundle... come back and look at this later",
+    "what is this file?": "It controls protected/private property mangling so that minified builds have consistent property names.",
+    "why are there duplicate minified properties?": "Most properties are only used on one type of object, so they can have the same name since they will never collide. Doing this reduces size."
+  },
+  "minify": {
+    "mangle": {
+      "properties": {
+        "regex": "^_",
+        "reserved": [
+          "__source",
+          "__self"
+        ]
+      }
+    },
+    "compress": {
+      "hoist_vars": true,
+      "reduce_funcs": false
+    }
+  },
+  "props": {
+    "cname": 6,
+    "props": {
+      "$_afterPaintQueued": "__a",
+      "$__hooks": "__H",
+      "$_list": "__",
+      "DEFAULT_OPTIONS": "__D"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "kompl",
+  "version": "0.0.0",
+  "description": "Web widget to PLAY a Compilation",
+  "author": "Jeff Armstrong <jeff@jamatic.com> (https://jeff.jamatic.com/)",
+  "license": "MIT",
+  "source": "src/main.ts",
+  "main": "dist/kompl.bundle.js",
+  "esmodule": "dist/kompl.js",
+  "module": "dist/kompl.module.js",
+  "types": "dist/kompl.d.ts",
+  "unpkg": "dist/kompl.umd.js",
+  "scripts": {
+    "clean": "find dist -type f | xargs rm",
+    "lint": "npm run lint-ts & npm run lint-css & npm run lint-html & npm run lint-assets",
+    "lint-ts": "eslint src/*.ts",
+    "lint-css": "stylelint src/*.css src/*.html",
+    "lint-html": "html-minifier-lint src/*.html",
+    "lint-assets": "echo no lint for assets",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build-ts & npm run build-css & npm run build-html & npm run build-assets &",
+    "build-ts": "microbundle build -f modern",
+    "build-css": "postcss src/*.css > dist/kompl.bundle.css",
+    "build-html": "gulp build_html",
+    "build-assets": "gulp build_assets",
+    "dev": "npm-watch",
+    "watch": "npm-watch",
+    "bundle": "npm run bundle-ts & bundle-css & npm run bundle-html & npm run bundle-assets",
+    "bundle-ts": "echo TODO",
+    "bundle-css": "echo TODO",
+    "bundle-html": "echo TODO",
+    "bundle-assets": "echo TODO"
+  },
+  "watch": {
+    "build-ts": { 
+      "patterns": "src",
+      "extensions": "ts"
+    },
+    "build-css": { 
+      "patterns": "src",
+      "extensions": "css"
+    },
+    "build-html": { 
+      "patterns": "src",
+      "extensions": "html"
+    },
+    "build-assets": { 
+      "patterns": "src",
+      "extensions": "svg,png,jpg,gif,ico"
+    }
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/gulp": "^4.0.6",
+    "@types/jquery": "^3.5.1",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "cssnano": "^4.1.10",
+    "cssnano-preset-advanced": "^4.0.7",
+    "del": "^5.1.0",
+    "eslint": "^7.9.0",
+    "gulp": "^4.0.2",
+    "gulp-chmod": "^3.0.0",
+    "gulp-htmlmin": "^5.0.1",
+    "html-minifier": "^4.0.0",
+    "html-minifier-lint": "^2.0.0",
+    "microbundle": "^0.12.3",
+    "npm-watch": "^0.7.0",
+    "rollup": "^2.28.1",
+    "stylelint": "^13.7.1",
+    "stylelint-config-standard": "^20.0.0",
+    "ts-node": "^9.0.0"
+  },
+  "dependencies": {
+    "-": "0.0.1"
+  }
+}

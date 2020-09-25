@@ -1,0 +1,19 @@
+{
+  "extends": "stylelint-config-standard",
+  "xx-plugins": ["../special-rule.js"],
+  "rules": {
+    "comment-empty-line-before": null,
+    "declaration-block-semicolon-space-after": null,
+    "declaration-block-single-line-max-declarations": null,
+    "block-opening-brace-space-before" : null,
+    "number-no-trailing-zeros" : null,
+    "selector-descendant-combinator-no-non-space" : null,
+    "color-function-notation" : "legacy",
+    "length-zero-no-unit" : true,
+    "number-max-precision": 2,
+    "shorthand-property-no-redundant-values": true,
+    "declaration-block-no-redundant-longhand-properties": true,
+    "no-unknown-animations": true,
+    "number-leading-zero": "always"
+  }
+}

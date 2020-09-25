@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Kompl Test</title>
+
+<style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .green {
+        font-weight: bold;
+        color: rgba(0, 64, 0, 0.70);
+      }
+    </style>
+
+
+  <script>
+    // for ESlint HTML plugin
+    var $kompl, $
+
+    let $show = {
+      title: 'Jeffs Test Slides',
+      slugs: [
+        '/t1/',
+        '/t1/index.php/p1',
+        '/t1/index.php/p2',
+        '/kompl/',
+        '/t1/index.php/p3',
+      ],
+    }
+
+    // no options - use those set elsewhere
+    function show_whatever()    { $kompl.play({ ...$show, }) }
+    function show_default()     { $kompl.play({ ...$show, options: { /* empty object = all defaults */ } }) }
+
+    function show_naked()       { $kompl.play({ ...$show, options: {
+            homer: false,
+            closer: false,
+            sizer: false,
+            placer: false,
+            size: 'large',
+            place: 'bc',
+          }})
+    }
+
+    function show_noplacer()    { $kompl.play({ ...$show, options: { placer: false, }}) }
+    function show_nohomer()     { $kompl.play({ ...$show, options: { homer: false,  }}) }
+    function show_nosizer()     { $kompl.play({ ...$show, options: { sizer: false,  }}) }
+    function show_nocloser()    { $kompl.play({ ...$show, options: { closer: false, }}) }
+    function show_nobar()       { $kompl.play({ ...$show, options: { sizer: false, closer: false, }}) }
+
+    function tl () { $kompl.place('tl') }
+    function tc () { $kompl.place('tc') }
+    function tr () { $kompl.place('tr') }
+    function bl () { $kompl.place('bl') }
+    function bc () { $kompl.place('bc') }
+    function br () { $kompl.place('br') }
+
+    function small  () { $kompl.size('small')   }
+    function medium () { $kompl.size('medium')  }
+    function large  () { $kompl.size('large')   }
+
+    function placer_on  () { $kompl.options({placer:true,})   }
+    function placer_off () { $kompl.options({placer:false,})  }
+    function closer_on  () { $kompl.options({closer:true,})   }
+    function closer_off () { $kompl.options({closer:false,})  }
+    function sizer_on   () { $kompl.options({sizer:true,})    }
+    function sizer_off  () { $kompl.options({sizer:false,})   }
+    function homer_on   () { $kompl.options({homer:true,})    }
+    function homer_off  () { $kompl.options({homer:false,})   }
+
+    // visual clue that above has compiled :)
+    // Does not depend on jQuery - maybe it should
+    document.addEventListener('DOMContentLoaded', function (ev) {
+      $('#greeting').text('Tadah: '+Date.now()).addClass('green')
+    })
+
+  </script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+<script src="kompl.bundle.js" type="module" ></script>
+
+<style>
+  table {
+    border-collapse: collapse;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  table,
+  td,
+  th {
+    border: 1px solid grey;
+    padding: 4px 8px;
+  }
+
+  th {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  button {
+    padding-top: 3px;
+    margin: 1px;
+    min-width: 3em;
+    text-align: center;
+  }
+
+</style>
+
+</head>
+<body>
+
+<p id='greeting' style='float: right;'>Loading...</p>
+<h1>Kompl testing</h1>
+
+<a href='index.html'>Main Tests</a>
+<a href='style.html'>Style Tests</a>
+
+<table>
+  <tr>
+    <th width='0%' >Action</th>
+    <th width='70%' >Effect</th>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.reset()">Reset</button></td>
+    <td>Reset all stored Kompl data</td>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.clear()">Close/Clear</button></td>
+    <td>Clear compilation currently in-play</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_default()">Slides - all controls</button></td>
+    <td>Show slides - default, all User controls.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_whatever()">Slides - current</button></td>
+    <td>Show slides - using current options.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_naked()">Slides - no controls</button></td>
+    <td>Show slides - no User controls at all.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_noplacer()">Slides - no placer</button></td>
+    <td>Show slides - no placer controls.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_nohomer()">Slides - no homer</button></td>
+    <td>Show slides - No HOME click on Title.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_nosizer()">Slides - no sizer</button></td>
+    <td>Show slides - no sizer controls.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_nocloser()">Slides - no closer</button></td>
+    <td>Show slides - no closer control.</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_nobar()">Slides - no bar</button></td>
+    <td>Show slides - no closer or sizer controls.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="tl()">TL</button>
+      <button onclick="tc()">TC</button>
+      <button onclick="tr()">TR</button><br>
+      <button onclick="bl()">BL</button>
+      <button onclick="bc()">BC</button>
+      <button onclick="br()">BR</button>
+    </td>
+    <td>Control placement - User preference.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="small()">Small</button>
+      <button onclick="medium()">Medium</button>
+      <button onclick="large()">Large</button><br>
+    </td>
+    <td>Control Sizing - User preference.</td>
+  </tr>
+
+
+  <tr>
+    <td>
+      <button onclick="placer_on()">Placer</button>
+      <button onclick="placer_off()">Off</button>
+    </td>
+    <td>Control interaction - Placer.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="sizer_on()">Sizer</button>
+      <button onclick="sizer_off()">Off</button>
+    </td>
+    <td>Control interaction - Sizer.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="closer_on()">Closer</button>
+      <button onclick="closer_off()">Off</button>
+    </td>
+    <td>Control interaction - Closer.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="homer_on()">Homer</button>
+      <button onclick="homer_off()">Off</button>
+    </td>
+    <td>Control interaction - Homer.</td>
+  </tr>
+
+</table>
+
+</body>
+</html>

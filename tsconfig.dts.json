@@ -1,0 +1,9 @@
+{
+  "include": ["node_modules/gulp-chmod"],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "types/gulp-chmod"
+  }
+}

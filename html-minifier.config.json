@@ -1,0 +1,16 @@
+{
+    "collapseInlineTagWhitespace": true,
+    "collapseWhitespace": true,
+    "conservativeCollapse": true,
+    "decodeEntities": true,
+    "minifyCSS": true,
+    "minifyJS": true,
+    "minifyURLs": true,
+    "removeAttributeQuotes": true,
+    "removeComments": true,
+    "removeEmptyAttributes": true,
+    "removeOptionalTags": true,
+    "removeRedundantAttributes": true,
+    "removeScriptTypeAttributes": true,
+    "removeStyleLinkTypeAttributes": true
+}

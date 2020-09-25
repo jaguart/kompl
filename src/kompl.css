@@ -1,0 +1,186 @@
+/* kompl.css */
+/* ----------------------------------------------------------------------------- */
+/*  Nav widget placement */
+/*  Use border to indicate clickable... */
+.kompl-place-tl,
+.kompl-place-tc,
+.kompl-place-tr,
+.kompl-place-bl,
+.kompl-place-bc,
+.kompl-place-br {
+  position: absolute;
+  height: 1em;
+  width: 2em;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.kompl-place-tl {
+  border-top: var(--kompl-place-border);
+  border-left: var(--kompl-place-border);
+}
+
+.kompl-place-tc {
+  border-top: var(--kompl-place-border);
+  height: 0.5em;
+}
+
+.kompl-place-tr {
+  border-top: var(--kompl-place-border);
+  border-right: var(--kompl-place-border);
+}
+
+.kompl-place-bl {
+  border-bottom: var(--kompl-place-border);
+  border-left: var(--kompl-place-border);
+}
+
+.kompl-place-bc {
+  border-bottom: var(--kompl-place-border);
+  height: 0.5em;
+}
+
+.kompl-place-br {
+  border-bottom: var(--kompl-place-border);
+  border-right: var(--kompl-place-border);
+}
+
+.kompl-at-tl { top: 0;     right: unset;   bottom: unset;  left: 0; }
+.kompl-at-tc { top: 0;     right: unset;   bottom: unset;  left: 50%; transform: translateX(-50%); }
+.kompl-at-tr { top: 0;     right: 0;       bottom: unset;  left: unset; }
+.kompl-at-bl { top: unset; right: unset;   bottom: 0;      left: 0; }
+.kompl-at-br { top: unset; right: 0;       bottom: 0;      left: unset; }
+.kompl-at-bc { top: unset; right: unset;   bottom: 0;      left: 50%; transform: translateX(-50%); }
+
+/* ----------------------------------------------------------------------------- */
+.kompl-compilation * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container */
+#kompl {
+  display: inline-block; /* shrink-wrap */
+  text-align: center;
+  z-index: 5000;
+  position: fixed;
+  margin: 2px 4px;
+  min-width: 8em;
+  padding: 1px;
+
+  --kompl-place-border: 3px solid rgba(0, 0, 0, 0.5);
+}
+
+/* Inner wrapper */
+.kompl-inner {
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 6px;
+  color: rgba(0, 0, 0, 0.8);
+  padding: 4px 4px 0;
+  white-space: nowrap;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.kompl-compilation a {
+  display: inline;
+  color: inherit;
+  text-decoration: none;
+}
+
+.kompl-sz-small  { font-size: 1.0em; }
+.kompl-sz-medium { font-size: 1.2em; }
+.kompl-sz-large  { font-size: 1.5em; }
+
+/* Nav widget menubar */
+.kompl-bar {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 2px;
+  width: 100%;
+  font-size: 70%;
+}
+
+.kompl-sizer-small,
+.kompl-sizer-medium,
+.kompl-sizer-large {
+  display: inline-block;
+  width: 1em;
+  margin-left: 2px;
+  cursor: pointer;
+}
+
+.kompl-closer   {
+  display: inline-block;
+  position: absolute;
+  right: 7px;
+  cursor: pointer;
+  transform: rotate(45deg);
+  opacity: 0.80;
+  filter: invert(1);
+  height: 20px !important;
+}
+
+.kompl-sz-small .kompl-closer   {
+  height: 16px !important;
+  top: 7px;
+}
+
+.kompl-sz-medium .kompl-closer {
+  height: 20px !important;
+  top: 6px;
+}
+
+.kompl-sz-large .kompl-closer {
+  height: 24px !important;
+  top: 6px;
+}
+
+.kompl-title {
+  font-weight: bold;
+  padding: 2px 0.5em 0;
+}
+
+.kompl-nav {
+  vertical-align: top;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Text inside nav */
+.kompl-descr {
+  display: inline-block;
+  transform: translateY(-10%);
+  padding: 0 0.25em;
+}
+
+.kompl-hide {
+  display: none;
+}
+
+.kompl-bar.kompl-hide {
+  display: flex;
+  height: 4px;
+}
+
+.kompl-bar.kompl-hide .kompl-sizer-small,
+.kompl-bar.kompl-hide .kompl-sizer-medium,
+.kompl-bar.kompl-hide .kompl-sizer-large,
+.kompl-bar.kompl-hide .kompl-closer
+ {
+  display: none;
+}
+
+#kompl.kompl-sz-small  img { height: 24px; }
+#kompl.kompl-sz-medium img { height: 36px; }
+#kompl.kompl-sz-large  img { height: 48px; }
+
+#kompl.kompl-sz-small   .kompl-sizer-small,
+#kompl.kompl-sz-medium  .kompl-sizer-medium,
+#kompl.kompl-sz-large   .kompl-sizer-large {
+  color: white;
+  border-bottom: 1px solid white;
+}
