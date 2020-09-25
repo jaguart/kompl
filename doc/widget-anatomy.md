@@ -4,15 +4,17 @@ This document describes the anatomy of the Kompl widget.
 
 ## User Interface
 
-The Kompl navigation widget has the following controls that the User can interact with, to set their own personal preferences. The controls can be enabled / disabled using the OPTIONS argument in calls to `$kompl.play()` or `$kompl.options()`
+The Kompl navigation widget has the following controls that the User can use to set their personal preferences. Controls can be enabled / disabled using the OPTIONS argument in `$kompl.play()` or `$kompl.options()`
 
-* `homer` - this makes the TITLE a clickable link that returns to the ORIGIN.
-* `placer` - this creates clickable border-regions that the User can use to PLACE the widget within the viewport. There are six places - `tl`, `tc`, `tr`, `bl`, `bc`, `br` - which correspond to top-left, top-center, top-right, bottom-left, bottom-center or bottom-right.
-* `sizer` - this adds an expanding bar above the Title containing clickable `S`, `M` and `L` which can be used to set the SIZE to small, medium or large.
-* `closer` - this adds a clickable CLOSE icon to the expanding bar, which enables the User to cancel playing of the compilation.
+* `homer` - makes the TITLE a link that returns to the ORIGIN.
+* `placer` - shows clickable border-regions that the User can use to PLACE the widget. There are six places - `tl`, `tc`, `tr`, `bl`, `bc`, `br` - which correspond to top-left, top-center, top-right, bottom-left, bottom-center or bottom-right.
+* `sizer` - adds an expanding bar above TITLE containing clickable `S` `M` `L` used to set SIZE to small, medium or large.
+* `closer` - adds a CLOSE icon to the expanding bar which cancels play.
 
 *TODO:* add a picture of the UI
+<!--
 ![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+-->
 
 ## Programmatic Interface
 
