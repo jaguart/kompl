@@ -36,6 +36,7 @@ You can read the documentation and examples here:
 * [Anatomy of the Widget](doc/widget-anatomy.md)
 * [Using the OPTIONS argument](doc/example-options.md)
 * [Using the STYLE argument](doc/example-style.md)
+* [Widget Interface and Styling](doc/widget-interface.md)
 * [Roadmap - planned features](doc/roadmap.md)
 
 ## Credits

@@ -2,8 +2,8 @@
 
 The OPTIONS argument sets two main things:
 
-1. Placement and Size of the widget
-2. Presence of User Controls
+1. Placement and Size of the widget - where the widget appears and how big it is
+2. User Controls for the widget - enable the User to set their own size and placement preferences.
 
 ## Placement and Size
 
@@ -60,10 +60,10 @@ There are six placement options:
 ## User Controls
 
 There are four User controls that can be enabled or disabled:
-* **placer** - enables User to position the widget by clicking on a border.
-* **homer** - enables User to return to the ORIGIN by clicking on the Title.
-* **sizer** - enables User to select **S** - small, **M** - Medium or **L** - Large to size the widget.
-* **closer** - enables User to close the widget.
+* **placer** - enables User to position the widget on the page by clicking on a border
+* **homer** - enables User to return to the ORIGIN by clicking on the Title
+* **sizer** - enables User to select **S** - small, **M** - Medium or **L** - Large to size the widget
+* **closer** - enables User to close the widget
 
 ```javascript
       $kompl.play({

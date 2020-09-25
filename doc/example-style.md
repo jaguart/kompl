@@ -9,7 +9,7 @@ The current STYLE presets are:
   * **naked** - no User controls, just simple navigation.
 
 
-You can combine STYLE* with OPTIONS - OPTIONS will take precedence.
+You can combine STYLE with OPTIONS - entries in OPTIONS will take precedence.
 
 ```html
 <!-- In HEAD -->
