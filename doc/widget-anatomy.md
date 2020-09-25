@@ -18,7 +18,8 @@ The Kompl navigation widget has the following controls that the User can use to 
 
 ## Programmatic Interface
 
-*Note:* Interface elements may be capitalised in this document for emphasis - **All method-names and argument-options are lower-case when being used**
+*Note:* Interface elements may be capitalised in this document for emphasis</br>
+**All method-names and argument-options are lower-case when being used**
 
 ### Private Properties
 
