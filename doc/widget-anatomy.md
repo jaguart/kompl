@@ -33,9 +33,9 @@ These private attributes are documented for informational purposes - they are no
 
 The Kompl widget has the following callable interfaces:
 * `$kompl.play({...})` - play the compilation - the main entry point.
-* `$kompl.options({...})` - set OPTIONS for the widget. You can set OPTIONS once in your `<head>`, and they will be used by any calls to `$kompl.play()` throughout the page.
-* `$kompl.place('bc')` - set the placement of the widget. You can set PLACE once in `<head>` and it will be used by any calls to `$kompl.play({...})` throughout the page.
-* `$kompl.size('large')` - set the SIZE of the widget. You can set this once in `<head>` and it will be used by any calls to `$kompl.play({...})` throughout the page.
+* `$kompl.options({...})` - set OPTIONS for the widget. You can set OPTIONS once in your `<head>`, and they will be used by any calls to PLAY throughout the page.
+* `$kompl.place('bc')` - set the placement of the widget. You can set PLACE once in `<head>` and it will be used by any calls to PLAY throughout the page.
+* `$kompl.size('large')` - set the SIZE of the widget. You can set this once in `<head>` and it will be used by any calls to PLAY throughout the page.
 
 You can find usage examples here:
 * [Kompl Usage](example-usage.md)
