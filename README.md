@@ -23,7 +23,11 @@ Add controls into your pages that play your compilations:
         '/p5/',
         '/p7/',
       ],
-      style: 'compact',
+      style: 'clean',
+      options: {
+        size: 'large',
+        place: 'bc',
+      }
     )
     ">Show me!</button>
 ```
