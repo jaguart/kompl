@@ -130,4 +130,6 @@ document.addEventListener('DOMContentLoaded', function (ev) {
 
 ```
 
-...but first, coffee!
+---
+
+...and now, coffee!
