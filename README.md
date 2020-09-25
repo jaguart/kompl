@@ -4,7 +4,7 @@ A website navigation widget - guide your users through a curated compilation of 
 
 ## Installation
 
-* Head over to [releases] - download the .zip file
+* Head over to [releases](releses) - download the .zip file
 * Unzip the contents into a folder that is accessible from your website - e.g. public/
 * Add `<script src='/kompl.bundle.js'></script>` into the `<head>` on all pages on your site, *after* **JQuery**J
 
@@ -21,9 +21,9 @@ Add controls into your pages that play your compilations:
       '/p7/',
     ],
     style: 'compact',
-    )"Show me!</button>
+    )" >Show me!</button>
 ```
 
 ## Examples
 
-* [Using the STYLE argument](blob/master/doc/example-style-001.md)
+* [Using the STYLE argument](doc/example-style-001.md)
