@@ -81,4 +81,4 @@ There are four User controls that can be enabled or disabled:
       })
 ```
 
-See [Using the STYLE argument](example-style-001.md) to set **options** to named presets.
+See [Using the STYLE argument](example-style.md) to set **options** to named presets.

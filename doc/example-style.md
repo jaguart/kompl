@@ -52,3 +52,5 @@ and then in your HTML you can play the compilation using:
   <!-- in BODY -->
   <button onclick='show_compact()'>Show me - Compact</button>
 ```
+
+See [Using the OPTIONS argument](example-options.md) to see all available **options**.
