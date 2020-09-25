@@ -1,4 +1,4 @@
-# Kompl - Example Usage
+# Kompl - Usage
 
 ## Installation
 
@@ -41,7 +41,8 @@ You can STYLE the widget using the STYLE argument:
 ">Show me! clean</button>
 ```
 
-Current preset STYLEs: rich | choice | clean | naked
+Current preset STYLE valuess: `'rich' | 'choice' | 'clean' | 'naked'`
+
 See [Using the STYLE argument](example-style.md) for more detail.
 
 
@@ -63,18 +64,16 @@ You can set OPTIONS for the widget:
 ">Show me! large-bc</button>
 ```
 
-Note that any USER saved preferences will take precedence over STYLE or OPTIONS.
+Note that USER saved preferences take precedence over STYLE or OPTIONS settings.
 
-You can reset USER preferences by calling `$kompl.reset()` after your document has loaded.
+You can call  `$kompl.reset()` when your document has loaded to clear USER saved preferences.
 
+See [Using the OPTIONS argument](example-options.md) for more OPTIONS.
 
-See [Using the OPTIONS argument](example-options.md) to see all available **options**.
 
 ## Multiple Compilations
 
-You can use JavaScript to manage several compilations on the same page.
-
-For example you might:
+You can use JavaScript to manage several compilations on the same page. For example you might:
 
 ```html
 <head>

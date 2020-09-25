@@ -1,4 +1,4 @@
-# Kompl - Using the OPTIONS argument
+# Kompl - the OPTIONS argument
 
 The OPTIONS argument sets two main things:
 
