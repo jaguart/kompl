@@ -221,5 +221,34 @@
 
 </table>
 
+<button onclick="
+  $kompl.play({
+    title: 'My Curated Kompilation',
+    slugs: [
+      '/kompl/',
+      '/page1/',
+      '/page3/',
+      '/page7/',
+    ],
+    style: 'clean',
+  })
+">Show me! clean</button>
+
+<button onclick="
+  $kompl.play({
+    title: 'My Curated Kompilation',
+    slugs: [
+      '/kompl/',
+      '/page1/',
+      '/page3/',
+      '/page7/',
+    ],
+    options: {
+      size: 'large',
+      place: 'bc',
+    }
+  })
+">Show me! large-bc</button>
+
 </body>
 </html>

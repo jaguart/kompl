@@ -30,7 +30,7 @@ The Kompl widget has the following *private* attributes -
 * `$kompl.#slugs` - URLs of the pages in the compilation. They must exist - the widget does **not** pre-fetch to validate them.
 * `$kompl.#options` - OPTIONS that control widget appearance and behaviour. See [Using the OPTIONS argument](example-options.md).
 
-Private attributes are documented for information - not settable or gettable, except through the method calls described below.
+Private attributes are documented for information only - not settable or gettable, except through the method calls described below.
 
 ### Public Methods
 
