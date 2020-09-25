@@ -96,6 +96,7 @@ var $fruit = [
   '/cream/',
 ]
 
+// A wrapper function that calls $kompl.play with the specified $list
 function play_kompl( $list ) {
   $kompl.play({
     title: 'My favourite things',
@@ -103,6 +104,20 @@ function play_kompl( $list ) {
     style: 'clean',
   })
 }
+
+// Calling $kompl.options() is OPTIONAL :)
+// You can set options: and|or style: in the call to $kompl.play()
+// Set options for ALL compilations when document has loaded
+document.addEventListener('DOMContentLoaded', function (ev) {
+  window.$kompl.options({
+    place: 'br',
+    size: 'large',
+    homer: true,
+    placer: true,
+    sizer: true,
+    closer: true,
+  });
+})
 
 </script>
 </head>
@@ -114,3 +129,5 @@ function play_kompl( $list ) {
 </body>
 
 ```
+
+...but first, coffee!
