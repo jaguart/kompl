@@ -1,12 +1,12 @@
 # kompl
 
-A website navigation widget - Guide your users through a curated compilation of pages on your site.
+A website navigation widget - guide your users through a curated compilation of pages on your site.
 
 ## Installation
 
-* Head over the release page - download the latest version .zip file
+* Head over to [releases] - download the .zip file
 * Unzip the contents into a folder that is accessible from your website - e.g. public/
-* Add `<script src='/kompl.bundle.js'></script>` into the `<head>` on all pages on your site.
+* Add `<script src='/kompl.bundle.js'></script>` into the `<head>` on all pages on your site, *after* **JQuery**J
 
 ## Usage
 
@@ -26,6 +26,4 @@ Add controls into your pages that play your compilations:
 
 ## Examples
 
-See:
-
-* [Using the STYLE arguement](../blob/master/doc/example-style-001.md)
+* [Using the STYLE argument](blob/master/doc/example-style-001.md)
