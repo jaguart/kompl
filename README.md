@@ -30,7 +30,7 @@ Add controls into your pages that play your compilations:
 
 ## Documentation and Examples
 
-You can see the widget in operation by clicking on the **buttons** on this page: https://normus.totahgi.com/tags
+You can see the widget in operation by clicking on the **buttons** on this page: https://normus.totahi.com/tags
 
 You can read the documentation and examples here:
 * [Anatomy of the Widget](doc/widget-anatomy.md)
