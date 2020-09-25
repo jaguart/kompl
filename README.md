@@ -17,7 +17,7 @@ Add controls into your pages that play your compilations:
 ```html
   <button onclick="
     $kompl.play(
-      title:'My curated compilation',
+      title:'Jeffs curated Kompilation',
       slugs: [
         '/p1/',
         '/p5/',
