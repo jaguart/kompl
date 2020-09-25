@@ -1,13 +1,9 @@
-# Example - Using the OPTIONS argument.
+# Kompl Example - Using the OPTIONS argument
 
 The OPTIONS argument sets two main things:
 
-1. Placement and Size of the widget.
-2. Presence of User Controls:
-  * PLACER - enables User to position the widget by clicking on a border.
-  * HOMER - enables User to return to the ORIGIN page by clicking on the Title.
-  * SIZER - enables User to select S - small, M - Medium or L - Large to size the widget.
-  * CLOSER - enables User to close the widget.
+1. Placement and Size of the widget
+2. Presence of User Controls
 
 ## Placement and Size
 
@@ -32,8 +28,8 @@ The placement and size of the widget can be set using the **place** and **size**
       $kompl.play({
         ...$show,
         options: {
-          size: 'large',
           place: 'bl',
+          size: 'large',
         }
       })
      }

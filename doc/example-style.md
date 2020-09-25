@@ -1,4 +1,4 @@
-# Example - Using the STYLE argument.
+# Kompl Example - Using the STYLE argument
 
 The STYLE argument is a shorthand that sets several OPTIONS to named presets.
 
