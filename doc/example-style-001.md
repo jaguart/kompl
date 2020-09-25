@@ -1,14 +1,15 @@
-# Example - Using the *style* argument.
+# Example - Using the STYLE argument.
 
-The *STYLE* argument is a short-hand that sets several *OPTIONS* to a named preset.
+The STYLE argument is a shorthand that sets several OPTIONS to named presets.
 
-The current *STYLE* presets are:
-  * rich - all User controls are enabled
-  * choice - User can choose SIZE and has access to CLOSE
-  * clean - only the clickable-Title is enabled
-  * naked - no User controls, just simple navigation.
+The current STYLE presets are:
+  * **rich** - all User controls enabled
+  * **choice** - User can choose SIZE and has access to CLOSE
+  * **clean** - only the clickable-Title is enabled
+  * **naked** - no User controls, just simple navigation.
 
-You can combine *STYLE* with *OPTIONS* - the *OPTIONS* will take precedence.
+
+You can combine STYLE* with OPTIONS - OPTIONS will take precedence.
 
 ```html
 <!-- In HEAD -->
