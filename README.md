@@ -37,7 +37,7 @@ You can read the documentation and examples here:
 * [Using the OPTIONS argument](doc/example-options.md)
 * [Using the STYLE argument](doc/example-style.md)
 * [Widget Interface and Styling](doc/widget-interface.md)
-* [Roadmap - planned features](doc/roadmap.md)
+* [Roadmap - planned features](doc/widget-roadmap.md)
 
 ## Credits
 
@@ -45,4 +45,6 @@ You can read the documentation and examples here:
 
 ## Author
 
-Jeff, aka *jaguart* on Github. https://jaguart.tech - dabbler. This is my first playground using TypeScript in the Node-verse.
+Jeff, aka *jaguart* on Github. https://jaguart.tech - dabbler.
+
+This is my first playground using TypeScript in the Node-verse. Canonical https://github.com/jaguart/kompl
