@@ -39,8 +39,9 @@ You can see the widget in operation by clicking on the **buttons** on this page:
 You can read the documentation and examples here:
 * [Anatomy of the Widget](doc/widget-anatomy.md)
 * [Kompl Usage Examples](doc/example-usage.md)
-* [Using the OPTIONS argument](doc/example-options.md)
 * [Using the STYLE argument](doc/example-style.md)
+* [Using the SHOW argument](doc/example-show.md)
+* [Using the OPTIONS argument](doc/example-options.md)
 * [Roadmap - planned features](doc/widget-roadmap.md)
 
 ## Credits
