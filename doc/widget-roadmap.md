@@ -4,16 +4,17 @@ Under contruction: *Updated: 26 Sept 2020*
 
 ## Features
 
-### `add-show` : Show - at a % or #
+### `add-show` : Show - at a % or #here
 * v0.1
 * show: 0.75 - only show the widget when scrolled to at least 75% of the page...
-* show: #here - embed the widget in the HTML by `.appendTo('#here)`
+* show: #here - embed the widget in the HTML using `.appendTo('#here)`
 * show: 75% - maybe, depending on reliability of numeric parsing in JS
 
 ### `add-labels` : Prev: label, Next: label
 * v0.2
 * replace the SVG icons with the specified text / html
 * additional styling if necessary
+* can set either or both - YHBW
 
 ### `add-selectors` : review CSS selectors for external styling
 * v0.3
