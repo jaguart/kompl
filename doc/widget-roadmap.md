@@ -20,12 +20,16 @@ Under contruction: *Updated: 26 Sept 2020*
 * v0.3
 * also major review of widget HTML
 
+### `add-shortcuts`
+* remove need for `options:` subhash in `$kompl.play()` interface
+
 ---
 
 ## Fixes
 
 Generally in `fix-xxx` branch - but use  `master` if trivial.
 
+* expire Compilation - after 2 days, add an option
 
 ## Toolchain
 
@@ -34,6 +38,9 @@ Generally in `master` branch - but use  `fix-xxx` branch if significant.
 * `npm version` semver bumping
 * gpg signature
 * github draft-release integration
+* fix code-indent
+* get prettier working for TS
+
 
 ---
 

@@ -29,6 +29,16 @@
 
 // import './kompl.module.css';
 
+// weirdly, the VS Code lib.dom.d.ts has this, but the node_modules in
+// my dev folder doesn't
+declare global {
+  interface Window {
+    scrollTop: number
+  }
+  interface Document {
+    scrollTop: number
+  }
+}
 
 //import { dirname, CSS } from './jaguart-util-css.js'
 import { dirname, CSS } from './jaguart-util-css'
@@ -36,27 +46,28 @@ import { dirname, CSS } from './jaguart-util-css'
 // -----------------------------------------------------------------------------
 // Interfaces for public methods
 interface KomplOptions {
-    place?    : string;         // widget placement - tl | tc | tr | bl | bc | br
-    size?     : string;         // widget size - small | medium | large
-    homer?    : boolean;        // origin link on title
-    closer?   : boolean;        // show closer on bar
-    placer?   : boolean;        // placement-click regions
-    sizer?    : boolean;        // show sizer on bar
+    place?    : string          // widget placement - tl | tc | tr | bl | bc | br
+    size?     : string          // widget size - small | medium | large
+    show?     : string|number   // show - number: at-scroll, string: in this element
+    homer?    : boolean         // origin link on title
+    closer?   : boolean         // show closer on bar
+    placer?   : boolean         // placement-click regions
+    sizer?    : boolean         // show sizer on bar
 }
 
 interface KomplStyle {
-    rich    : KomplOptions;
-    choice  : KomplOptions;
-    clean   : KomplOptions;
-    naked   : KomplOptions;
+    rich    : KomplOptions
+    choice  : KomplOptions
+    clean   : KomplOptions
+    naked   : KomplOptions
 }
 
 interface KomplDefinition {
-    title     : string;         //  TITLE for the Kompilation, anchors to HOME
-    slugs     : string[];       //  SLUGS to navigate through, in order.
-    origin?   : string;         //  HOME URL of the Kompilation
-    style     : string;         //  Name of an option style: clear | rich etc.
-    options?  : KomplOptions;   //  OPTIONS that tweak presentation and behaviour
+    title     : string          //  TITLE for the Kompilation, anchors to HOME
+    slugs     : string[]        //  SLUGS to navigate through, in order.
+    origin?   : string          //  HOME URL of the Kompilation
+    style     : string          //  Name of an option style: clear | rich etc.
+    options?  : KomplOptions    //  OPTIONS that tweak presentation and behaviour
 }
 
 
@@ -118,8 +129,11 @@ export class Kompilation {
     #_index:   number | undefined = undefined     // zero-based index for window.location.pathname in #slugs
     #_widget:  JQuery | undefined = undefined     // Kompl collection navigation widget
     #_spacer:  JQuery | undefined = undefined     // Kompl spacer - ensure body can scroll clear of #widget_nav
+    #_show_when = 0                               // show when scrolled more than this. 0.0 - 1.0
+    #_show_at = 0                                 // show when window.scrollTop() is > this px
 
     // -----------------------------------------------------------------------
+
     // called in bundle main.js to instantiate global - not usually from page
     public constructor() {
         // Kompilation.say('constructed')
@@ -338,7 +352,7 @@ export class Kompilation {
 
         this._setNavIndex();
         if ( typeof this.#_index === 'number' ) {
-            // Kompilation.say('showing...')
+            Kompilation.say('showing...')
             const $size_css   = Kompilation.__getSizeCSSClass( this.#options.size )
             const $place_css  = Kompilation.__getPlaceCSSClass( this.#options.place )
 
@@ -347,9 +361,101 @@ export class Kompilation {
                 class:  `kompl-compilation kompl-hide ${ $place_css } ${ $size_css }`,
               })
             this.#_widget.html( this._getNavInnerHTML() )
-            this.#_widget.appendTo($('body'))
+
+            let $container = 'body'
+
+            Kompilation.say(`show: ${ this.#options.show }`)
+            Kompilation.say(`show: huh???!`)
+
+            if ( this.#options.show ) {
+              if ( typeof this.#options.show === 'number' ) {
+
+                Kompilation.say(`show: number ${ this.#options.show }`)
+
+                if ( this.#options.show > 1 && this.#options.show <= 100 )  {
+                  this.#_show_when = this.#options.show / 100
+                }
+                else if ( this.#options.show >= 0.01 && this.#options.show <= 1.00 ) {
+                  this.#_show_when = this.#options.show
+                }
+                else {
+                  Kompilation.warn(`invalid show: ${ this.#options.show } - ignored - must be 1-100 or 0.01-1.00`)
+                }
+
+                Kompilation.say(`show when: ${ this.#_show_when }`)
+
+              }
+              else if ( typeof this.#options.show === 'string' ) {
+
+                Kompilation.say(`show: string ${ this.#options.show }`)
+
+                if ( this.#options.show.substring(0,1) === '#' ) {
+                  const $id = this.#options.show.substring(1)
+                  if ( document.getElementById($id) ) {
+                    $container = this.#options.show // includes the #
+                    Kompilation.say(`show: in element ${ this.#options.show }`)
+                    this.#_widget.css("position", "relative")
+
+                  }
+                  else {
+                    Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
+                  }
+                }
+                else {
+                  Kompilation.warn(`invalid show: ${ this.#options.show } - must start with # - ignored`)
+                }
+              }
+              else {
+                Kompilation.warn(`invalid show: ${ this.#options.show } - must be number or string - ignored`)
+              }
+
+            }
+            else {
+              Kompilation.say("options.show is not set")
+            }
+
+            Kompilation.say(`show: container ${ $container }`)
+
+            // set up event-listeners to display widget when desired position is reached
+            if ( this.#_show_when > 0 ) {
+
+              Kompilation.say(`will show: when ${ this.#_show_when }`)
+
+              /*
+              const $vis_px     = document.documentElement.clientHeight // height of visible content
+              const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
+              const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
+              this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
+              */
+
+              if ( $(window) ) {
+                if ( $(document)  ) {
+                  const $vis_px     = $(window).height()    || 0
+                  const $doc_px     = $(document).height()  || 0 // height of visible content
+                  const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
+                  this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
+
+                  Kompilation.say(`have vis   : ${ $vis_px } px`)
+                  Kompilation.say(`have doc   : ${ $doc_px } px`)
+                  Kompilation.say(`can scroll : ${ $doc_scroll } px`)
+                  Kompilation.say(`show at    : ${ this.#_show_at } px`)
+                }
+              }
+
+              this._addWindowsEventHandlers()
+              if ( this.#_show_at > 0 ) {
+                this.#_widget.css('visibility','hidden')
+              }
+
+            }
+            else {
+              Kompilation.say(`show when skipped: ${ this.#_show_when }`)
+            }
+
+            this.#_widget.appendTo($($container))
             this.#_widget.removeClass('kompl-hide')
-            // Kompilation.say('displayed.')
+
+            Kompilation.say('displayed.')
         }
         else if ( this.#_widget ) {
           // Kompilation.say('remove widget - not in-play')
@@ -548,30 +654,84 @@ export class Kompilation {
         $('.kompl-bar').addClass( 'kompl-hide');
     }
 
-    public toggleBar() : void {
-        $('.kompl-bar').toggleClass( 'kompl-hide');
-        if ( $('.kompl-bar').hasClass( 'kompl-hide' ) ) {
-            this.hideCloser()
-        }
-        else {
-            this.showCloser()
-        }
-
+  public toggleBar() : void {
+    $('.kompl-bar').toggleClass( 'kompl-hide');
+    if ( $('.kompl-bar').hasClass( 'kompl-hide' ) ) {
+      this.hideCloser()
     }
-
-    /*
-    private static say( message: string, trace = false ) {
-      console.log( `kompl: ${message}` +
-       (trace ? ' at ' + Error('stack-trace').stack : '')
-       )
+    else {
+      this.showCloser()
     }
-    */
+  }
 
-   private static warn( message: string, trace = false ) {
+  // comment this out when building for production...
+  // need to get conditional code inclusion working...
+  private static say( message: string, trace = false ) {
     // eslint-disable-next-line no-console
     console.log( `kompl: ${message}` +
-     (trace ? ' at ' + Error('stack-trace').stack : '')
-     )
+      (trace ? ' at ' + Error('stack-trace').stack : '')
+      )
+  }
+
+  private static warn( message: string, trace = false ) {
+  // eslint-disable-next-line no-console
+  console.log( `kompl: ${message}` +
+    (trace ? ' at ' + Error('stack-trace').stack : '')
+    )
+  }
+
+  private _addWindowsEventHandlers () {
+
+    // Maybe these should be set up in initialise() only if we need them?
+    window.addEventListener('scroll', function (ev) {
+      window.$kompl.onWindowScroll(ev);
+    })
+
+    window.addEventListener('resize', function (ev) {
+      window.$kompl.onWindowScroll(ev);
+    })
+
+      /* Show/hide depending on how far window is scrolled */
+      /*
+
+        // chrome testing Sep 2020
+        document.documentElement.clientHeight - height of visible content
+        document.documentElement.scrollHeight - height of content, can be ZERO after back!
+        // body - beware of margins? can be smaller...
+
+
+        User can scroll from 0 to max(window.innerHeight - window.screen.availHeight,0)
+
+
+      function amIScrolled(ev) {
+        if ( window.scrollTop() >= (window.innerHeight/4) ) {
+          $go_top.css('visibility','visible')
+        }
+        else {
+          $go_top.css('visibility','hidden')
+        }
+      }
+
+      */
+
+  }
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  public onWindowScroll( ev: Event ) : any {
+    // dont do much here - can be called a lot, very fast!
+    //Kompilation.say( 'scrolled event callback')
+    if ( this.#_widget ) {
+      const  $scroll_top = Math.round($(window).scrollTop() || 0 )
+      Kompilation.say( `scroll is ${ $scroll_top }`)
+      //Kompilation.say( `scrollTop is ${ $scroll_top  }`)
+      if ( $scroll_top && $scroll_top >= this.#_show_at ) {
+        this.#_widget.css( 'visibility', 'visible')
+      }
+      else {
+        this.#_widget.css( 'visibility', 'hidden')
+      }
+    }
   }
 
 }

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kompl Show</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .green {
+        font-weight: bold;
+        color: rgba(128, 0, 0, 0.70);
+      }
+    </style>
+    <script>
+      // for ESlint HTML plugin
+      var $kompl, $
+
+      let $show = {
+        title: 'Jeffs Style Testing',
+        slugs: [
+          '/kompl/show.html',
+          '/kompl/index.html',
+          '/kompl/style.html',
+          '/t1/index.php/p1',
+          '/t1/index.php/p2',
+          '/t1/index.php/p3',
+        ],
+      }
+
+      function show_here_1()  { $kompl.play({ ...$show, options: { show: '#here1',     }}) }
+      function show_here_2()  { $kompl.play({ ...$show, options: { show: '#here2',     }}) }
+      function show_bad_id()  { $kompl.play({ ...$show, options: { show: '#nosuch',    }}) }
+      function show_bad_str() { $kompl.play({ ...$show, options: { show: 'invalid-id', }}) }
+      function show_20()      { $kompl.play({ ...$show, options: { show: 0.20, }}) }
+      function show_50()      { $kompl.play({ ...$show, options: { show: 0.50, }}) }
+      function show_80()      { $kompl.play({ ...$show, options: { show: 0.80, }}) }
+      function show_100()     { $kompl.play({ ...$show, options: { show: 1.00, }}) }
+
+      // visual clue that above has compiled :)
+      // Does not depend on jQuery - maybe it should
+      document.addEventListener('DOMContentLoaded', function (ev) {
+        $('#greeting').text('Tadah: '+Date.now()).addClass('green')
+      })
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="kompl.bundle.js" type="module" ></script>
+
+    <style>
+      table {
+        border-collapse: collapse;
+        margin: 8px 0;
+        width: 100%;
+      }
+
+      table,
+      td,
+      th {
+        border: 1px solid grey;
+        padding: 4px 8px;
+      }
+
+      th {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      button {
+        padding-top: 3px;
+        margin: 1px;
+        min-width: 3em;
+        text-align: center;
+      }
+
+    </style>
+
+</head>
+<body>
+
+<p id='greeting' style='float: right;'>Loading...</p>
+<h1>Kompl Style testing</h1>
+
+<a href='index.html'>Main Tests</a>
+<a href='style.html'>Style Tests</a>
+<a href='show.html'>Show Tests</a>
+
+<table>
+  <tr>
+    <th width='0%' >Action</th>
+    <th width='70%' >Effect</th>
+  </tr>
+
+  <tr>
+    <td><button onclick="$kompl.reset()">Reset</button></td>
+    <td>Reset all stored Kompl data</td>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.clear()">Close/Clear</button></td>
+    <td>Clear compilation currently in-play</td>
+  </tr>
+
+  <tr>
+    <td><button onclick="show_here_1()">Slides - HERE1</button></td>
+    <td>Show - here - <div id='here1'>here1</div></td>
+  </tr>
+  <tr>
+    <td><button onclick="show_here_2()">Slides - HERE2</button></td>
+    <td>Show - here - <div id='here2'>here2</div></td>
+  </tr>
+
+  <tr>
+    <td><button onclick="show_bad_id()">Slides - Bad Id</button></td>
+    <td>Show - oops - <div id='there1'>there1</div></td>
+  </tr>
+  <tr>
+    <td><button onclick="show_bad_str()">Slides - Bad Str</button></td>
+    <td>Show - oops - <div id='there1'>there2</div></td>
+  </tr>
+
+  <tr>
+    <td><button onclick="show_20()">Slides - 20%</button></td>
+    <td>Show at 20% scroll</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_50()">Slides - 50%</button></td>
+    <td>Show at 50% scroll</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_80()">Slides - 80%</button></td>
+    <td>Show at 80% scroll</td>
+  </tr>
+  <tr>
+    <td><button onclick="show_100()">Slides - 100%</button></td>
+    <td>Show at 100% scroll</td>
+  </tr>
+
+
+</table>
+
+</body>
+</html>

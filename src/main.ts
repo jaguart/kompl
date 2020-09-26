@@ -2,7 +2,6 @@
 // main.ts
 
 import Kompilation from "./kompl";
-//import Kompilation from "./kompl";
 
 declare global {
   var $kompl: Kompilation
