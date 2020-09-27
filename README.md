@@ -2,7 +2,7 @@
 
 A website navigation widget - guide your users through a curated compilation of pages on your site.
 
-*I will get a picture here, when I figure out how-to*
+![Kompilation in Action](doc/kompl-example-001.jpg)
 
 ## Installation
 
