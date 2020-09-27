@@ -129,8 +129,8 @@ export class Kompilation {
     #_index:   number | undefined = undefined     // zero-based index for window.location.pathname in #slugs
     #_widget:  JQuery | undefined = undefined     // Kompl collection navigation widget
     #_spacer:  JQuery | undefined = undefined     // Kompl spacer - ensure body can scroll clear of #widget_nav
-    #_show_when = 0                               // show when scrolled more than this. 0.0 - 1.0
-    #_show_at = 0                                 // show when window.scrollTop() is > this px
+    #_show_at   = 0                               // show when window.scrollTop() is > this px
+    #_show_in   = 'body'                          // show in this element - BODY or #ID
 
     // -----------------------------------------------------------------------
 
@@ -344,126 +344,135 @@ export class Kompilation {
       $('head').append(`<link rel='stylesheet' href='${ Kompilation.URL_BASE + Kompilation.KomplAssetCSS }' type='text/css' media='screen'>`);
     }
 
-    /* -----------------------------------------------------------------------
-     * Display the #widget_nav and spacer if we are in-play.
-     * Any previously displayed element is removed.
-     * ----------------------------------------------------------------------- */
-    private _showNavigation() : void {
+  // parse  SHOW option and set either #_show_at or #_show_in
+  // #_show_at - pixels, visible when scrollTop >= this value
+  // #_show_in - body or #id - container for widget
+  private _setShowOptions () {
 
-        this._setNavIndex();
-        if ( typeof this.#_index === 'number' ) {
-            Kompilation.say('showing...')
-            const $size_css   = Kompilation.__getSizeCSSClass( this.#options.size )
-            const $place_css  = Kompilation.__getPlaceCSSClass( this.#options.place )
+    Kompilation.say(`set show: ${ this.#options.show }`)
 
-            this.#_widget = $('<div>',{
-                id:     'kompl',
-                class:  `kompl-compilation kompl-hide ${ $place_css } ${ $size_css }`,
-              })
-            this.#_widget.html( this._getNavInnerHTML() )
+    let $when = 0
 
-            let $container = 'body'
-
-            Kompilation.say(`show: ${ this.#options.show }`)
-            Kompilation.say(`show: huh???!`)
-
-            if ( this.#options.show ) {
-              if ( typeof this.#options.show === 'number' ) {
-
-                Kompilation.say(`show: number ${ this.#options.show }`)
-
-                if ( this.#options.show > 1 && this.#options.show <= 100 )  {
-                  this.#_show_when = this.#options.show / 100
-                }
-                else if ( this.#options.show >= 0.01 && this.#options.show <= 1.00 ) {
-                  this.#_show_when = this.#options.show
-                }
-                else {
-                  Kompilation.warn(`invalid show: ${ this.#options.show } - ignored - must be 1-100 or 0.01-1.00`)
-                }
-
-                Kompilation.say(`show when: ${ this.#_show_when }`)
-
-              }
-              else if ( typeof this.#options.show === 'string' ) {
-
-                Kompilation.say(`show: string ${ this.#options.show }`)
-
-                if ( this.#options.show.substring(0,1) === '#' ) {
-                  const $id = this.#options.show.substring(1)
-                  if ( document.getElementById($id) ) {
-                    $container = this.#options.show // includes the #
-                    Kompilation.say(`show: in element ${ this.#options.show }`)
-                    this.#_widget.css("position", "relative")
-
-                  }
-                  else {
-                    Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
-                  }
-                }
-                else {
-                  Kompilation.warn(`invalid show: ${ this.#options.show } - must start with # - ignored`)
-                }
-              }
-              else {
-                Kompilation.warn(`invalid show: ${ this.#options.show } - must be number or string - ignored`)
-              }
-
-            }
-            else {
-              Kompilation.say("options.show is not set")
-            }
-
-            Kompilation.say(`show: container ${ $container }`)
-
-            // set up event-listeners to display widget when desired position is reached
-            if ( this.#_show_when > 0 ) {
-
-              Kompilation.say(`will show: when ${ this.#_show_when }`)
-
-              /*
-              const $vis_px     = document.documentElement.clientHeight // height of visible content
-              const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
-              const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
-              this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
-              */
-
-              if ( $(window) ) {
-                if ( $(document)  ) {
-                  const $vis_px     = $(window).height()    || 0
-                  const $doc_px     = $(document).height()  || 0 // height of visible content
-                  const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
-                  this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
-
-                  Kompilation.say(`have vis   : ${ $vis_px } px`)
-                  Kompilation.say(`have doc   : ${ $doc_px } px`)
-                  Kompilation.say(`can scroll : ${ $doc_scroll } px`)
-                  Kompilation.say(`show at    : ${ this.#_show_at } px`)
-                }
-              }
-
-              this._addWindowsEventHandlers()
-              if ( this.#_show_at > 0 ) {
-                this.#_widget.css('visibility','hidden')
-              }
-
-            }
-            else {
-              Kompilation.say(`show when skipped: ${ this.#_show_when }`)
-            }
-
-            this.#_widget.appendTo($($container))
-            this.#_widget.removeClass('kompl-hide')
-
-            Kompilation.say('displayed.')
+    if ( this.#options.show ) {
+      if ( typeof this.#options.show === 'number' ) {
+        Kompilation.say(`show: number ${ this.#options.show }`)
+        if ( this.#options.show > 1 && this.#options.show <= 100 )  {
+          $when = this.#options.show / 100
         }
-        else if ( this.#_widget ) {
-          // Kompilation.say('remove widget - not in-play')
-          this.#_widget.remove();
-          this.#_widget = undefined;
+        else if ( this.#options.show >= 0.01 && this.#options.show <= 1.00 ) {
+          $when = this.#options.show
         }
-
+        else {
+          Kompilation.warn(`invalid show: ${ this.#options.show } - ignored - must be 1-100 or 0.01-1.00`)
+        }
+        Kompilation.say(`show when: ${ $when }`)
       }
+      else if ( typeof this.#options.show === 'string' ) {
+        Kompilation.say(`show: string ${ this.#options.show }`)
+        if ( this.#options.show.substring(0,1) === '#' ) {
+          const $id = this.#options.show.substring(1)
+          if ( document.getElementById($id) ) {
+            this.#_show_in = this.#options.show // includes the #
+            Kompilation.say(`show: in element ${ this.#options.show }`)
+          }
+          else {
+            Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
+          }
+        }
+        else {
+          Kompilation.warn(`invalid show: ${ this.#options.show } - must start with # - ignored`)
+        }
+      }
+      else {
+        Kompilation.warn(`invalid show: ${ this.#options.show } - must be number or string - ignored`)
+      }
+    }
+    else {
+      Kompilation.say("options.show is not set")
+    }
+    Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in } `)
+
+    // set up event-listeners to display widget when desired position is reached
+    if ( $when > 0 ) {
+
+      Kompilation.say(`will show: when ${ $when }`)
+
+      /*
+       // These don't work as reliably as JQuery
+      const $vis_px     = document.documentElement.clientHeight // height of visible content
+      const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
+      const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
+      this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
+      */
+
+      if ( $(window) ) {
+        if ( $(document)  ) {
+          const $vis_px     = $(window).height()    || 0        // height of viewport
+          const $doc_px     = $(document).height()  || 0        // height of content
+          const $scroll_px  = Math.max( 0, $doc_px - $vis_px )  // scrollable px
+
+          // need a few scrollable PX - 150? or don't bother.
+          if ( $scroll_px >= 150 ) {
+            this.#_show_at    = Math.round( $scroll_px * $when )  // trigger point
+          }
+
+          Kompilation.say(`have vis   : ${ $vis_px } px`)
+          Kompilation.say(`have doc   : ${ $doc_px } px`)
+          Kompilation.say(`can scroll : ${ $scroll_px } px`)
+          Kompilation.say(`show at    : ${ this.#_show_at } px`)
+        }
+      }
+
+      if ( this.#_show_at > 0 ) {
+        this._addWindowsEventHandlers()
+      }
+
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+   * Display the #widget_nav and spacer if we are in-play.
+   * Any previously displayed element is removed.
+   * ----------------------------------------------------------------------- */
+  private _showNavigation() : void {
+
+    this._setNavIndex();
+
+    if ( typeof this.#_index === 'number' ) {
+
+      const $size_css   = Kompilation.__getSizeCSSClass( this.#options.size )
+      const $place_css  = Kompilation.__getPlaceCSSClass( this.#options.place )
+
+      this.#_widget = $('<div>',{
+          id:     'kompl',
+          class:  `kompl-compilation kompl-hide ${ $place_css } ${ $size_css }`,
+        })
+      this.#_widget.html( this._getNavInnerHTML() )
+
+      // Side-effect => sets #_show_at and #_show_in
+      this._setShowOptions()
+
+      if ( this.#_show_in != 'body' ) {
+        // position: default: fixed => relative in STYLE
+        this.#_widget.css("position", "relative")
+      }
+      if ( this.#_show_at > 0 ) {
+        this.#_widget.css('visibility','hidden')
+      }
+
+      this.#_widget.appendTo($(this.#_show_in))
+      this.#_widget.removeClass('kompl-hide')
+
+      Kompilation.say('displayed.')
+    }
+    else if ( this.#_widget ) {
+      // Kompilation.say('remove widget - not in-play')
+      // Should never get here?
+      this.#_widget.remove();
+      this.#_widget = undefined;
+    }
+
+  }
 
     private _refreshNavigation() : void {
         if ( this.#_widget ) {
@@ -723,8 +732,6 @@ export class Kompilation {
     //Kompilation.say( 'scrolled event callback')
     if ( this.#_widget ) {
       const  $scroll_top = Math.round($(window).scrollTop() || 0 )
-      Kompilation.say( `scroll is ${ $scroll_top }`)
-      //Kompilation.say( `scrollTop is ${ $scroll_top  }`)
       if ( $scroll_top && $scroll_top >= this.#_show_at ) {
         this.#_widget.css( 'visibility', 'visible')
       }
@@ -733,6 +740,7 @@ export class Kompilation {
       }
     }
   }
+
 
 }
 

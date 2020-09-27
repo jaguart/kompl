@@ -1,6 +1,6 @@
 # Kompl - Roadmap
 
-Under contruction: *Updated: 26 Sept 2020*
+Under contruction: *Updated: 27 Sept 2020*
 
 ## Features
 
@@ -10,18 +10,23 @@ Under contruction: *Updated: 26 Sept 2020*
 * show: #here - embed the widget in the HTML using `.appendTo('#here)`
 * show: 75% - maybe, depending on reliability of numeric parsing in JS
 
-### `add-labels` : Prev: label, Next: label
+### `add-shortcuts`
 * v0.2
+* remove need for `options:` subhash in `$kompl.play()` interface
+
+### `add-labels` : Prev: label, Next: label
+* v0.3
 * replace the SVG icons with the specified text / html
 * additional styling if necessary
 * can set either or both - YHBW
 
+### `add-spacer` : Enable visible scroll past widget
+* vn.n.1
+
 ### `add-selectors` : review CSS selectors for external styling
-* v0.3
+* vn.n.1
 * also major review of widget HTML
 
-### `add-shortcuts`
-* remove need for `options:` subhash in `$kompl.play()` interface
 
 ---
 
