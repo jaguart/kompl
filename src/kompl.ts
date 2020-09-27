@@ -156,6 +156,7 @@ export class Kompilation {
     this._addCSSToHead()
     this._showNavigation()
 
+
     // TBC
     // parse doc for all Kompilation definitions, adding a PLAY element?
     // Kompilation.say(`initialised at ${Kompilation.URL_BASE}` )
@@ -349,6 +350,7 @@ export class Kompilation {
     let $when = 0
 
     if ( this.#options.show ) {
+      /* v1
       if ( typeof this.#options.show === 'number' ) {
         //Kompilation.say(`show: number ${ this.#options.show }`)
         if ( this.#options.show > 1 && this.#options.show <= 100 )  {
@@ -381,9 +383,32 @@ export class Kompilation {
       else {
         Kompilation.warn(`invalid show: ${ this.#options.show } - must be number or string - ignored`)
       }
-    }
-    //Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in }`)
+      */
 
+    if ( typeof this.#options.show === 'string' && this.#options.show.substring(0,1) === '#' ) {
+      const $id = this.#options.show.substring(1)
+      if ( document.getElementById($id) ) {
+        this.#_show_in = this.#options.show // includes the #
+      }
+      else {
+        Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
+      }
+    }
+    else {
+      let $show = typeof this.#options.show === 'string'
+        ? Number.parseFloat( this.#options.show )
+        : this.#options.show
+      $show = Number.isNaN( $show ) ? 0 : $show
+      if ( $show >= 1 && $show <= 100 ) $show = $show / 100
+      if ( $show >= 0.01 && $show <= 1.00 ) {
+        $when = $show
+      }
+      else {
+        Kompilation.warn(`invalid show: ${ this.#options.show } - ignored`)
+      }
+    }
+
+    //Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in }`)
     // set up event-listeners to display widget when desired position is reached
     if ( $when > 0 ) {
 
@@ -417,6 +442,7 @@ export class Kompilation {
         this._addWindowsEventHandlers()
       }
 
+    }
     }
   }
 
