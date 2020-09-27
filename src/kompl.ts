@@ -46,298 +46,292 @@ import { dirname, CSS } from './jaguart-util-css'
 // -----------------------------------------------------------------------------
 // Interfaces for public methods
 interface KomplOptions {
-    place?    : string          // widget placement - tl | tc | tr | bl | bc | br
-    size?     : string          // widget size - small | medium | large
-    show?     : string|number   // show - number: at-scroll, string: in this element
-    homer?    : boolean         // origin link on title
-    closer?   : boolean         // show closer on bar
-    placer?   : boolean         // placement-click regions
-    sizer?    : boolean         // show sizer on bar
+  place?    : string          // widget placement - tl | tc | tr | bl | bc | br
+  size?     : string          // widget size - small | medium | large
+  show?     : string|number   // show - number: at-scroll, string: in this element
+  homer?    : boolean         // origin link on title
+  closer?   : boolean         // show closer on bar
+  placer?   : boolean         // placement-click regions
+  sizer?    : boolean         // show sizer on bar
 }
 
 interface KomplStyle {
-    rich    : KomplOptions
-    choice  : KomplOptions
-    clean   : KomplOptions
-    naked   : KomplOptions
+  rich      : KomplOptions    // all User controls
+  choice    : KomplOptions    // no placer, has homer, sizer and closer
+  clean     : KomplOptions    // only homer
+  naked     : KomplOptions    // no user controls
 }
 
 interface KomplDefinition {
-    title     : string          //  TITLE for the Kompilation, anchors to HOME
-    slugs     : string[]        //  SLUGS to navigate through, in order.
-    origin?   : string          //  HOME URL of the Kompilation
-    style     : string          //  Name of an option style: clear | rich etc.
-    options?  : KomplOptions    //  OPTIONS that tweak presentation and behaviour
+  title     : string          //  TITLE for the Kompilation, anchors to HOME
+  slugs     : string[]        //  SLUGS to navigate through, in order.
+  origin?   : string          //  HOME URL of the Kompilation
+  style     : string          //  Name of an option style: clear | rich etc.
+  options?  : KomplOptions    //  OPTIONS that tweak presentation and behaviour
 }
 
 
 // -----------------------------------------------------------------------------
 export class Kompilation {
 
-    // Statics seem to minify better - the name is NOT mangled by terser/terser
+  // Statics seem to minify better - the name is NOT mangled by terser/terser
 
-    static readonly KomplAssetCSS           = 'kompl.bundle.css' // kompl.css
-    static readonly KomplAssetSVGUp         = 'kompl-up.svg'
-    static readonly KomplAssetSVGPlus       = 'kompl-plus.svg'
+  static readonly KomplAssetCSS           = 'kompl.bundle.css' // kompl.css
+  static readonly KomplAssetSVGUp         = 'kompl-up.svg'
+  static readonly KomplAssetSVGPlus       = 'kompl-plus.svg'
 
-    // Valid position css-classes for Widget - top-left to bottom-right.
-    static readonly WidgetPlaceEnum         = ['tl','tc','tr','bl','bc','br',]
-                                                .map( x => 'kompl-at-' + x)
+  // Valid position css-classes for Widget - top-left to bottom-right.
+  static readonly WidgetPlaceEnum         = ['tl','tc','tr','bl','bc','br',]
+                                              .map( x => 'kompl-at-' + x)
 
-    // Valid size css-classes for Widget
-    static readonly WidgetSizeEnum          = ['small','medium','large',]
-                                                .map( x => 'kompl-sz-' + x)
+  // Valid size css-classes for Widget
+  static readonly WidgetSizeEnum          = ['small','medium','large',]
+                                              .map( x => 'kompl-sz-' + x)
 
-    // localStorage keys
-    static readonly KomplStorageData        = 'kompl-data'
-    static readonly KomplStorageOptions     = 'kompl-options'
-    static readonly KomplStoragePlace       = 'kompl-place'
-    static readonly KomplStorageSize        = 'kompl-size'
+  // localStorage keys
+  static readonly KomplStorageData        = 'kompl-data'
+  static readonly KomplStorageOptions     = 'kompl-options'
+  static readonly KomplStoragePlace       = 'kompl-place'
+  static readonly KomplStorageSize        = 'kompl-size'
 
-    // Kompilation.DEFAULT_OPTIONS
-    static readonly DEFAULTS : KomplOptions = {
-        place:    'br',
-        size:     'medium',
-        homer:    true,
-        closer:   true,
-        placer:   true,
-        sizer:    true,
-        }
+  // Kompilation.DEFAULT_OPTIONS
+  static readonly DEFAULTS : KomplOptions = {
+    place:    'br',
+    size:     'medium',
+    homer:    true,
+    closer:   true,
+    placer:   true,
+    sizer:    true,
+  }
 
-    static readonly STYLE : KomplStyle = {
-        rich    : { homer: true,  closer: true,  sizer: true,  placer: true  },
-        choice  : { homer: true,  closer: true,  sizer: true,  placer: false },
-        clean   : { homer: true,  closer: false, sizer: false, placer: false },
-        naked   : { homer: false, closer: false, sizer: false, placer: false },
+  static readonly STYLE : KomplStyle = {
+    rich    : { homer: true,  closer: true,  sizer: true,  placer: true  },
+    choice  : { homer: true,  closer: true,  sizer: true,  placer: false },
+    clean   : { homer: true,  closer: false, sizer: false, placer: false },
+    naked   : { homer: false, closer: false, sizer: false, placer: false },
+  }
+
+  // Kompilation.URL_BASE
+  // prepended to file-assets to create resolvable URL.
+  // /.well-known/ is a folder used by LetsEncrypt in Ghost
+  static URL_BASE = '/.well-known/'
+
+  // -------------------------------------------------------------------------
+  // Kompilation instance properties - all hard-privates
+  #origin = ''
+  #title  = ''
+  #slugs: string[] = []
+
+  // Initialise to DEFAULTS using a spread
+  #options = { ... Kompilation.DEFAULTS }
+
+  // State attributes
+  #_index:   number | undefined = undefined     // zero-based index for window.location.pathname in #slugs
+  #_widget:  JQuery | undefined = undefined     // Kompl collection navigation widget
+  #_spacer:  JQuery | undefined = undefined     // Kompl spacer - ensure body can scroll clear of #widget_nav
+  #_show_at   = 0                               // show when window.scrollTop() is > this px
+  #_show_in   = 'body'                          // show in this element - BODY or #ID
+
+  // -----------------------------------------------------------------------
+
+  // called in bundle main.js to instantiate global - not usually from page
+  public constructor() {
+    // Kompilation.say('constructed')
+    return this
+  }
+
+  /* -----------------------------------------------------------------------
+    * The main EVERY-PAGE ENTRYPOINT called in document-event-DOMContentLoaded
+    * If Kompilation is in-play, #widget_nav will be displayed.
+    * There is deliberately NO createKompilation here because I feel that
+    * this would confuse consumers.
+    * ----------------------------------------------------------------------- */
+  public initialise() : void {
+    // Kompilation.say('initialising...')
+    this._restoreCompilation()
+    // Cannot SHOW until document DOMContentLoaded event has fired
+    // Would be cool to move just this call to
+    // document.addEventListener('DOMContentLoaded', (ev)=> {})
+    this._setURLBase()
+    this._addCSSToHead()
+    this._showNavigation()
+
+    // TBC
+    // parse doc for all Kompilation definitions, adding a PLAY element?
+    // Kompilation.say(`initialised at ${Kompilation.URL_BASE}` )
+
+  }
+
+  /* -----------------------------------------------------------------------
+    * This is the MAIN ENTRYPOINT called by end user to show the Kompilation
+    * It returns a BOOLEAN - true on success, false on no-compilation so that
+    * callers can respond in onclick. Call this on a User initiated event.
+    * ----------------------------------------------------------------------- */
+  public play( arg: KomplDefinition ) :boolean {
+
+    // Kompilation.say('playing...')
+    if ( arg.style ) {
+      if ( Kompilation.STYLE[arg.style as keyof KomplStyle] ) {
+          arg.options = { ...Kompilation.STYLE[arg.style as keyof KomplStyle], ...arg.options }
+      }
+      else {
+          Kompilation.warn( `unknown style: ${arg.style} - ignored`)
+      }
     }
 
-    // Kompilation.URL_BASE
-    // prepended to file-assets to create resolvable URL.
-    // /.well-known/ is a folder used by LetsEncrypt in Ghost
-    static URL_BASE = '/.well-known/'
-
-    // -------------------------------------------------------------------------
-    // Kompilation instance properties - all hard-privates
-    #origin = ''
-    #title  = ''
-    #slugs: string[] = []
-
-    // Would like to have used DEFAULT_OPTIONS but dont yet know how to make that happen
-    #options = { ... Kompilation.DEFAULTS }
-
-    // Instance State variables
-    #_index:   number | undefined = undefined     // zero-based index for window.location.pathname in #slugs
-    #_widget:  JQuery | undefined = undefined     // Kompl collection navigation widget
-    #_spacer:  JQuery | undefined = undefined     // Kompl spacer - ensure body can scroll clear of #widget_nav
-    #_show_at   = 0                               // show when window.scrollTop() is > this px
-    #_show_in   = 'body'                          // show in this element - BODY or #ID
-
-    // -----------------------------------------------------------------------
-
-    // called in bundle main.js to instantiate global - not usually from page
-    public constructor() {
-        // Kompilation.say('constructed')
-        return this
+    if ( arg.options ) {
+      // If options are specified, make them a complete set
+      arg.options = { ...Kompilation.DEFAULTS, ...arg.options }
     }
+    if ( arg ) this._createCompilation( arg )
 
-    /* -----------------------------------------------------------------------
-     * The main EVERY-PAGE ENTRYPOINT called in document-event-DOMContentLoaded
-     * If Kompilation is in-play, #widget_nav will be displayed.
-     * There is deliberately NO createKompilation here because I feel that
-     * this would confuse consumers.
-     * ----------------------------------------------------------------------- */
-    public initialise() : void {
-
-        // Kompilation.say('initialising...')
-
-        this._restoreCompilation()
-
-        // Cannot SHOW until document DOMContentLoaded event has fired
-        // Would be cool to move just this call to
-        // document.addEventListener('DOMContentLoaded', (ev)=> {})
-        this._setURLBase()
-        this._addCSSToHead()
-        this._showNavigation()
-
-        // TBC
-        // parse doc for all Kompilation definitions, adding a PLAY element?
-
-        // Kompilation.say(`initialised at ${Kompilation.URL_BASE}` )
-
+    // PLAY - navigate to the first slug
+    if ( this.#slugs.length > 0 ) {
+        this._persistCompilation()
+        window.location.pathname = this.#slugs[0]
+        return true
     }
+    // Kompilation.say('Nothing to play')
+    return false
+  }
 
-    /* -----------------------------------------------------------------------
-     * This is the MAIN ENTRYPOINT called by end user to show the Kompilation
-     * It returns a BOOLEAN - true on success, false on no-compilation so that
-     * callers can respond in onclick. Call this on a User initiated event.
-     * ----------------------------------------------------------------------- */
-    public play( arg: KomplDefinition ) :boolean {
+  /* -----------------------------------------------------------------------
+    * Publicly callable - options  for this Compilation,
+    * will trigger a widget redraw if necessary
+    * ----------------------------------------------------------------------- */
+  public options ( arg: KomplOptions | string ) : void {
+    if ( typeof arg === 'string' ) {
+      if ( Kompilation.STYLE[arg as keyof KomplStyle] ) {
+        arg = { ...Kompilation.STYLE[arg as keyof KomplStyle] }
+      }
+      else {
+        Kompilation.warn( `unknown style: ${arg} - ignored`)
+        return
+      }
+    }
+    this._setOptions( arg )
+    this._persistOptions()
+    this._refreshNavigation()
+  }
 
-      // Kompilation.say('playing...')
-      if ( arg.style ) {
-        if ( Kompilation.STYLE[arg.style as keyof KomplStyle] ) {
-            arg.options = { ...Kompilation.STYLE[arg.style as keyof KomplStyle], ...arg.options }
-        }
-        else {
-            Kompilation.warn( `unknown style: ${arg.style} - ignored`)
-        }
+  private _createCompilation( arg: KomplDefinition ) : void {
+    // Kompilation.say('creating...')
+    //for (const [key, value] of Object.entries(arg)) {
+    //    Kompilation.say(`arg: ${key}: ${typeof(value)} = ${value}`);
+    //}
+
+    this.#origin    =   typeof( arg.origin ) == 'string' ? arg.origin : window.location.pathname
+    this.#title     =   typeof( arg.title ) == 'string' ? arg.title : ''
+    this.#slugs     =   Array.isArray( arg.slugs )
+                        ? [ ...arg.slugs]
+                        : (typeof(arg.slugs) == 'object'
+                        ? Object.values(arg.slugs)
+                        : [])
+
+    // this call has NO side-effects - just sets options for later evaluation
+    this._setOptions( arg.options )
+
+    // Kompilation.say( 'created: ' + this._title  + ' origin: ' + this._origin + ' slugs: ' + this._slugs.length )
+  }
+
+
+  /* -----------------------------------------------------------------------
+    * Set zero-based index into #slugs.
+    * return TRUE if we are on a page that is in-play
+    * ----------------------------------------------------------------------- */
+  private _setNavIndex() : boolean {
+    this.#_index = undefined;
+    const $here = window.location.pathname
+    this.#slugs.some(( $slug, $i ) => {
+      if ( $slug == $here ) {
+        this.#_index = $i
+        return true
+      }
+    })
+    // Kompilation.say('index is: ' + this._nav_index + ' at ' + $here)
+    return typeof this.#_index == 'number'
+  }
+
+  /* -----------------------------------------------------------------------
+    * Construct Nav widget HTML
+    * ----------------------------------------------------------------------- */
+  private _getNavInnerHTML () : string  {
+
+    if ( typeof this.#_index === 'number' ) {
+
+      // TODO: migrate from style to css
+      let $prev_href  = ''
+      let $prev_style ='style="filter: opacity(30%);transform: rotate(-90deg);"'
+      if ( this.#_index > 0 ) {
+          $prev_href  = `href="${ this.#slugs[this.#_index-1] }"`
+          $prev_style = 'style="transform: rotate(-90deg);"'
       }
 
-      if ( arg.options ) {
-        // If options are specified, make them a complete set
-        arg.options = { ...Kompilation.DEFAULTS, ...arg.options }
+      let $prev = ''
+      $prev  = `<a ${ $prev_href }><img src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGUp }" ${$prev_style} ></a>`
+
+      let $next_href  = ''
+      let $next_style ='style="filter: opacity(30%);transform: rotate(90deg);"'
+      if ( this.#_index < this.#slugs.length-1 ) {
+          $next_href  =`href="${ this.#slugs[this.#_index+1] }"`
+          $next_style = 'style="transform: rotate(90deg);"'
       }
-      if ( arg ) this._createCompilation( arg )
+      let $next = ''
+      $next  = `<a ${ $next_href }><img src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGUp }" ${$next_style} ></a>`
 
-      if ( this.#slugs.length > 0 ) {
-          this._persistCompilation()
-          // Kompilation.say('In-play.')
-          window.location.pathname = this.#slugs[0]
-          return true
-      }
-      // Kompilation.say('Nothing to play')
-      return false
+      let $last_html = ''
+      $last_html  = `<a href="${ this.#slugs[this.#slugs.length-1] }">${ this.#slugs.length.toString() }</a>`
+
+      let $descr = ''
+      $descr = `<div class="kompl-descr"><b>${this.#_index+1}</b> of ${$last_html}</div>`
+
+      const $sizer = this.#options.sizer ?
+      `
+      <div class="kompl-sizer-small"  onclick="$kompl.size('small')">S</div>
+      <div class="kompl-sizer-medium" onclick="$kompl.size('medium')">M</div>
+      <div class="kompl-sizer-large"  onclick="$kompl.size('large')">L</div>
+      `
+      :
+      `<div class="kompl-sizer-small"></div>`
+
+      const $closer = this.#options.closer
+      ? `<img class="kompl-closer" onclick="$kompl.clear()" src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGPlus }"/>`
+      : ``
+
+      const $bar = this.#options.sizer || this.#options.closer
+      ? `<div class="kompl-bar kompl-hide" onclick="$kompl.toggleBar()"> ${ $sizer } ${ $closer } </div>`
+      : ``
+
+      const $placer = this.#options.placer
+      ? `
+      <div class="kompl-place-tl kompl-at-tl" onclick="$kompl.place('tl')"></div>
+      <div class="kompl-place-tc kompl-at-tc" onclick="$kompl.place('tc')"></div>
+      <div class="kompl-place-tr kompl-at-tr" onclick="$kompl.place('tr')"></div>
+      <div class="kompl-place-br kompl-at-br" onclick="$kompl.place('br')"></div>
+      <div class="kompl-place-bc kompl-at-bc" onclick="$kompl.place('bc')"></div>
+      <div class="kompl-place-bl kompl-at-bl" onclick="$kompl.place('bl')"></div>
+      `
+      : ``
+
+      const $title = this.#options.homer
+      ? `
+      <div class="kompl-title"><a href="${ this.#origin }">${ this.#title }</a></div>
+      `
+      : `
+      <div class="kompl-title">${ this.#title }</div>
+      `
+
+      return `
+      <div class="kompl-inner">
+        ${ $placer }
+        ${ $bar }
+        ${ $title }
+        <div class="kompl-nav">${ $prev } ${ $descr } ${ $next }</div>
+      </div>
+      `
     }
-
-
-    private _createCompilation( arg: KomplDefinition ) : void {
-
-        // Kompilation.say('creating...')
-        //for (const [key, value] of Object.entries(arg)) {
-        //    Kompilation.say(`arg: ${key}: ${typeof(value)} = ${value}`);
-        //}
-
-        this.#origin    =   typeof( arg.origin ) == 'string' ? arg.origin : window.location.pathname
-        this.#title     =   typeof( arg.title ) == 'string' ? arg.title : ''
-        this.#slugs     =   Array.isArray( arg.slugs )
-                            ? [ ...arg.slugs]
-                            : (typeof(arg.slugs) == 'object'
-                            ? Object.values(arg.slugs)
-                            : [])
-
-        // this call has NO side-effects - just sets options for later evaluation
-        this._setOptions( arg.options )
-
-        // Kompilation.say( 'created: ' + this._title  + ' origin: ' + this._origin + ' slugs: ' + this._slugs.length )
-    }
-
-    /* -----------------------------------------------------------------------
-     * Publicly callable - options  for this Compilation, will trigger a
-     * widget refresh if necessary
-     * ----------------------------------------------------------------------- */
-    public options ( arg: KomplOptions | string ) : void {
-      if ( typeof arg === 'string' ) {
-        if ( Kompilation.STYLE[arg as keyof KomplStyle] ) {
-          arg = { ...Kompilation.STYLE[arg as keyof KomplStyle] }
-        }
-        else {
-          Kompilation.warn( `unknown style: ${arg} - ignored`)
-          return
-        }
-      }
-      this._setOptions( arg )
-      this._persistOptions()
-      this._refreshNavigation()
-    }
-
-    /* -----------------------------------------------------------------------
-     * Set #position zero-based index into #slugs.
-     * return TRUE if we are on a page that is in-play [!??]
-     * A little bit expensive?
-     * ----------------------------------------------------------------------- */
-    private _setNavIndex() : boolean {
-        this.#_index = undefined;
-        const $here = window.location.pathname
-        this.#slugs.some(( $slug, $i ) => {
-            if ( $slug == $here ) {
-                this.#_index = $i
-                return true
-            }
-        })
-        // Kompilation.say('index is: ' + this._nav_index + ' at ' + $here)
-        return typeof this.#_index == 'number'
-    }
-
-    /* -----------------------------------------------------------------------
-     * Construct Nav widget HTML
-     * ----------------------------------------------------------------------- */
-    private _getNavInnerHTML () : string  {
-
-        if ( typeof this.#_index === 'number' ) {
-
-            // TODO: migrate from style to css
-            let $prev_href  = ''
-            let $prev_style ='style="filter: opacity(30%);transform: rotate(-90deg);"'
-            if ( this.#_index > 0 ) {
-                $prev_href  = `href="${ this.#slugs[this.#_index-1] }"`
-                $prev_style = 'style="transform: rotate(-90deg);"'
-            }
-
-            let $prev = ''
-            $prev  = `<a ${ $prev_href }><img src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGUp }" ${$prev_style} ></a>`
-
-            let $next_href  = ''
-            let $next_style ='style="filter: opacity(30%);transform: rotate(90deg);"'
-            if ( this.#_index < this.#slugs.length-1 ) {
-                $next_href  =`href="${ this.#slugs[this.#_index+1] }"`
-                $next_style = 'style="transform: rotate(90deg);"'
-            }
-            let $next = ''
-            $next  = `<a ${ $next_href }><img src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGUp }" ${$next_style} ></a>`
-
-            let $last_html = ''
-            $last_html  = `<a href="${ this.#slugs[this.#slugs.length-1] }">${ this.#slugs.length.toString() }</a>`
-
-            let $descr = ''
-            $descr = `<div class="kompl-descr"><b>${this.#_index+1}</b> of ${$last_html}</div>`
-
-            const $sizer = this.#options.sizer ?
-            `
-            <div class="kompl-sizer-small"  onclick="$kompl.size('small')">S</div>
-            <div class="kompl-sizer-medium" onclick="$kompl.size('medium')">M</div>
-            <div class="kompl-sizer-large"  onclick="$kompl.size('large')">L</div>
-            `
-            :
-            `<div class="kompl-sizer-small"></div>`
-
-            const $closer = this.#options.closer
-            ? `<img class="kompl-closer" onclick="$kompl.clear()" src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGPlus }"/>`
-            : ``
-
-            const $bar = this.#options.sizer || this.#options.closer
-            ? `<div class="kompl-bar kompl-hide" onclick="$kompl.toggleBar()"> ${ $sizer } ${ $closer } </div>`
-            : ``
-
-            const $placer = this.#options.placer
-            ? `
-            <div class="kompl-place-tl kompl-at-tl" onclick="$kompl.place('tl')"></div>
-            <div class="kompl-place-tc kompl-at-tc" onclick="$kompl.place('tc')"></div>
-            <div class="kompl-place-tr kompl-at-tr" onclick="$kompl.place('tr')"></div>
-            <div class="kompl-place-br kompl-at-br" onclick="$kompl.place('br')"></div>
-            <div class="kompl-place-bc kompl-at-bc" onclick="$kompl.place('bc')"></div>
-            <div class="kompl-place-bl kompl-at-bl" onclick="$kompl.place('bl')"></div>
-            `
-            : ``
-
-            const $title = this.#options.homer
-            ? `
-            <div class="kompl-title"><a href="${ this.#origin }">${ this.#title }</a></div>
-            `
-            : `
-            <div class="kompl-title">${ this.#title }</div>
-            `
-
-            return `
-            <div class="kompl-inner">
-              ${ $placer }
-              ${ $bar }
-              ${ $title }
-              <div class="kompl-nav">${ $prev } ${ $descr } ${ $next }</div>
-            </div>
-            `
-        }
-        return ''
-    }
+    return ''
+  }
 
     private _addCSSToHead() {
       // webpack inlines the CSS in head... but we have switched to rollup
@@ -351,6 +345,7 @@ export class Kompilation {
 
     Kompilation.say(`set show: ${ this.#options.show }`)
 
+    // the fraction-of-scrollable, 0.01-1.00, at which to become visible
     let $when = 0
 
     if ( this.#options.show ) {
@@ -387,10 +382,7 @@ export class Kompilation {
         Kompilation.warn(`invalid show: ${ this.#options.show } - must be number or string - ignored`)
       }
     }
-    else {
-      Kompilation.say("options.show is not set")
-    }
-    Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in } `)
+    Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in }`)
 
     // set up event-listeners to display widget when desired position is reached
     if ( $when > 0 ) {
@@ -398,7 +390,7 @@ export class Kompilation {
       Kompilation.say(`will show: when ${ $when }`)
 
       /*
-       // These don't work as reliably as JQuery
+      // These don't work as reliably as JQuery
       const $vis_px     = document.documentElement.clientHeight // height of visible content
       const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
       const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
@@ -410,12 +402,10 @@ export class Kompilation {
           const $vis_px     = $(window).height()    || 0        // height of viewport
           const $doc_px     = $(document).height()  || 0        // height of content
           const $scroll_px  = Math.max( 0, $doc_px - $vis_px )  // scrollable px
-
-          // need a few scrollable PX - 150? or don't bother.
+          // need a few scrollable px - 150? or don't bother.
           if ( $scroll_px >= 150 ) {
             this.#_show_at    = Math.round( $scroll_px * $when )  // trigger point
           }
-
           Kompilation.say(`have vis   : ${ $vis_px } px`)
           Kompilation.say(`have doc   : ${ $doc_px } px`)
           Kompilation.say(`can scroll : ${ $scroll_px } px`)
@@ -474,74 +464,75 @@ export class Kompilation {
 
   }
 
-    private _refreshNavigation() : void {
-        if ( this.#_widget ) {
-          this.#_widget.html( this._getNavInnerHTML() );
-        }
-      }
-
-    // --------------------------------------------------------------------------
-    // persist and restore - mirrored-behaviour please.
-    private _persistCompilation () {
-      // Kompilation.say('persisting...')
-      this._persistData()
-      this._persistOptions()
+  private _refreshNavigation() : void {
+    if ( this.#_widget ) {
+      this.#_widget.html( this._getNavInnerHTML() );
     }
-
-    private _persistData() {
-      window.localStorage.setItem(
-        Kompilation.KomplStorageData,
-        JSON.stringify({
-          origin:   this.#origin,
-          title:    this.#title,
-          slugs:    this.#slugs,
-        })
-      )
   }
-    private _persistOptions() {
-      window.localStorage.setItem(
-        Kompilation.KomplStorageOptions,
-        JSON.stringify( this.#options )
-      )
-    }
 
-    private _restoreCompilation () : void {
-      // Kompilation.say('restoring...')
-      const $data     = window.localStorage.getItem( Kompilation.KomplStorageData )     // managed by ->play()
-      const $options  = window.localStorage.getItem( Kompilation.KomplStorageOptions )  // managed by ->play()
-      const $place    = window.localStorage.getItem( Kompilation.KomplStoragePlace )    // set by user
-      const $size     = window.localStorage.getItem( Kompilation.KomplStorageSize )     // set by user
-      if ( $data ) {
-        this._createCompilation( JSON.parse( $data ) )
-        if ( $options ) {
-          this._setOptions( JSON.parse( $options ) )
-        }
+  // --------------------------------------------------------------------------
+  // persist and restore - mirrored-behaviour please.
+  private _persistCompilation () {
+    // Kompilation.say('persisting...')
+    this._persistData()
+    this._persistOptions()
+  }
+
+  private _persistData() {
+    window.localStorage.setItem(
+      Kompilation.KomplStorageData,
+      JSON.stringify({
+        origin:   this.#origin,
+        title:    this.#title,
+        slugs:    this.#slugs,
+      })
+    )
+  }
+
+  private _persistOptions() {
+    window.localStorage.setItem(
+      Kompilation.KomplStorageOptions,
+      JSON.stringify( this.#options )
+    )
+  }
+
+  private _restoreCompilation () : void {
+    // Kompilation.say('restoring...')
+    const $data     = window.localStorage.getItem( Kompilation.KomplStorageData )     // managed by ->play()
+    const $options  = window.localStorage.getItem( Kompilation.KomplStorageOptions )  // managed by ->play()
+    const $place    = window.localStorage.getItem( Kompilation.KomplStoragePlace )    // set by user
+    const $size     = window.localStorage.getItem( Kompilation.KomplStorageSize )     // set by user
+    if ( $data ) {
+      this._createCompilation( JSON.parse( $data ) )
+      if ( $options ) {
+        this._setOptions( JSON.parse( $options ) )
       }
-      // if $data?? TODO: validation?
-      if ( $place ) this.#options.place = $place
-      if ( $size )  this.#options.size  = $size
     }
+    // if $data?? TODO: validation?
+    if ( $place ) this.#options.place = $place
+    if ( $size )  this.#options.size  = $size
+  }
 
-    // --------------------------------------------------------------------------
-    // remove the Collection, including localStorage
-    // callable from page - by Closer
-    public clear () : void {
-      // Kompilation.say('Clearing...')
+  // --------------------------------------------------------------------------
+  // remove the Collection, including localStorage
+  // callable from page - by Closer
+  public clear () : void {
+    // Kompilation.say('Clearing...')
 
-      // destroy all widgets
-      if ( this.#_widget ) this.#_widget.remove()
-      if ( this.#_spacer ) this.#_spacer.remove()
+    // destroy all widgets
+    if ( this.#_widget ) this.#_widget.remove()
+    if ( this.#_spacer ) this.#_spacer.remove()
 
-      // We only clear Compilation - not  users preferred place and size.
-      window.localStorage.removeItem( Kompilation.KomplStorageData )
-      window.localStorage.removeItem( Kompilation.KomplStorageOptions )
+    // We only clear Compilation - not  users preferred place and size.
+    window.localStorage.removeItem( Kompilation.KomplStorageData )
+    window.localStorage.removeItem( Kompilation.KomplStorageOptions )
 
-      this.#origin    = ''
-      this.#title     = ''
-      this.#slugs     = []
-      this.#options   = { ... Kompilation.DEFAULTS }
-      this.#_index = undefined
-      this.#_widget = undefined
+    this.#origin    = ''
+    this.#title     = ''
+    this.#slugs     = []
+    this.#options   = { ... Kompilation.DEFAULTS }
+    this.#_index = undefined
+    this.#_widget = undefined
 
   }
 
@@ -557,24 +548,13 @@ export class Kompilation {
   //  - do NOT refresh widget
   //  - do NOT persist options
   private _setOptions ( arg : KomplOptions | undefined ) : void {
-
     if ( arg ) {
       // Kompilation.say('opting...')
       // for (const [$key, $value] of Object.entries(arg)) {
       //    Kompilation.say(`arg: ${$key}: ${typeof($value)} = ${$value}`)
       // }
       Object.assign( this.#options, arg )
-      //console.log( arg )
-      //console.log( this._options )
     }
-
-    // // Kompilation.say(`opt: place:  ${ this._options.place }`)
-    // // Kompilation.say(`opt: size:   ${ this._options.size }`)
-    // // Kompilation.say(`opt: homer:  ${ this._options.homer }`)
-    // // Kompilation.say(`opt: closer: ${ this._options.closer }`)
-    // // Kompilation.say(`opt: placer: ${ this._options.placer }`)
-    // // Kompilation.say(`opt: sizer:  ${ this._options.sizer }`)
-
   }
 
   private static __getPlaceCSSClass ( $which : string | undefined ) : string {
@@ -690,41 +670,18 @@ export class Kompilation {
   }
 
   private _addWindowsEventHandlers () {
+    // this is an extra safety check
+    // We dont need event handlers if #_show_at is not set.
+    if ( this.#_show_at > 0 ) {
+      window.addEventListener('scroll', function (ev) {
+        window.$kompl.onWindowScroll(ev);
+      })
 
-    // Maybe these should be set up in initialise() only if we need them?
-    window.addEventListener('scroll', function (ev) {
-      window.$kompl.onWindowScroll(ev);
-    })
-
-    window.addEventListener('resize', function (ev) {
-      window.$kompl.onWindowScroll(ev);
-    })
-
-      /* Show/hide depending on how far window is scrolled */
-      /*
-
-        // chrome testing Sep 2020
-        document.documentElement.clientHeight - height of visible content
-        document.documentElement.scrollHeight - height of content, can be ZERO after back!
-        // body - beware of margins? can be smaller...
-
-
-        User can scroll from 0 to max(window.innerHeight - window.screen.availHeight,0)
-
-
-      function amIScrolled(ev) {
-        if ( window.scrollTop() >= (window.innerHeight/4) ) {
-          $go_top.css('visibility','visible')
-        }
-        else {
-          $go_top.css('visibility','hidden')
-        }
-      }
-
-      */
-
+      window.addEventListener('resize', function (ev) {
+        window.$kompl.onWindowScroll(ev);
+      })
+    }
   }
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
   public onWindowScroll( ev: Event ) : any {
@@ -732,7 +689,7 @@ export class Kompilation {
     //Kompilation.say( 'scrolled event callback')
     if ( this.#_widget ) {
       const  $scroll_top = Math.round($(window).scrollTop() || 0 )
-      if ( $scroll_top && $scroll_top >= this.#_show_at ) {
+      if ( $scroll_top >= this.#_show_at ) {
         this.#_widget.css( 'visibility', 'visible')
       }
       else {

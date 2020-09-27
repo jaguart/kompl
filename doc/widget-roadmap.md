@@ -27,6 +27,9 @@ Under contruction: *Updated: 27 Sept 2020*
 * vn.n.1
 * also major review of widget HTML
 
+### `add-builder` : Add PLAY controls into page
+* Ghost blogging enhancement?
+* embedded markers trigger creation of PLAY buttons/links?
 
 ---
 
