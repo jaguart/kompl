@@ -343,106 +343,69 @@ export class Kompilation {
   // #_show_at - pixels, visible when scrollTop >= this value
   // #_show_in - body or #id - container for widget
   private _setOptionsShow () {
-
     //Kompilation.say(`set show: ${ this.#options.show }`)
-
     // the fraction-of-scrollable, 0.01-1.00, at which to become visible
     let $when = 0
-
     if ( this.#options.show ) {
-      /* v1
-      if ( typeof this.#options.show === 'number' ) {
-        //Kompilation.say(`show: number ${ this.#options.show }`)
-        if ( this.#options.show > 1 && this.#options.show <= 100 )  {
-          $when = this.#options.show / 100
-        }
-        else if ( this.#options.show >= 0.01 && this.#options.show <= 1.00 ) {
-          $when = this.#options.show
+
+      if ( typeof this.#options.show === 'string' && this.#options.show.substring(0,1) === '#' ) {
+        const $id = this.#options.show.substring(1)
+        if ( document.getElementById($id) ) {
+          this.#_show_in = this.#options.show // includes the #
         }
         else {
-          Kompilation.warn(`invalid show: ${ this.#options.show } - ignored - must be 1-100 or 0.01-1.00`)
+          Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
         }
-        //Kompilation.say(`show when: ${ $when }`)
       }
-      else if ( typeof this.#options.show === 'string' ) {
-        //Kompilation.say(`show: string ${ this.#options.show }`)
-        if ( this.#options.show.substring(0,1) === '#' ) {
-          const $id = this.#options.show.substring(1)
-          if ( document.getElementById($id) ) {
-            this.#_show_in = this.#options.show // includes the #
-            //Kompilation.say(`show: in element ${ this.#options.show }`)
-          }
-          else {
-            Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
-          }
+      else {
+        let $show = typeof this.#options.show === 'string'
+          ? Number.parseFloat( this.#options.show )
+          : this.#options.show
+        $show = Number.isNaN( $show ) ? 0 : $show
+        if ( $show >= 1 && $show <= 100 ) $show = $show / 100
+        if ( $show >= 0.01 && $show <= 1.00 ) {
+          $when = $show
         }
         else {
-          Kompilation.warn(`invalid show: ${ this.#options.show } - must start with # - ignored`)
+          Kompilation.warn(`invalid show: ${ this.#options.show } - ignored`)
         }
       }
-      else {
-        Kompilation.warn(`invalid show: ${ this.#options.show } - must be number or string - ignored`)
-      }
-      */
 
-    if ( typeof this.#options.show === 'string' && this.#options.show.substring(0,1) === '#' ) {
-      const $id = this.#options.show.substring(1)
-      if ( document.getElementById($id) ) {
-        this.#_show_in = this.#options.show // includes the #
-      }
-      else {
-        Kompilation.warn(`invalid show: ${ this.#options.show } - no such element - ignored`)
-      }
-    }
-    else {
-      let $show = typeof this.#options.show === 'string'
-        ? Number.parseFloat( this.#options.show )
-        : this.#options.show
-      $show = Number.isNaN( $show ) ? 0 : $show
-      if ( $show >= 1 && $show <= 100 ) $show = $show / 100
-      if ( $show >= 0.01 && $show <= 1.00 ) {
-        $when = $show
-      }
-      else {
-        Kompilation.warn(`invalid show: ${ this.#options.show } - ignored`)
-      }
-    }
+      //Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in }`)
+      // set up event-listeners to display widget when desired position is reached
+      if ( $when > 0 ) {
 
-    //Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in }`)
-    // set up event-listeners to display widget when desired position is reached
-    if ( $when > 0 ) {
+        //Kompilation.say(`will show: when ${ $when }`)
 
-      //Kompilation.say(`will show: when ${ $when }`)
+        /*
+        // These don't work as reliably as JQuery
+        const $vis_px     = document.documentElement.clientHeight // height of visible content
+        const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
+        const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
+        this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
+        */
 
-      /*
-      // These don't work as reliably as JQuery
-      const $vis_px     = document.documentElement.clientHeight // height of visible content
-      const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
-      const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
-      this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
-      */
-
-      if ( $(window) ) {
-        if ( $(document)  ) {
-          const $vis_px     = $(window).height()    || 0        // height of viewport
-          const $doc_px     = $(document).height()  || 0        // height of content
-          const $scroll_px  = Math.max( 0, $doc_px - $vis_px )  // scrollable px
-          // need a few scrollable px - 150? or don't bother.
-          if ( $scroll_px >= 150 ) {
-            this.#_show_at    = Math.round( $scroll_px * $when )  // trigger point
+        if ( $(window) ) {
+          if ( $(document)  ) {
+            const $vis_px     = $(window).height()    || 0        // height of viewport
+            const $doc_px     = $(document).height()  || 0        // height of content
+            const $scroll_px  = Math.max( 0, $doc_px - $vis_px )  // scrollable px
+            // need a few scrollable px - 150? or don't bother.
+            if ( $scroll_px >= 150 ) {
+              this.#_show_at    = Math.round( $scroll_px * $when )  // trigger point
+            }
+            // Kompilation.say(`have vis   : ${ $vis_px } px`)
+            // Kompilation.say(`have doc   : ${ $doc_px } px`)
+            // Kompilation.say(`can scroll : ${ $scroll_px } px`)
+            // Kompilation.say(`show at    : ${ this.#_show_at } px`)
           }
-          // Kompilation.say(`have vis   : ${ $vis_px } px`)
-          // Kompilation.say(`have doc   : ${ $doc_px } px`)
-          // Kompilation.say(`can scroll : ${ $scroll_px } px`)
-          // Kompilation.say(`show at    : ${ this.#_show_at } px`)
         }
-      }
 
-      if ( this.#_show_at > 0 ) {
-        this._addWindowsEventHandlers()
-      }
+        if ( this.#_show_at > 0 ) {
+          this._addWindowsEventHandlers()
+        }
 
-    }
+      }
     }
   }
 
