@@ -27,6 +27,7 @@ Add controls into your pages that play your compilations:
       options: {
         size: 'large',
         place: 'bc',
+        show: 80%,
       }
     )
     ">Show me!</button>
