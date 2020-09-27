@@ -27,10 +27,8 @@ The placement and size of the widget can be set using the **place** and **size**
     function show_big_left()   {
       $kompl.play({
         ...$show,
-        options: {
-          place: 'bl',
-          size: 'large',
-        }
+        place: 'bl',
+        size: 'large',
       })
      }
 
@@ -68,12 +66,10 @@ There are four User controls that can be enabled or disabled:
 ```javascript
       $kompl.play({
         ...$show,
-        options: {
-          homer: true,
-          placer: true,
-          closer: true,
-          sizer: true,
-        }
+        homer: true,
+        placer: true,
+        closer: true,
+        sizer: true,
       })
 ```
 

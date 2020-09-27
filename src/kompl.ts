@@ -29,8 +29,8 @@
 
 // import './kompl.module.css';
 
-// weirdly, the VS Code lib.dom.d.ts has this, but the node_modules in
-// my dev folder doesn't
+// weirdly, the VS Code lib.dom.d.ts has this, but the node_modules doesn't
+/* Not currently used - but keep for future
 declare global {
   interface Window {
     scrollTop: number
@@ -39,12 +39,22 @@ declare global {
     scrollTop: number
   }
 }
+*/
 
 //import { dirname, CSS } from './jaguart-util-css.js'
 import { dirname, CSS } from './jaguart-util-css'
 
 // -----------------------------------------------------------------------------
-// Interfaces for public methods
+// Interfaces aka Types
+
+interface KomplDefinition {
+  title     : string          //  TITLE for the Kompilation, anchors to HOME
+  slugs     : string[]        //  SLUGS to navigate through, in order.
+  origin?   : string          //  HOME URL of the Kompilation
+  style?    : string          //  Name of an option style: clear | rich etc.
+  options?  : KomplOptions    //  OPTIONS that tweak presentation and behaviour
+}
+
 interface KomplOptions {
   place?    : string          // widget placement - tl | tc | tr | bl | bc | br
   size?     : string          // widget size - small | medium | large
@@ -63,13 +73,6 @@ interface KomplStyle {
   zam       : KomplOptions    // Malcolm's presets
 }
 
-interface KomplDefinition {
-  title     : string          //  TITLE for the Kompilation, anchors to HOME
-  slugs     : string[]        //  SLUGS to navigate through, in order.
-  origin?   : string          //  HOME URL of the Kompilation
-  style     : string          //  Name of an option style: clear | rich etc.
-  options?  : KomplOptions    //  OPTIONS that tweak presentation and behaviour
-}
 
 
 // -----------------------------------------------------------------------------
@@ -99,6 +102,7 @@ export class Kompilation {
   static readonly DEFAULTS : KomplOptions = {
     place:    'br',
     size:     'medium',
+    show:     0,
     homer:    true,
     closer:   true,
     placer:   true,
@@ -174,7 +178,7 @@ export class Kompilation {
     * It returns a BOOLEAN - true on success, false on no-compilation so that
     * callers can respond in onclick. Call this on a User initiated event.
     * ----------------------------------------------------------------------- */
-  public play( arg: KomplDefinition ) :boolean {
+  public play( arg: KomplDefinition & KomplOptions ) :boolean {
 
     // Kompilation.say('playing...')
     if ( arg.style ) {
@@ -186,10 +190,24 @@ export class Kompilation {
       }
     }
 
+    // short opts   - arg.thingy -> arg.options.thingy if thingy is a valid option
+    // AFTER styles - arg.thingy takes precedence
+    const $shorts : KomplDefinition & KomplOptions = Object.assign({}, arg )
+    const $known  = Object.keys( Kompilation.DEFAULTS )
+    Object.keys( $shorts ).forEach( ( $key ) => {
+      if ( ! $known.includes( $key ) ) {
+        delete $shorts[$key as keyof KomplDefinition ]
+      }
+    })
+
     if ( arg.options ) {
       // If options are specified, make them a complete set
-      arg.options = { ...Kompilation.DEFAULTS, ...arg.options }
+      arg.options = { ...Kompilation.DEFAULTS, ...arg.options, ...$shorts }
     }
+    else if ( Object.keys($shorts).length > 0 ) {
+      arg.options = { ...Kompilation.DEFAULTS, ...$shorts }
+    }
+
     if ( arg ) this._createCompilation( arg )
 
     // PLAY - navigate to the first slug

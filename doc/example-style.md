@@ -35,11 +35,9 @@ You can combine STYLE with OPTIONS - entries in OPTIONS will take precedence.
     function show_clean_big()   {
       $kompl.play({
         ...$show,
-        style: 'clean',
-        options: {
-          size: 'large',
-          place: 'bc',
-        }
+        style:  'clean',
+        size:   'large',
+        place:  'bc',
       })
      }
 

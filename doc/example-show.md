@@ -6,6 +6,10 @@ There are two types of **show:**:
 * percentage: `show: 80%` - the widget will show when the User has scrolled to 80% of the document.
 * element id: `show:'#here'` - the widget will be placed inside the element with `<element id='here'>...`
 
+Note that there is an interaction between SHOW and the User PLACE preferences.
+* When SHOW-percentage is in effect, the only valid User placements are bottom-left, bottom-center and bottom-right.
+* When SHOW-element is in effect, User placement is not available.
+
 ## Show - Percent scrolled
 
 In this example, the Kompilation widget will only be displayed when the User has scrolled to 75% in the document.
@@ -19,14 +23,12 @@ In this example, the Kompilation widget will only be displayed when the User has
         '/page-5/',
         '/page-7/',
       ],
-      options: {
-        show: 75%,
-      }
+      show: 75%,
     })
   ">Show me!</a>
 ```
 
-The following are all valid values for `show`:
+The following examples are all valid values for `show`:
 * `show: 90`
 * `show: 90%`
 * `show: 0.90`
@@ -48,9 +50,7 @@ In this example, the Kompilation widget will be added at the end of the `#show-m
         '/page-5/',
         '/page-7/',
       ],
-      options: {
-        show: '#show-me',
-      }
+      show: '#show-here',
     })
   ">Show me!</a>
 ```

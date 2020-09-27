@@ -2,11 +2,15 @@
 
 Continually under contruction: *Updated: 27 Sept 2020*
 
-## Features
+## Fixes
 
-### `add-shortopts`
-* v0.2
-* remove need for `options:` subhash in `$kompl.play()` interface
+Generally in `fix-xxx` branch - but use  `master` if trivial.
+* fix interaction of SHOW and User preferences
+* expire Compilation - after 2 days, add an option
+
+---
+
+## Features
 
 ### `add-easycss` : review CSS selectors for external styling
 * vn.n.1
@@ -24,12 +28,6 @@ Continually under contruction: *Updated: 27 Sept 2020*
 
 ---
 
-## Fixes
-
-Generally in `fix-xxx` branch - but use  `master` if trivial.
-
-* expire Compilation - after 2 days, add an option
-
 ## Toolchain
 
 Generally in `master` branch - but use  `fix-xxx` branch if significant.
@@ -39,7 +37,6 @@ Generally in `master` branch - but use  `fix-xxx` branch if significant.
 * github draft-release integration
 * fix code-indent
 * get prettier working for TS
-
 
 ---
 

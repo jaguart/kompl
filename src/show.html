@@ -28,6 +28,11 @@
           '/t1/index.php/p3',
         ],
         style: 'zam',
+        // these are for short-option testing in show_zam()
+        show: 50,
+        size: 'large',
+        placer: true,
+        closer: true,
       }
 
       function show_here_1()  { $kompl.play({ ...$show, options: { show: '#here1',      }}) }
@@ -38,7 +43,7 @@
       function show_50()      { $kompl.play({ ...$show, options: { show: 0.50,          }}) }
       function show_80()      { $kompl.play({ ...$show, options: { show: 0.80,          }}) }
       function show_100()     { $kompl.play({ ...$show, options: { show: 1.00,          }}) }
-      function show_zam()     { $kompl.play({ ...$show, options: {                      }}) }
+      function show_zam()     { $kompl.play({ ...$show, xoptions: {                      }}) }
 
       // visual clue that above has compiled :)
       // Does not depend on jQuery - maybe it should

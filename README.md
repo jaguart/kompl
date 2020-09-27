@@ -1,6 +1,6 @@
 # kompl
 
-A website navigation widget - guide your users through a curated compilation of pages on your site.
+A website navigation widget. Guide your users through a curated compilation of pages on your site.
 
 ![Kompilation in Action](doc/kompl-example-001.jpg)
 
@@ -24,11 +24,9 @@ Add controls into your pages that play your compilations:
         '/p7/',
       ],
       style: 'clean',
-      options: {
-        size: 'large',
-        place: 'bc',
-        show: 80%,
-      }
+      size: 'large',
+      place: 'bc',
+      show: 80%,
     )
     ">Show me!</button>
 ```
