@@ -60,6 +60,7 @@ interface KomplStyle {
   choice    : KomplOptions    // no placer, has homer, sizer and closer
   clean     : KomplOptions    // only homer
   naked     : KomplOptions    // no user controls
+  zam       : KomplOptions    // Malcolm's presets
 }
 
 interface KomplDefinition {
@@ -109,6 +110,7 @@ export class Kompilation {
     choice  : { homer: true,  closer: true,  sizer: true,  placer: false },
     clean   : { homer: true,  closer: false, sizer: false, placer: false },
     naked   : { homer: false, closer: false, sizer: false, placer: false },
+    zam     : { homer: true,  closer: false, sizer: false, placer: false, size: 'large', place: 'bc', show: 0.90 },
   }
 
   // Kompilation.URL_BASE
@@ -156,6 +158,10 @@ export class Kompilation {
     this._addCSSToHead()
     this._showNavigation()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    window.addEventListener("load", (ev) => {
+      this._showSpacer()
+    })
 
     // TBC
     // parse doc for all Kompilation definitions, adding a PLAY element?
@@ -442,6 +448,8 @@ export class Kompilation {
       this.#_widget.appendTo($(this.#_show_in))
       this.#_widget.removeClass('kompl-hide')
 
+      //this._showSpacer()
+
       //Kompilation.say('displayed.')
     }
     else if ( this.#_widget ) {
@@ -453,9 +461,45 @@ export class Kompilation {
 
   }
 
+  // If Navigation has been added to body, add a spacer too
+  private _showSpacer () {
+    // Sizing - is complex, at DOMContentReady the CSS and IMG etc
+    // are still in-progress, so .height() is not yet accurate.
+    // I've added a callback in window.load() to this which seems
+    // to work a little better.
+    if ( this.#_show_in == 'body' ) {
+      if ( this.#_widget ) {
+        let $height = this.#_widget.height()
+        $height = $height ? Math.round($height+8) : 0 // 8px border
+        if ( this.#_spacer ) {
+          if ( $height ) {
+            this.#_spacer.height( $height )
+          }
+          else {
+            this.#_spacer.remove()
+            this.#_spacer = undefined
+          }
+        }
+        else {
+          if ( $height ) {
+            this.#_spacer = $('<div>',{
+              id:    'kompl_spacer',
+              style: `display:block; box-sizing: border-box; height: ${$height}px; width:100%;`,
+            }).appendTo('body')
+          }
+        }
+      }
+      else if (this.#_spacer) {
+        this.#_spacer.remove()
+        this.#_spacer = undefined
+      }
+    }
+  }
+
   private _refreshNavigation() : void {
     if ( this.#_widget ) {
       this.#_widget.html( this._getNavInnerHTML() );
+      this._showSpacer()
     }
   }
 
@@ -599,6 +643,7 @@ export class Kompilation {
         })
       ){
         window.localStorage.setItem( Kompilation.KomplStorageSize, $size )
+        this._showSpacer()
       }
     }
   }

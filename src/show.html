@@ -27,16 +27,18 @@
           '/t1/index.php/p2',
           '/t1/index.php/p3',
         ],
+        style: 'zam',
       }
 
-      function show_here_1()  { $kompl.play({ ...$show, options: { show: '#here1',     }}) }
-      function show_here_2()  { $kompl.play({ ...$show, options: { show: '#here2',     }}) }
-      function show_bad_id()  { $kompl.play({ ...$show, options: { show: '#nosuch',    }}) }
-      function show_bad_str() { $kompl.play({ ...$show, options: { show: 'invalid-id', }}) }
-      function show_20()      { $kompl.play({ ...$show, options: { show: 0.20, }}) }
-      function show_50()      { $kompl.play({ ...$show, options: { show: 0.50, }}) }
-      function show_80()      { $kompl.play({ ...$show, options: { show: 0.80, }}) }
-      function show_100()     { $kompl.play({ ...$show, options: { show: 1.00, }}) }
+      function show_here_1()  { $kompl.play({ ...$show, options: { show: '#here1',      }}) }
+      function show_here_2()  { $kompl.play({ ...$show, options: { show: '#here2',      }}) }
+      function show_bad_id()  { $kompl.play({ ...$show, options: { show: '#nosuch',     }}) }
+      function show_bad_str() { $kompl.play({ ...$show, options: { show: 'invalid-id',  }}) }
+      function show_20()      { $kompl.play({ ...$show, options: { show: 0.20,          }}) }
+      function show_50()      { $kompl.play({ ...$show, options: { show: 0.50,          }}) }
+      function show_80()      { $kompl.play({ ...$show, options: { show: 0.80,          }}) }
+      function show_100()     { $kompl.play({ ...$show, options: { show: 1.00,          }}) }
+      function show_zam()     { $kompl.play({ ...$show, options: {                      }}) }
 
       // visual clue that above has compiled :)
       // Does not depend on jQuery - maybe it should
@@ -134,6 +136,11 @@
   <tr>
     <td><button onclick="show_100()">Slides - 100%</button></td>
     <td>Show at 100% scroll</td>
+  </tr>
+
+  <tr>
+    <td><button onclick="show_zam()">Slides - ZAM</button></td>
+    <td>Show ZAM</td>
   </tr>
 
 
