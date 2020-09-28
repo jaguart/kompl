@@ -64,10 +64,11 @@ and then in **ALL** your documents...
 ---
 
 ### Documentation
-* [Kompl README](doc/README.md) - Introduction and installation.
-* [Anatomy of Kompl](doc/widget-anatomy.md) - Taxonomy and overview.
-* [Kompl Usage Examples](doc/example-usage.md) - Learn by example.
-* [Using the STYLE argument](doc/example-style.md) - Named preset options.
-* [Using the SHOW argument](doc/example-show.md) - Positioning Kompl on the pages.
-* [Using the OPTIONS argument](doc/example-options.md) - Details of all available options.
-* [Roadmap - planned features](doc/widget-roadmap.md) - bugs, features, enhancments.
+
+* [Kompl README](../README.md) - Introduction and installation.
+* [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
+* [Kompl Usage Examples](example-usage.md) - Learn by example.
+* [Using the STYLE argument](example-style.md) - Named preset options.
+* [Using the SHOW argument](example-show.md) - Positioning Kompl on the pages.
+* [Using the OPTIONS argument](example-options.md) - Details of all available options.
+* [Roadmap - planned features](widget-roadmap.md) - bugs, features, enhancments.
