@@ -10,11 +10,14 @@ The current STYLE presets are:
 
 Here's what they look like:
 
-![Style RICH](kompl-style-rich.jpg) - RICH - all User controls.
+![Style RICH](kompl-style-rich.jpg)<br>
+**RICH - all User controls.**
 
-![Style CHOICE](kompl-style-choice.jpg) - CHOICE - Sizer and Closer in collapsible bar.
+![Style CHOICE](kompl-style-choice.jpg)<br>
+**CHOICE - Sizer and Closer in collapsible bar**
 
-![Style CLEAN](kompl-style-clean.jpg) - Clean and Naked look the same. TITLE is a link in CLEAN.
+![Style CLEAN](kompl-style-clean.jpg)<br>
+**CLEAN and NAKED - same appearance - TITLE is a homer-link in CLEAN**
 
 ## Usage
 
