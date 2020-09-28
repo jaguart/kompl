@@ -1,10 +1,12 @@
 # Kompl - Roadmap
 
-Continually under contruction: *Updated: 27 Sept 2020*
+Continually under contruction: *Updated: 28 Sept 2020*
 
 ## Fixes
 
 Generally in `fix-xxx` branch - but use  `master` if trivial.
+
+**Open items**
 * fix interaction of SHOW and User preferences
 * expire Compilation - after 2 days, add an option
 
@@ -17,14 +19,14 @@ Generally in `fix-xxx` branch - but use  `master` if trivial.
 * also major review of widget HTML
 
 ### `add-labels` : Prev: label, Next: label
-* v0.3
+* v0.n
 * replace the SVG icons with the specified text / html
 * additional styling if necessary
 * can set either or both - YHBW
 
 ### `add-builder` : Add PLAY controls into page
 * Ghost blogging enhancement?
-* embedded markers trigger creation of PLAY buttons/links?
+* embedded markers => create styled PLAY buttons/links?
 
 ---
 
@@ -37,6 +39,7 @@ Generally in `master` branch - but use  `fix-xxx` branch if significant.
 * github draft-release integration
 * fix code-indent
 * get prettier working for TS
+* switch from `npm run` to `gulp` for more flexibility
 
 ---
 
@@ -47,3 +50,15 @@ Generally in `try-xxx` branch - but use  `master` if trivial.
 * `try-cssmodules` - see if this is better
 * `try-templates` - see if this helps the TESTING HTML, *vue*?
 * `try-cssxxx` - varions CSS libraries - *tailwind* etc - are they useful?
+
+---
+
+### Documentation
+
+* [Kompl README](../README.md) - Overview and installation.
+* [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
+* [Kompl Usage Examples](example-usage.md) - Learn by example.
+* [Using the STYLE argument](example-style.md) - Named preset options.
+* [Using the SHOW argument](example-show.md) - Positioning Kompl on the pages.
+* [Using the OPTIONS argument](example-options.md) - Details of all available options.
+* [Roadmap - planned features](widget-roadmap.md) - bugs, features, enhancments.
