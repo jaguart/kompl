@@ -8,6 +8,15 @@ The current STYLE presets are:
   * **clean** - only the clickable-Title is enabled
   * **naked** - no User controls, just simple navigation.
 
+Here's what they look like:
+
+![Style RICH](kompl-style-rich.jpg) - RICH - all User controls.
+
+![Style CHOICE](kompl-style-choice.jpg) - CHOICE - Sizer and Closer in collapsible bar.
+
+![Style CLEAN](kompl-style-clean.jpg) - Clean and Naked look the same. TITLE is a link in CLEAN.
+
+## Usage
 
 You can combine STYLE with OPTIONS - entries in OPTIONS will take precedence.
 
