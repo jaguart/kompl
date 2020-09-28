@@ -60,3 +60,14 @@ and then in **ALL** your documents...
   <div id='show-me'>See more: </div>
   <p>Disclaimer and Copyright, or other additional detail</p>
 ```
+
+---
+
+### Documentation
+* [Kompl README](doc/README.md) - Introduction and installation.
+* [Anatomy of Kompl](doc/widget-anatomy.md) - Taxonomy and overview.
+* [Kompl Usage Examples](doc/example-usage.md) - Learn by example.
+* [Using the STYLE argument](doc/example-style.md) - Named preset options.
+* [Using the SHOW argument](doc/example-show.md) - Positioning Kompl on the pages.
+* [Using the OPTIONS argument](doc/example-options.md) - Details of all available options.
+* [Roadmap - planned features](doc/widget-roadmap.md) - bugs, features, enhancments.

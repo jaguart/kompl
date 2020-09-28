@@ -1,4 +1,4 @@
-# Kompl - Widget Anatomy
+# Kompl - Anatomy and Taxonomy
 
 This document describes the anatomy of the Kompl widget.
 
@@ -7,14 +7,11 @@ This document describes the anatomy of the Kompl widget.
 The Kompl navigation widget has the following controls that the User can use to set their personal preferences. Controls can be enabled / disabled using the OPTIONS argument in `$kompl.play()` or `$kompl.options()`
 
 * `homer` - makes the TITLE a link that returns to the ORIGIN.
-* `placer` - shows clickable border-regions that the User can use to PLACE the widget. There are six places - `tl`, `tc`, `tr`, `bl`, `bc`, `br` - which correspond to top-left, top-center, top-right, bottom-left, bottom-center or bottom-right.
+* `placer` - shows clickable border-regions for Users to control PLACEment of the widget. There are six places - `tl`, `tc`, `tr`, `bl`, `bc`, `br` - which correspond to top-left, top-center, top-right, bottom-left, bottom-center or bottom-right.
 * `sizer` - adds an expanding bar above TITLE containing clickable `S` `M` `L` used to set SIZE to small, medium or large.
 * `closer` - adds a CLOSE icon to the expanding bar which cancels play.
 
-*TODO:* add a picture of the UI
-<!--
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
--->
+![Kompilation Anatomy](kompl-anatomy-001.jpg)
 
 ## Programmatic Interface
 
@@ -40,7 +37,14 @@ The Kompl widget has the following callable interfaces:
 * `$kompl.place('bc')` - set placement. Set PLACE once in `<head>` to be used by calls to PLAY throughout the page.
 * `$kompl.size('large')` - set SIZE . Set once in `<head>` to be used by calls to PLAY throughout the page.
 
-You can find usage examples here:
-* [Kompl Usage](example-usage.md)
-* [The STYLE argument](example-style.md)
-* [The OPTIONS argument](example-style.md)
+---
+
+### Documentation
+
+* [Kompl README](doc/README.md) - Introduction and installation.
+* [Anatomy of Kompl](doc/widget-anatomy.md) - Taxonomy and overview.
+* [Kompl Usage Examples](doc/example-usage.md) - Learn by example.
+* [Using the STYLE argument](doc/example-style.md) - Named preset options.
+* [Using the SHOW argument](doc/example-show.md) - Positioning Kompl on the pages.
+* [Using the OPTIONS argument](doc/example-options.md) - Details of all available options.
+* [Roadmap - planned features](doc/widget-roadmap.md) - bugs, features, enhancments.
