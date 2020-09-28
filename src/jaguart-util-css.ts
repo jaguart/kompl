@@ -34,3 +34,8 @@ export function dirname( path:string ) : string {
     const pathname = parts.join('/') + '/'
     return pathname
 }
+
+// let $unique = arr.filter(onlyUnique)
+export function onlyUniqueSting ( value : string , index: number , self : string[] ) : boolean {
+  return self.indexOf(value) === index
+}

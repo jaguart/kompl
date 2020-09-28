@@ -7,8 +7,7 @@ Continually under contruction: *Updated: 28 Sept 2020*
 Generally in `fix-xxx` branch - but use  `master` if trivial.
 
 **Open items**
-* fix interaction of SHOW and User preferences
-* expire Compilation - after 2 days, add an option
+* *TBC...*
 
 ---
 

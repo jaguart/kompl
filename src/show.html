@@ -12,38 +12,45 @@
         font-weight: bold;
         color: rgba(128, 0, 0, 0.70);
       }
+
+      #here1 { border: 1px solid red; }
+      #here2 { border: 1px solid green; }
+      #here3 { border: 1px solid blue; }
+
+      #here1,
+      #here2,
+      #here3 { min-height: 3em; margin-bottom: 8px; }
+
     </style>
     <script>
       // for ESlint HTML plugin
       var $kompl, $
 
       let $show = {
-        title: 'Jeffs Curated Kompilation',
+        title: 'Jeffs SHOW Compilation',
         slugs: [
           '/kompl/show.html',
-          '/kompl/index.html',
           '/kompl/style.html',
           '/t1/index.php/p1',
           '/t1/index.php/p2',
           '/t1/index.php/p3',
+          '/kompl/index.html',
         ],
         style: 'zam',
-        // these are for short-option testing in show_zam()
-        show: 50,
         size: 'large',
         placer: true,
         closer: true,
       }
 
-      function show_here_1()  { $kompl.play({ ...$show, options: { show: '#here1',      }}) }
-      function show_here_2()  { $kompl.play({ ...$show, options: { show: '#here2',      }}) }
-      function show_bad_id()  { $kompl.play({ ...$show, options: { show: '#nosuch',     }}) }
-      function show_bad_str() { $kompl.play({ ...$show, options: { show: 'invalid-id',  }}) }
-      function show_20()      { $kompl.play({ ...$show, options: { show: 0.20,          }}) }
-      function show_50()      { $kompl.play({ ...$show, options: { show: 0.50,          }}) }
-      function show_80()      { $kompl.play({ ...$show, options: { show: 0.80,          }}) }
-      function show_100()     { $kompl.play({ ...$show, options: { show: 1.00,          }}) }
-      function show_zam()     { $kompl.play({ ...$show, xoptions: {                      }}) }
+      function show_here_1()  { $kompl.play({ ...$show, title: $show.title + ': #here1',  options: { show: '#here1',      }}) }
+      function show_here_2()  { $kompl.play({ ...$show, title: $show.title + ': #here2',  options: { show: '#here2',      }}) }
+      function show_bad_id()  { $kompl.play({ ...$show, title: $show.title + ': #nosuch', options: { show: '#nosuch',     }}) }
+      function show_bad_str() { $kompl.play({ ...$show, title: $show.title + ': badstr',  options: { show: 'invalid-id',  }}) }
+      function show_20()      { $kompl.play({ ...$show, title: $show.title + ': 0.20',    options: { show: 0.20,          }}) }
+      function show_50()      { $kompl.play({ ...$show, title: $show.title + ': 0.50',    options: { show: 0.50,          }}) }
+      function show_80()      { $kompl.play({ ...$show, title: $show.title + ': 0.80',    options: { show: 0.80,          }}) }
+      function show_100()     { $kompl.play({ ...$show, title: $show.title + ': 1.00',    options: { show: 1.00,          }}) }
+      function show_zam()     { $kompl.play({ ...$show, title: $show.title + ': ZAM',     xoptions: {                      }}) }
 
       // visual clue that above has compiled :)
       // Does not depend on jQuery - maybe it should
@@ -110,20 +117,20 @@
 
   <tr>
     <td><button onclick="show_here_1()">Slides - HERE1</button></td>
-    <td>Show - here - <div id='here1'>here1</div></td>
+    <td>Show - here1</td>
   </tr>
   <tr>
     <td><button onclick="show_here_2()">Slides - HERE2</button></td>
-    <td>Show - here - <div id='here2'>here2</div></td>
+    <td>Show - here2</td>
   </tr>
 
   <tr>
     <td><button onclick="show_bad_id()">Slides - Bad Id</button></td>
-    <td>Show - oops - <div id='there1'>there1</div></td>
+    <td>Show - bad-id oops</td>
   </tr>
   <tr>
     <td><button onclick="show_bad_str()">Slides - Bad Str</button></td>
-    <td>Show - oops - <div id='there1'>there2</div></td>
+    <td>Show - bad-string oops </td>
   </tr>
 
   <tr>
@@ -147,9 +154,13 @@
     <td><button onclick="show_zam()">Slides - ZAM</button></td>
     <td>Show ZAM</td>
   </tr>
-
-
 </table>
+
+<hr>
+<p>These DIVs are for embedded Kompl widgets.</p>
+<div id='here1' >This is HERE1</div>
+<div id='here2' >This is HERE2</div>
+<div id='here3' >This is HERE3</div>
 
 </body>
 </html>

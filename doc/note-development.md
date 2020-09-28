@@ -29,4 +29,11 @@ Do **not** use '/' in branch names - it translates to folders on the filesystem 
 
 * **add-<something>** - feature aka topic branch
   - expected to be merged back into master
-  - any merge to master must be --no-ff
+  - `git checkout master;git pull;git checkout -b add-expire`
+  - `git commit -m 'some comment' some-file.ts`
+  - `git push -u origin add-expire`
+  - create a pull-request on Github
+  - merge the pull-request on Github
+  - delete the branch on Github
+  - fix up local repo :( - still has branch etc
+  - must be a better way...

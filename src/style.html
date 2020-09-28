@@ -12,27 +12,36 @@
         font-weight: bold;
         color: rgba(0, 0, 128, 0.70);
       }
+
+      #here1 { border: 1px solid red; }
+      #here2 { border: 1px solid green; }
+      #here3 { border: 1px solid blue; }
+
+      #here1,
+      #here2,
+      #here3 { min-height: 3em; margin-bottom: 8px; }
+
     </style>
     <script>
       // for ESlint HTML plugin
       var $kompl, $
 
-      let $show = {
-        title: 'Jeffs Style Testing',
+      let $compilation = {
+        title: 'Jeffs Style Compilation',
         slugs: [
           '/kompl/style.html',
-          '/kompl/show.html',
           '/kompl/index.html',
           '/t1/index.php/p1',
           '/t1/index.php/p2',
           '/t1/index.php/p3',
+          '/kompl/show.html',
         ],
       }
 
-      function show_rich()    { $kompl.play({ ...$show, style: 'rich',    }) }
-      function show_choice()  { $kompl.play({ ...$show, style: 'choice',  }) }
-      function show_clean()   { $kompl.play({ ...$show, style: 'clean',   }) }
-      function show_naked()   { $kompl.play({ ...$show, style: 'naked',   }) }
+      function play_rich()    { $kompl.play({ ...$compilation, style: 'rich',    }) }
+      function play_choice()  { $kompl.play({ ...$compilation, style: 'choice',  }) }
+      function play_clean()   { $kompl.play({ ...$compilation, style: 'clean',   }) }
+      function play_naked()   { $kompl.play({ ...$compilation, style: 'naked',   }) }
 
       function small  ()      { $kompl.size('small')   }
       function medium ()      { $kompl.size('medium')  }
@@ -80,7 +89,7 @@
 <body>
 
 <p id='greeting' style='float: right;'>Loading...</p>
-<h1>Kompl Style testing</h1>
+<h1>Kompl STYLE testing</h1>
 
 <a href='index.html'>Main Tests</a>
 <a href='style.html'>Style Tests</a>
@@ -100,20 +109,20 @@
     <td>Clear compilation currently in-play</td>
   </tr>
   <tr>
-    <td><button onclick="show_rich()">Slides - RICH</button></td>
-    <td>Show - with <i>size</i>, <i>close</i>, <i>place</i>, <i>home</i></td>
+    <td><button onclick="play_rich()">Play - RICH</button></td>
+    <td>Play - with <i>size</i>, <i>close</i>, <i>place</i>, <i>home</i></td>
   </tr>
   <tr>
-    <td><button onclick="show_choice()">Slides - CHOICE</button></td>
-    <td>Show - with <i>size</i>, <i>close</i>, <i>home</i></td>
+    <td><button onclick="play_choice()">Play - CHOICE</button></td>
+    <td>Play - with <i>size</i>, <i>close</i>, <i>home</i></td>
   </tr>
   <tr>
-    <td><button onclick="show_clean()">Slides - CLEAN</button></td>
-    <td>Show - with <i>home</i></td>
+    <td><button onclick="play_clean()">Play - CLEAN</button></td>
+    <td>Play - with <i>home</i></td>
   </tr>
   <tr>
-    <td><button onclick="show_naked()">Slides - NAKED</button></td>
-    <td>Show - no controls except navigation</td>
+    <td><button onclick="play_naked()">Play - NAKED</button></td>
+    <td>Play - no controls except navigation</td>
   </tr>
   <!--
   <tr>
@@ -140,12 +149,10 @@
 </table>
 
 <hr>
-<div id='here1' style='border: 1px solid red;''>This is HERE1</div>
-<hr>
-<div id='here2' style='border: 1px solid blue;''>This is HERE2</div>
-<hr>
-<div id='here3' style='border: 1px solid green;''>This is HERE3</div>
-<hr>
+<p>These DIVs are for embedded Kompl widgets.</p>
+<div id='here1' >This is HERE1</div>
+<div id='here2' >This is HERE2</div>
+<div id='here3' >This is HERE3</div>
 
 </body>
 </html>

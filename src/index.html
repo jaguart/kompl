@@ -5,7 +5,7 @@
 
     <title>Kompl Test</title>
 
-<style>
+    <style>
       body {
         font-family: Arial, Helvetica, sans-serif;
       }
@@ -14,108 +14,107 @@
         font-weight: bold;
         color: rgba(0, 64, 0, 0.70);
       }
+
+      #here1 { border: 1px solid red; }
+      #here2 { border: 1px solid green; }
+      #here3 { border: 1px solid blue; }
+
+      #here1,
+      #here2,
+      #here3 { min-height: 3em; margin-bottom: 8px; }
+
     </style>
 
+    <script>
+      // for ESlint HTML plugin
+      var $kompl, $
 
-  <script>
-    // for ESlint HTML plugin
-    var $kompl, $
+      let $compilation = {
+        title: 'Jeffs Main Test Compilation',
+        slugs: [
+          '/kompl/index.html',
+          '/t1/index.php/p1',
+          '/t1/index.php/p2',
+          '/t1/index.php/p3',
+          '/kompl/index.html',
+          '/kompl/show.html',
+          '/kompl/style.html',
+        ],
+      }
 
-    let $show = {
-      title: 'Jeffs Test Slides',
-      slugs: [
-        '/t1/index.php/p1',
-        '/t1/index.php/p2',
-        '/t1/index.php/p3',
-        '/kompl/index.html',
-        '/kompl/show.html',
-        '/kompl/style.html',
-      ],
+      // no options - use those set elsewhere
+      function play_whatever()    { $kompl.play({ ...$compilation, }) }
+      function play_default()     { $kompl.play({ ...$compilation, options: { /* empty = all defaults */ } }) }
+      function play_naked()       { $kompl.play({ ...$compilation, homer:  false, closer: false, sizer:  false, placer: false, }) }
+
+      function play_nohomer()     { $kompl.play({ ...$compilation, homer:  false,  }) }
+      function play_nosizer()     { $kompl.play({ ...$compilation, sizer:  false,  }) }
+      function play_nocloser()    { $kompl.play({ ...$compilation, closer: false,  }) }
+      function play_noplacer()    { $kompl.play({ ...$compilation, placer: false,  }) }
+      function play_nobar()       { $kompl.play({ ...$compilation, sizer:  false, closer: false, }) }
+
+      function tl()       { $kompl.place('tl') }
+      function tc()       { $kompl.place('tc') }
+      function tr()       { $kompl.place('tr') }
+      function bl()       { $kompl.place('bl') }
+      function bc()       { $kompl.place('bc') }
+      function br()       { $kompl.place('br') }
+
+      function small  ()  { $kompl.size('small')   }
+      function medium ()  { $kompl.size('medium')  }
+      function large  ()  { $kompl.size('large')   }
+
+      function placer_on  () { $kompl.options({placer:true,})   }
+      function placer_off () { $kompl.options({placer:false,})  }
+      function closer_on  () { $kompl.options({closer:true,})   }
+      function closer_off () { $kompl.options({closer:false,})  }
+      function sizer_on   () { $kompl.options({sizer:true,})    }
+      function sizer_off  () { $kompl.options({sizer:false,})   }
+      function homer_on   () { $kompl.options({homer:true,})    }
+      function homer_off  () { $kompl.options({homer:false,})   }
+
+      // visual clue that above has compiled :)
+      // Does not depend on jQuery - maybe it should
+      document.addEventListener('DOMContentLoaded', function (ev) {
+        $('#greeting').text('Tadah: '+Date.now()).addClass('green')
+      })
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="kompl.bundle.js" type="module" ></script>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      margin: 8px 0;
+      width: 100%;
     }
 
-    // no options - use those set elsewhere
-    function show_whatever()    { $kompl.play({ ...$show, }) }
-    function show_default()     { $kompl.play({ ...$show, options: { /* empty object = all defaults */ } }) }
-
-    function show_naked()       { $kompl.play({ ...$show, options: {
-            homer: false,
-            closer: false,
-            sizer: false,
-            placer: false,
-            size: 'large',
-            place: 'bc',
-          }})
+    table,
+    td,
+    th {
+      border: 1px solid grey;
+      padding: 4px 8px;
     }
 
-    function show_noplacer()    { $kompl.play({ ...$show, options: { placer: false, }}) }
-    function show_nohomer()     { $kompl.play({ ...$show, options: { homer: false,  }}) }
-    function show_nosizer()     { $kompl.play({ ...$show, options: { sizer: false,  }}) }
-    function show_nocloser()    { $kompl.play({ ...$show, options: { closer: false, }}) }
-    function show_nobar()       { $kompl.play({ ...$show, options: { sizer: false, closer: false, }}) }
+    th {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
 
-    function tl () { $kompl.place('tl') }
-    function tc () { $kompl.place('tc') }
-    function tr () { $kompl.place('tr') }
-    function bl () { $kompl.place('bl') }
-    function bc () { $kompl.place('bc') }
-    function br () { $kompl.place('br') }
+    button {
+      padding-top: 3px;
+      margin: 1px;
+      min-width: 3em;
+      text-align: center;
+    }
 
-    function small  () { $kompl.size('small')   }
-    function medium () { $kompl.size('medium')  }
-    function large  () { $kompl.size('large')   }
-
-    function placer_on  () { $kompl.options({placer:true,})   }
-    function placer_off () { $kompl.options({placer:false,})  }
-    function closer_on  () { $kompl.options({closer:true,})   }
-    function closer_off () { $kompl.options({closer:false,})  }
-    function sizer_on   () { $kompl.options({sizer:true,})    }
-    function sizer_off  () { $kompl.options({sizer:false,})   }
-    function homer_on   () { $kompl.options({homer:true,})    }
-    function homer_off  () { $kompl.options({homer:false,})   }
-
-    // visual clue that above has compiled :)
-    // Does not depend on jQuery - maybe it should
-    document.addEventListener('DOMContentLoaded', function (ev) {
-      $('#greeting').text('Tadah: '+Date.now()).addClass('green')
-    })
-
-  </script>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
-<script src="kompl.bundle.js" type="module" ></script>
-
-<style>
-  table {
-    border-collapse: collapse;
-    margin: 8px 0;
-    width: 100%;
-  }
-
-  table,
-  td,
-  th {
-    border: 1px solid grey;
-    padding: 4px 8px;
-  }
-
-  th {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  button {
-    padding-top: 3px;
-    margin: 1px;
-    min-width: 3em;
-    text-align: center;
-  }
-
-</style>
-
+  </style>
 </head>
 <body>
 
 <p id='greeting' style='float: right;'>Loading...</p>
-<h1>Kompl testing</h1>
+<h1>Kompl MAIN Testing</h1>
 
 <a href='index.html'>Main Tests</a>
 <a href='style.html'>Style Tests</a>
@@ -135,36 +134,36 @@
     <td>Clear compilation currently in-play</td>
   </tr>
   <tr>
-    <td><button onclick="show_default()">Slides - all controls</button></td>
-    <td>Show slides - default, all User controls.</td>
+    <td><button onclick="play_default()">Play - default</button></td>
+    <td>Play - default options</td>
   </tr>
   <tr>
-    <td><button onclick="show_whatever()">Slides - current</button></td>
-    <td>Show slides - using current options.</td>
+    <td><button onclick="play_whatever()">Play - current</button></td>
+    <td>Play - using current options.</td>
   </tr>
   <tr>
-    <td><button onclick="show_naked()">Slides - no controls</button></td>
-    <td>Show slides - no User controls at all.</td>
+    <td><button onclick="play_naked()">Play - no controls</button></td>
+    <td>Play - no User controls at all.</td>
   </tr>
   <tr>
-    <td><button onclick="show_noplacer()">Slides - no placer</button></td>
-    <td>Show slides - no placer controls.</td>
+    <td><button onclick="play_noplacer()">Play - no placer</button></td>
+    <td>Play - no placer controls.</td>
   </tr>
   <tr>
-    <td><button onclick="show_nohomer()">Slides - no homer</button></td>
-    <td>Show slides - No HOME click on Title.</td>
+    <td><button onclick="play_nohomer()">Play - no homer</button></td>
+    <td>Play - No HOME click on Title.</td>
   </tr>
   <tr>
-    <td><button onclick="show_nosizer()">Slides - no sizer</button></td>
-    <td>Show slides - no sizer controls.</td>
+    <td><button onclick="play_nosizer()">Play - no sizer</button></td>
+    <td>Play - no sizer controls.</td>
   </tr>
   <tr>
-    <td><button onclick="show_nocloser()">Slides - no closer</button></td>
-    <td>Show slides - no closer control.</td>
+    <td><button onclick="play_nocloser()">Play - no closer</button></td>
+    <td>Play - no closer control.</td>
   </tr>
   <tr>
-    <td><button onclick="show_nobar()">Slides - no bar</button></td>
-    <td>Show slides - no closer or sizer controls.</td>
+    <td><button onclick="play_nobar()">Play - no bar</button></td>
+    <td>Play - no closer or sizer controls.</td>
   </tr>
 
   <tr>
@@ -223,44 +222,11 @@
 
 </table>
 
-<button onclick="
-  $kompl.play({
-    title: 'My Curated Kompilation',
-    slugs: [
-      '/kompl/',
-      '/page1/',
-      '/page3/',
-      '/page7/',
-    ],
-    style: 'clean',
-  })
-">Show me! clean</button>
-
-<button onclick="
-  $kompl.play({
-    title: 'My Curated Kompilation',
-    slugs: [
-      '/kompl/',
-      '/page1/',
-      '/page3/',
-      '/page7/',
-    ],
-    options: {
-      size: 'large',
-      place: 'bc',
-    }
-  })
-">Show me! large-bc</button>
-
 <hr>
-<div id='here1' style='border: 1px solid red;''>This is HERE1</div>
-<hr>
-<div id='here2' style='border: 1px solid blue;''>This is HERE2</div>
-<hr>
-<div id='here3' style='border: 1px solid green;''>This is HERE3</div>
-<hr>
-<div id='nosuch' style='border: 1px solid green;''>This is NOSUCH</div>
-<hr>
+<p>These DIVs are for embedded Kompl widgets.</p>
+<div id='here1' >This is HERE1</div>
+<div id='here2' >This is HERE2</div>
+<div id='here3' >This is HERE3</div>
 
 </body>
 </html>
