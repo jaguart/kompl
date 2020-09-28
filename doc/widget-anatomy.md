@@ -41,7 +41,7 @@ The Kompl widget has the following callable interfaces:
 
 ### Documentation
 
-* [Kompl README](../README.md) - Introduction and installation.
+* [Kompl README](../README.md) - Overview and installation.
 * [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
 * [Kompl Usage Examples](example-usage.md) - Learn by example.
 * [Using the STYLE argument](example-style.md) - Named preset options.

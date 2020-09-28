@@ -21,7 +21,7 @@ Here's what they look like:
 
 ## Usage
 
-You can combine STYLE with OPTIONS - entries in OPTIONS will take precedence.
+You can combine STYLE and individual OPTIONS - OPTIONS will take precedence.
 
 ```html
 <!-- In HEAD -->
@@ -67,7 +67,7 @@ and then in your HTML you can play the compilation using:
 
 ### Documentation
 
-* [Kompl README](../README.md) - Introduction and installation.
+* [Kompl README](../README.md) - Overview and installation.
 * [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
 * [Kompl Usage Examples](example-usage.md) - Learn by example.
 * [Using the STYLE argument](example-style.md) - Named preset options.
