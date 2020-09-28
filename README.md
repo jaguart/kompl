@@ -52,4 +52,4 @@ You can read the documentation and examples here:
 
 Jeff, aka *jaguart* on Github. https://jaguart.tech - dabbler.
 
-This is my first playground using TypeScript in the Node-verse. Canonical https://github.com/jaguart/kompl
+This is my first playground using TypeScript in the Node-verse. Canonical source - https://github.com/jaguart/kompl
