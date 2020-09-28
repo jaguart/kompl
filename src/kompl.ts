@@ -98,6 +98,9 @@ export class Kompilation {
   static readonly KomplStoragePlace       = 'kompl-place'
   static readonly KomplStorageSize        = 'kompl-size'
 
+  // Storage Expire seconds - should be be 3 days, instead of 1?
+  static readonly KomplStorageExpire      = 86400
+
   // Kompilation.DEFAULT_OPTIONS
   static readonly DEFAULTS : KomplOptions = {
     place:    'br',
@@ -536,6 +539,7 @@ export class Kompilation {
         origin:   this.#origin,
         title:    this.#title,
         slugs:    this.#slugs,
+        created:  Math.round(Date.now()/1000),
       })
     )
   }
@@ -554,14 +558,22 @@ export class Kompilation {
     const $place    = window.localStorage.getItem( Kompilation.KomplStoragePlace )    // set by user
     const $size     = window.localStorage.getItem( Kompilation.KomplStorageSize )     // set by user
     if ( $data ) {
-      this._createCompilation( JSON.parse( $data ) )
-      if ( $options ) {
-        this._setOptions( JSON.parse( $options ) )
+      const $parsed = JSON.parse( $data )
+      const $now    = Math.round(Date.now()/1000)
+      if ( ($now - $parsed.created) >= Kompilation.KomplStorageExpire ) {
+        // We only remove the DATA and OPTIONS - leaving the User preferences alone
+        window.localStorage.removeItem( Kompilation.KomplStorageData )
+        window.localStorage.removeItem( Kompilation.KomplStorageOptions )
+      }
+      else {
+        this._createCompilation( $parsed )
+        if ( $options ) {
+          this._setOptions( JSON.parse( $options ) )
+        }
+        if ( $place ) this.#options.place = $place
+        if ( $size )  this.#options.size  = $size
       }
     }
-    // if $data?? TODO: validation?
-    if ( $place ) this.#options.place = $place
-    if ( $size )  this.#options.size  = $size
   }
 
   // --------------------------------------------------------------------------
