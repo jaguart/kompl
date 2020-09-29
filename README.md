@@ -36,12 +36,12 @@ Add controls into your pages that play your compilations:
 You can see the widget in operation by clicking on the **buttons** on this page: https://normus.totahi.com/tags
 
 You can read the documentation and examples here:
-* [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
-* [Kompl Usage Examples](example-usage.md) - Learn by example.
-* [Using the STYLE argument](example-style.md) - Named preset options.
-* [Using the SHOW argument](example-show.md) - Positioning Kompl on the pages.
-* [Using the OPTIONS argument](example-options.md) - Details of all available options.
-* [Roadmap - planned features](widget-roadmap.md) - bugs, features, enhancments.
+* [Anatomy of Kompl](doc/widget-anatomy.md) - Taxonomy and overview.
+* [Kompl Usage Examples](doc/example-usage.md) - Learn by example.
+* [Using the STYLE argument](doc/example-style.md) - Named preset options.
+* [Using the SHOW argument](doc/example-show.md) - Positioning Kompl on the pages.
+* [Using the OPTIONS argument](doc/example-options.md) - Details of all available options.
+* [Roadmap - planned features](doc/widget-roadmap.md) - bugs, features, enhancments.
 
 
 ## Credits
