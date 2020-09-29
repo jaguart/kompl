@@ -46,12 +46,16 @@ class Jenny {
   private registerHelpers () {
 
     // not sure how you get data into this helper in a template...
-    Handlebars.registerHelper('list-ul', function( items, options ) {
-      const $lis = items.map(
-          ( item : Record<string,unknown> ) =>
-          `<li>${options.fn(item)}</li>`
+    Handlebars.registerHelper('list-ul', function( options ) {
+      const $rows = options.fn().split("\n")
+      const $lis = $rows.map(
+          ( $row : string ) =>
+          $row ? `<li>${$row}</li>` : ''
         )
-      return `<ul>\n ${ $lis.join("\n") }\n</ul>\n`
+      // eslint-disable-next-line no-console
+      // console.log( options )
+      const $title = options.hash.title ? `<h2>${options.hash.title}</h2>\n` : ``
+      return `${$title}<ul>\n ${ $lis.join("\n") }\n</ul>\n`
     })
 
   }
