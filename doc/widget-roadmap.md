@@ -61,3 +61,35 @@ Generally in `try-xxx` branch - but use  `master` if trivial.
 * [Using the SHOW argument](example-show.md) - Positioning Kompl on the pages.
 * [Using the OPTIONS argument](example-options.md) - Details of all available options.
 * [Roadmap - planned features](widget-roadmap.md) - bugs, features, enhancments.
+
+---
+
+## Remember Me
+
+**Fix Branch**
+```
+git checkout master
+git pull --all
+git checkout -b fix-thingy
+git commit ...
+```
+
+**Release Fix**
+```
+git checkout master
+git pull --all
+git merge fix-thingy
+npm version n.n.n
+npm run clean
+npm run build
+# final test / confirmation
+git checkout -n rel-n.n.n
+git checkout master
+git push --all
+```
+
+* create release and release tag on Githum
+* delete fix-thingy on github
+* `git pull --all` - pull deletes locally
+* `git tag` - to list tags
+* `git branch` - to list branches
