@@ -1,6 +1,6 @@
 {
   "name": "kompl",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Web widget to PLAY a Compilation",
   "author": "Jeff <jeff@jaguart.tech> (https://jaguart.tech/)",
   "license": "MIT",
@@ -46,7 +46,11 @@
       "extensions": "html"
     },
     "build-html": {
-      "patterns": ["src/views", "src/views/partials", "src/views/layouts" ],
+      "patterns": [
+        "src/views",
+        "src/views/partials",
+        "src/views/layouts"
+      ],
       "extensions": "hbs"
     },
     "build-assets": {
