@@ -1,0 +1,101 @@
+{{#> layout-page  page_title="Style Tests" page_heading="Kompl STYLE Tests" }}
+
+<style>
+
+
+</style>
+
+<script>
+  // for ESlint HTML plugin
+  var $kompl, $
+
+  let $compilation = {
+    title: 'Jeffs Style Compilation',
+    slugs: [
+      '/kompl/style.html',
+      '/kompl/index.html',
+      '/t1/index.php/p1',
+      '/t1/index.php/p2',
+      '/t1/index.php/p3',
+      '/kompl/show.html',
+    ],
+  }
+
+  function play_rich()    { $kompl.play({ ...$compilation, style: 'rich',    }) }
+  function play_choice()  { $kompl.play({ ...$compilation, style: 'choice',  }) }
+  function play_clean()   { $kompl.play({ ...$compilation, style: 'clean',   }) }
+  function play_naked()   { $kompl.play({ ...$compilation, style: 'naked',   }) }
+
+  function small  ()      { $kompl.size('small')   }
+  function medium ()      { $kompl.size('medium')  }
+  function large  ()      { $kompl.size('large')   }
+
+  // visual clue that above has compiled :)
+  // Does not depend on jQuery - maybe it should
+  document.addEventListener('DOMContentLoaded', function (ev) {
+    $('#greeting').text('Tadah: '+Date.now()).addClass('blue')
+  })
+
+</script>
+
+<table>
+  <tr>
+    <th width='0%' >Action</th>
+    <th width='70%' >Effect</th>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.reset()">Reset</button></td>
+    <td>Reset all stored Kompl data</td>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.clear()">Close/Clear</button></td>
+    <td>Clear compilation currently in-play</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_rich()">Play - RICH</button></td>
+    <td>Play - with <i>size</i>, <i>close</i>, <i>place</i>, <i>home</i></td>
+  </tr>
+  <tr>
+    <td><button onclick="play_choice()">Play - CHOICE</button></td>
+    <td>Play - with <i>size</i>, <i>close</i>, <i>home</i></td>
+  </tr>
+  <tr>
+    <td><button onclick="play_clean()">Play - CLEAN</button></td>
+    <td>Play - with <i>home</i></td>
+  </tr>
+  <tr>
+    <td><button onclick="play_naked()">Play - NAKED</button></td>
+    <td>Play - no controls except navigation</td>
+  </tr>
+  <!--
+  <tr>
+    <td>
+      <button onclick="tl()">TL</button>
+      <button onclick="tc()">TC</button>
+      <button onclick="tr()">TR</button><br>
+      <button onclick="bl()">BL</button>
+      <button onclick="bc()">BC</button>
+      <button onclick="br()">BR</button>
+    </td>
+    <td>Control placement - User preference.</td>
+  </tr>
+  -->
+  <tr>
+    <td>
+      <button onclick="small()">Small</button>
+      <button onclick="medium()">Medium</button>
+      <button onclick="large()">Large</button><br>
+    </td>
+    <td>Control Sizing</td>
+  </tr>
+
+</table>
+
+{{! the following doesn't seem to work - how to get data from template into helper? --}}
+{{#list-ui items=[a:b] }}
+Hmmm
+{{/list-ui}}
+
+{{> partial-heredivs }}
+
+{{/layout-page}}

@@ -1,0 +1,16 @@
+<!-- partial-navigation -->
+<script>
+  function highlight_here() {
+    let $here = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1)
+    let $anchor = $(`a[href$="${$here}"]`)
+    if ( $anchor )  $anchor.addClass('thispage')
+  }
+  document.addEventListener("DOMContentLoaded", (ev) => {
+    highlight_here()
+  })
+</script>
+<nav>
+<a href='index.html'>Main Tests</a>
+<a href='style.html'>Style Tests</a>
+<a href='show.html'>Show Tests</a>
+</nav>

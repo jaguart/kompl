@@ -35,6 +35,24 @@ export function dirname( path:string ) : string {
     return pathname
 }
 
+export function filename( path:string ) : string | undefined {
+  const parts = path.split(/[/]/)
+  const filename = parts.pop()
+  return filename
+}
+
+export function basename( path:string ) : string | undefined {
+  let parts = path.split(/[/]/)
+  const filename = parts.pop()
+  if ( filename ) {
+    parts = filename.split(/\./)
+    parts.pop()
+    const basename = parts.join('.')
+    return basename
+  }
+  return undefined
+}
+
 // let $unique = arr.filter(onlyUnique)
 export function onlyUniqueSting ( value : string , index: number , self : string[] ) : boolean {
   return self.indexOf(value) === index

@@ -21,7 +21,8 @@
     "build": "npm run build-ts & npm run build-css & npm run build-html & npm run build-assets &",
     "build-ts": "microbundle build -f modern",
     "build-css": "postcss src/*.css > dist/kompl.bundle.css",
-    "build-html": "gulp build_html",
+    "build-html-old": "gulp build_html",
+    "build-html": "ts-node src/generate-html.ts",
     "build-assets": "gulp build_assets",
     "dev": "npm-watch",
     "watch": "npm-watch",
@@ -40,9 +41,13 @@
       "patterns": "src",
       "extensions": "css"
     },
-    "build-html": {
+    "build-html-old": {
       "patterns": "src",
       "extensions": "html"
+    },
+    "build-html": {
+      "patterns": ["src/views", "src/views/partials", "src/views/layouts" ],
+      "extensions": "hbs"
     },
     "build-assets": {
       "patterns": "src",
@@ -59,9 +64,11 @@
     "cssnano-preset-advanced": "^4.0.7",
     "del": "^5.1.0",
     "eslint": "^7.9.0",
+    "glob": "^7.1.6",
     "gulp": "^4.0.2",
     "gulp-chmod": "^3.0.0",
     "gulp-htmlmin": "^5.0.1",
+    "handlebars": "^4.7.6",
     "html-minifier": "^4.0.0",
     "html-minifier-lint": "^2.0.0",
     "microbundle": "^0.12.3",

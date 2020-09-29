@@ -1,0 +1,163 @@
+{{#> layout-page  page_title="Main Tests" page_heading="Kompl MAIN Tests" }}
+
+<script>
+  // for ESlint HTML plugin
+  var $kompl, $
+
+  let $compilation = {
+    title: 'Jeffs Main Test Compilation',
+    slugs: [
+      '/kompl/index.html',
+      '/t1/index.php/p1',
+      '/t1/index.php/p2',
+      '/t1/index.php/p3',
+      '/kompl/index.html',
+      '/kompl/show.html',
+      '/kompl/style.html',
+    ],
+  }
+
+  // no options - use those set elsewhere
+  function play_whatever()    { $kompl.play({ ...$compilation, }) }
+  function play_default()     { $kompl.play({ ...$compilation, options: { /* empty = all defaults */ } }) }
+  function play_naked()       { $kompl.play({ ...$compilation, homer:  false, closer: false, sizer:  false, placer: false, }) }
+
+  function play_nohomer()     { $kompl.play({ ...$compilation, homer:  false,  }) }
+  function play_nosizer()     { $kompl.play({ ...$compilation, sizer:  false,  }) }
+  function play_nocloser()    { $kompl.play({ ...$compilation, closer: false,  }) }
+  function play_noplacer()    { $kompl.play({ ...$compilation, placer: false,  }) }
+  function play_nobar()       { $kompl.play({ ...$compilation, sizer:  false, closer: false, }) }
+
+  function tl()       { $kompl.place('tl') }
+  function tc()       { $kompl.place('tc') }
+  function tr()       { $kompl.place('tr') }
+  function bl()       { $kompl.place('bl') }
+  function bc()       { $kompl.place('bc') }
+  function br()       { $kompl.place('br') }
+
+  function small  ()  { $kompl.size('small')   }
+  function medium ()  { $kompl.size('medium')  }
+  function large  ()  { $kompl.size('large')   }
+
+  function placer_on  () { $kompl.options({placer:true,})   }
+  function placer_off () { $kompl.options({placer:false,})  }
+  function closer_on  () { $kompl.options({closer:true,})   }
+  function closer_off () { $kompl.options({closer:false,})  }
+  function sizer_on   () { $kompl.options({sizer:true,})    }
+  function sizer_off  () { $kompl.options({sizer:false,})   }
+  function homer_on   () { $kompl.options({homer:true,})    }
+  function homer_off  () { $kompl.options({homer:false,})   }
+
+  // visual clue that above has compiled :)
+  // Does not depend on jQuery - maybe it should
+  document.addEventListener('DOMContentLoaded', function (ev) {
+    $('#greeting').text('Tadah: '+Date.now()).addClass('green')
+  })
+
+</script>
+
+<table>
+  <tr>
+    <th width='0%' >Action</th>
+    <th width='70%' >Effect</th>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.reset()">Reset</button></td>
+    <td>Reset all stored Kompl data</td>
+  </tr>
+  <tr>
+    <td><button onclick="$kompl.clear()">Close/Clear</button></td>
+    <td>Clear compilation currently in-play</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_default()">Play - default</button></td>
+    <td>Play - default options</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_whatever()">Play - current</button></td>
+    <td>Play - using current options.</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_naked()">Play - no controls</button></td>
+    <td>Play - no User controls at all.</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_noplacer()">Play - no placer</button></td>
+    <td>Play - no placer controls.</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_nohomer()">Play - no homer</button></td>
+    <td>Play - No HOME click on Title.</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_nosizer()">Play - no sizer</button></td>
+    <td>Play - no sizer controls.</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_nocloser()">Play - no closer</button></td>
+    <td>Play - no closer control.</td>
+  </tr>
+  <tr>
+    <td><button onclick="play_nobar()">Play - no bar</button></td>
+    <td>Play - no closer or sizer controls.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="tl()">TL</button>
+      <button onclick="tc()">TC</button>
+      <button onclick="tr()">TR</button><br>
+      <button onclick="bl()">BL</button>
+      <button onclick="bc()">BC</button>
+      <button onclick="br()">BR</button>
+    </td>
+    <td>Control placement - User preference.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="small()">Small</button>
+      <button onclick="medium()">Medium</button>
+      <button onclick="large()">Large</button><br>
+    </td>
+    <td>Control Sizing - User preference.</td>
+  </tr>
+
+
+  <tr>
+    <td>
+      <button onclick="placer_on()">Placer</button>
+      <button onclick="placer_off()">Off</button>
+    </td>
+    <td>Control interaction - Placer.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="sizer_on()">Sizer</button>
+      <button onclick="sizer_off()">Off</button>
+    </td>
+    <td>Control interaction - Sizer.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="closer_on()">Closer</button>
+      <button onclick="closer_off()">Off</button>
+    </td>
+    <td>Control interaction - Closer.</td>
+  </tr>
+
+  <tr>
+    <td>
+      <button onclick="homer_on()">Homer</button>
+      <button onclick="homer_off()">Off</button>
+    </td>
+    <td>Control interaction - Homer.</td>
+  </tr>
+
+</table>
+
+{{> partial-heredivs }}
+
+{{/layout-page}}

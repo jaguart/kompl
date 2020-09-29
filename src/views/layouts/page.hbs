@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!-- layout-page -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{page_title}}</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="kompl.bundle.js" type="module" ></script>
+
+    <style>
+
+      :root {
+        --grey-faint: rgb( 252, 252, 252 );
+        --grey-pale: rgb( 239, 239, 239 );
+        --grey-mid:  rgb( 224, 224, 224 );
+        --grey-dark: rgb( 74, 74, 74 );
+      }
+
+      body { padding: 0 1em; }
+
+      nav {
+        width: 100%;
+        background-color: var(--grey-pale);
+        padding: 1px;
+      }
+
+      nav a {
+        display: inline-block;
+        min-width: 7em;
+        border: 1px solid transparent;
+        text-align: center;
+        white-space: nowrap;
+        text-decoration: none;
+        padding: 0.25em 0.50em;
+      }
+
+      nav a:hover {
+        transform: translate(-1px, -1px);
+        border-bottom: 1px solid var(--grey-dark);
+      }
+
+      .thispage {
+        x-color: white;
+        background-color: var(--grey-mid);
+        transform: translate(-1px, -1px);
+        border-bottom: 1px solid rgba( 118, 118, 118);
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 8px 0;
+        width: 100%;
+      }
+
+      table,
+      td,
+      th {
+        border: 1px solid grey;
+        padding: 4px 8px;
+      }
+
+      th {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      button {
+        padding-top: 3px;
+        margin: 1px;
+        min-width: 3em;
+        text-align: center;
+      }
+
+      .green {
+        font-weight: bold;
+        color: rgba(0, 64, 0, 0.70);
+      }
+
+      .blue {
+        font-weight: bold;
+        color: rgba(0, 0, 128, 0.70);
+      }
+
+      .red {
+        font-weight: bold;
+        color: rgba(128, 0, 0, 0.70);
+      }
+
+  </style>
+</head>
+<body>
+
+<p id='greeting' style='float: right;'>Loading...</p>
+<h1>{{page_heading}}</h1>
+
+{{> partial-navigation }}
+
+<main>
+{{> @partial-block }}
+</main>
+
+</body>
+</html>
