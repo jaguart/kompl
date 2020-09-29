@@ -120,7 +120,8 @@ export class Kompilation {
   #_index:   number | undefined = undefined     // zero-based index for window.location.pathname in #slugs
   #_widget:  JQuery | undefined = undefined     // Kompl collection navigation widget
   #_spacer:  JQuery | undefined = undefined     // Kompl spacer - ensure body can scroll clear of #widget_nav
-  #_show_at   = 0                               // show when window.scrollTop() is > this px
+  #_show_at   = 0                               // fraction of scrollable used to calc #_show_px
+  #_show_px   = 0                               // show when window.scrollTop() is > this px
   #_show_in   = 'body'                          // show in this element - BODY or #ID
 
   /* -----------------------------------------------------------------------
@@ -301,7 +302,24 @@ export class Kompilation {
     // Maybe we should always show if PLACE is at TOP? Maybe not.
     if ( this.#_widget ) {
       const  $scroll_top = Math.round($(window).scrollTop() || 0 )
-      if ( $scroll_top >= this.#_show_at ) {
+      if ( $scroll_top >= this.#_show_px ) {
+        this.#_widget.css( 'visibility', 'visible')
+      }
+      else {
+        this.#_widget.css( 'visibility', 'hidden')
+      }
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  public onWindowResize( ev: Event ) : any {
+    // dont do much here - can be called a lot, very fast!
+    // Kompilation.say( 'scrolled event callback')
+    // Maybe we should always show if PLACE is at TOP? Maybe not.
+    if ( this.#_widget ) {
+      this._setShowPX()
+      const  $scroll_top = Math.round($(window).scrollTop() || 0 )
+      if ( $scroll_top >= this.#_show_px ) {
         this.#_widget.css( 'visibility', 'visible')
       }
       else {
@@ -439,7 +457,6 @@ export class Kompilation {
   private _setOptionsShow () {
     //Kompilation.say(`set show: ${ this.#options.show }`)
     // the fraction-of-scrollable, 0.01-1.00, at which to become visible
-    let $when = 0
     if ( this.#options.show ) {
 
       if ( typeof this.#options.show === 'string' && this.#options.show.substring(0,1) === '#' ) {
@@ -458,48 +475,38 @@ export class Kompilation {
         $show = Number.isNaN( $show ) ? 0 : $show
         if ( $show >= 1 && $show <= 100 ) $show = $show / 100
         if ( $show >= 0.01 && $show <= 1.00 ) {
-          $when = $show
+          this.#_show_at = $show
+          this._setShowPX()
         }
         else {
           Kompilation.warn(`invalid show: ${ this.#options.show } - ignored`)
         }
       }
 
-      //Kompilation.say(`show: at ${ this.#_show_at } in ${ this.#_show_in }`)
-      // set up event-listeners to display widget when desired position is reached
-      if ( $when > 0 ) {
+      if ( this.#_show_px > 0 ) {
+        this._addWindowsEventHandlers()
+      }
 
-        //Kompilation.say(`will show: when ${ $when }`)
+    }
+  }
 
-        /*
-        // These don't work as reliably as JQuery
-        const $vis_px     = document.documentElement.clientHeight // height of visible content
-        const $doc_px     = Math.max( $vis_px, document.documentElement.scrollHeight ) // height of visible content
-        const $doc_scroll = Math.max( 0, $doc_px - $vis_px )
-        this.#_show_at    = Math.round( $doc_scroll * this.#_show_when )
-        */
-
-        if ( $(window) ) {
-          if ( $(document)  ) {
-            const $vis_px     = $(window).height()    || 0        // height of viewport
-            const $doc_px     = $(document).height()  || 0        // height of content
-            const $scroll_px  = Math.max( 0, $doc_px - $vis_px )  // scrollable px
-            // need a few scrollable px - 150? or don't bother.
-            if ( $scroll_px >= 150 ) {
-              this.#_show_at    = Math.round( $scroll_px * $when )  // trigger point
-            }
-            // Kompilation.say(`have vis   : ${ $vis_px } px`)
-            // Kompilation.say(`have doc   : ${ $doc_px } px`)
-            // Kompilation.say(`can scroll : ${ $scroll_px } px`)
-            // Kompilation.say(`show at    : ${ this.#_show_at } px`)
+  // called in window.resize - keep it tight.
+  private _setShowPX () {
+    this.#_show_px = 0  // always reset
+    if ( this.#_show_at > 0 && this.#_show_at <= 1 ) {
+      if ( $(window) ) {
+        if ( $(document)  ) {
+          const $vis_px     = $(window).height()    || 0        // height of viewport
+          const $doc_px     = $(document).height()  || 0        // height of content
+          const $scroll_px  = Math.max( 0, $doc_px - $vis_px )  // scrollable px
+          // need a few scrollable px - 150? or don't bother.
+          if ( $scroll_px >= 150 ) {
+            this.#_show_px    = Math.round( $scroll_px * this.#_show_at )  // trigger point
+            //Kompilation.say(`show px    : ${ this.#_show_px } px`)
           }
         }
-
-        if ( this.#_show_at > 0 ) {
-          this._addWindowsEventHandlers()
-        }
-
       }
+
     }
   }
 
@@ -529,7 +536,7 @@ export class Kompilation {
         // position: default: fixed => relative in STYLE
         this.#_widget.css("position", "relative")
       }
-      if ( this.#_show_at > 0 ) {
+      if ( this.#_show_px > 0 ) {
         this.#_widget.css('visibility','hidden')
       }
 
@@ -724,13 +731,13 @@ export class Kompilation {
   private _addWindowsEventHandlers () {
     // this is an extra safety check
     // We dont need event handlers if #_show_at is not set.
-    if ( this.#_show_at > 0 ) {
+    if ( this.#_show_px > 0 ) {
       window.addEventListener('scroll', function (ev) {
         window.$kompl.onWindowScroll(ev);
       })
 
       window.addEventListener('resize', function (ev) {
-        window.$kompl.onWindowScroll(ev);
+        window.$kompl.onWindowResize(ev);
       })
     }
   }
