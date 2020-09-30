@@ -1,0 +1,118 @@
+<!-- partial-head-style -->
+<style>
+
+  :root {
+    --grey-faint: rgb( 252, 252, 252 );
+    --grey-pale: rgb( 239, 239, 239 );
+    --grey-mid:  rgb( 224, 224, 224 );
+    --grey-dark: rgb( 74, 74, 74 );
+  }
+
+  div,
+  header,
+  footer,
+  main, {
+    box-sizing: border-box;
+  }
+
+  body { padding: 0 1em; }
+
+  header,
+  main {
+    margin-bottom: 1.0em;
+  }
+
+  footer   {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--grey-dark);
+    font-size: 90%;
+    color: var(--grey-dark);
+    width: 100%;
+  }
+
+  nav {
+    width: 100%;
+    background-color: var(--grey-pale);
+    padding: 1px;
+  }
+
+  nav a {
+    display: inline-block;
+    min-width: 7em;
+    border: 1px solid transparent;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 0.25em 0.50em;
+  }
+
+  nav a:hover {
+    transform: translate(-1px, -1px);
+    border-bottom: 1px solid var(--grey-dark);
+  }
+
+  .thispage {
+    x-color: white;
+    background-color: var(--grey-mid);
+    transform: translate(-1px, -1px);
+    border-bottom: 1px solid rgba( 118, 118, 118);
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  table,
+  caption,
+  td,
+  th {
+    border: 1px solid grey;
+    padding: 4px 8px;
+  }
+
+  caption {
+    border-bottom: none;
+    font-weight: bold;
+  }
+
+  caption,
+  th {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  button {
+    padding-top: 3px;
+    margin: 1px;
+    min-width: 3em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .green {
+    font-weight: bold;
+    color: rgba(0, 64, 0, 0.70);
+  }
+
+  .blue {
+    font-weight: bold;
+    color: rgba(0, 0, 128, 0.70);
+  }
+
+  .red {
+    font-weight: bold;
+    color: rgba(128, 0, 0, 0.70);
+  }
+
+  .outer {
+    width: 100%;
+  }
+
+  .inner {
+    margin: 0 auto;
+    max-width: 50rem; /* REM because otherwise affected by container font-size: 80% etc */
+  }
+
+</style>

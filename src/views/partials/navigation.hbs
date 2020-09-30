@@ -1,4 +1,5 @@
 <!-- partial-navigation -->
+<nav>
 <script>
   function highlight_here() {
     let $here = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1)
@@ -9,8 +10,9 @@
     highlight_here()
   })
 </script>
-<nav>
-<a href='index.html'>Main Tests</a>
-<a href='style.html'>Style Tests</a>
-<a href='show.html'>Show Tests</a>
+<div class='outer'><div class='inner'>
+  <a href='index.html'>Main Tests</a>
+  <a href='style.html'>Style Tests</a>
+  <a href='show.html'>Show Tests</a>
+</div></div>
 </nav>

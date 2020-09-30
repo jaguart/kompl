@@ -1,5 +1,7 @@
 {{#> layout-page  page_title="Show Tests" page_heading="Kompl SHOW Tests" }}
 
+<!-- show.hbs -->
+
 <script>
   // for ESlint HTML plugin
   var $kompl, $
@@ -20,15 +22,8 @@
     closer: true,
   }
 
-  function show_here_1()  { $kompl.play({ ...$show, title: $show.title + ': #here1',  options: { show: '#here1',      }}) }
-  function show_here_2()  { $kompl.play({ ...$show, title: $show.title + ': #here2',  options: { show: '#here2',      }}) }
-  function show_bad_id()  { $kompl.play({ ...$show, title: $show.title + ': #nosuch', options: { show: '#nosuch',     }}) }
-  function show_bad_str() { $kompl.play({ ...$show, title: $show.title + ': badstr',  options: { show: 'invalid-id',  }}) }
-  function show_20()      { $kompl.play({ ...$show, title: $show.title + ': 0.20',    options: { show: 0.20,          }}) }
-  function show_50()      { $kompl.play({ ...$show, title: $show.title + ': 0.50',    options: { show: 0.50,          }}) }
-  function show_80()      { $kompl.play({ ...$show, title: $show.title + ': 0.80',    options: { show: 0.80,          }}) }
-  function show_100()     { $kompl.play({ ...$show, title: $show.title + ': 1.00',    options: { show: 1.00,          }}) }
-  function show_zam()     { $kompl.play({ ...$show, title: $show.title + ': ZAM',     xoptions: {                      }}) }
+  function show_in( $id   ) { $kompl.play({ ...$show, title: $show.title + ': ' + $id,   options: { show: $id,    }}) }
+  function show_at( $pcnt ) { $kompl.play({ ...$show, title: $show.title + ': ' + $pcnt, options: { show: $pcnt,  }}) }
 
   // visual clue that above has compiled :)
   // Does not depend on jQuery - maybe it should
@@ -38,62 +33,26 @@
 
 </script>
 
-<table>
-  <tr>
-    <th width='0%' >Action</th>
-    <th width='70%' >Effect</th>
-  </tr>
+{{#table-piped th_rows=0 caption="Kompilation SHOW testing..." }}
 
-  <tr>
-    <td><button onclick="$kompl.reset()">Reset</button></td>
-    <td>Reset all stored Kompl data</td>
-  </tr>
-  <tr>
-    <td><button onclick="$kompl.clear()">Close/Clear</button></td>
-    <td>Clear compilation currently in-play</td>
-  </tr>
+| {{#button}} Reset           => $kompl.reset()       {{/button}} | Reset all Kompl storage               |
+| {{#button}} Clear           => $kompl.clear()       {{/button}} | Clear compilation currently in-play   |
+| {{#button}} Play - HERE1    => show_in('#here1')    {{/button}} | Widget in #here1                      |
+| {{#button}} Play - HERE2    => show_in('#Here2')    {{/button}} | Widget in #Here2 ?? note case!        |
+| {{#button}} Play - Bad Id   => show_in('#unknown')  {{/button}} | Widget in #id that doesn't exist      |
+| {{#button}} Play - Bad Arg  => show_in('apples')    {{/button}} | Widget in invalid-arg                 |
 
-  <tr>
-    <td><button onclick="show_here_1()">Slides - HERE1</button></td>
-    <td>Show - here1</td>
-  </tr>
-  <tr>
-    <td><button onclick="show_here_2()">Slides - HERE2</button></td>
-    <td>Show - here2</td>
-  </tr>
+| {{#button}} Play - 10%      => show_at(10)          {{/button}} | Widget at 10%                         |
+| {{#button}} Play - 50%      => show_at(50)          {{/button}} | Widget at 50%                         |
+| {{#button}} Play - 90%      => show_at(90)          {{/button}} | Widget at 90%                         |
+| {{#button}} Play - 100%     => show_at(100)         {{/button}} | Widget at 100%                        |
+| {{#button}} Play - 0.50     => show_at(0.50)        {{/button}} | Widget at 0.50                        |
+| {{#button}} Play - 1.00     => show_at(1)           {{/button}} | Widget at 1.00                        |
 
-  <tr>
-    <td><button onclick="show_bad_id()">Slides - Bad Id</button></td>
-    <td>Show - bad-id oops</td>
-  </tr>
-  <tr>
-    <td><button onclick="show_bad_str()">Slides - Bad Str</button></td>
-    <td>Show - bad-string oops </td>
-  </tr>
-
-  <tr>
-    <td><button onclick="show_20()">Slides - 20%</button></td>
-    <td>Show at 20% scroll</td>
-  </tr>
-  <tr>
-    <td><button onclick="show_50()">Slides - 50%</button></td>
-    <td>Show at 50% scroll</td>
-  </tr>
-  <tr>
-    <td><button onclick="show_80()">Slides - 80%</button></td>
-    <td>Show at 80% scroll</td>
-  </tr>
-  <tr>
-    <td><button onclick="show_100()">Slides - 100%</button></td>
-    <td>Show at 100% scroll</td>
-  </tr>
-
-  <tr>
-    <td><button onclick="show_zam()">Slides - ZAM</button></td>
-    <td>Show ZAM</td>
-  </tr>
-</table>
+{{/table-piped }}
 
 {{> partial-heredivs }}
+
+<!-- show.hbs ends -->
 
 {{/layout-page}}

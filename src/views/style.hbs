@@ -1,5 +1,7 @@
 {{#> layout-page  page_title="Style Tests" page_heading="Kompl STYLE Tests" }}
 
+<!-- style.hbs -->
+
 <style>
 
 
@@ -21,10 +23,7 @@
     ],
   }
 
-  function play_rich()    { $kompl.play({ ...$compilation, style: 'rich',    }) }
-  function play_choice()  { $kompl.play({ ...$compilation, style: 'choice',  }) }
-  function play_clean()   { $kompl.play({ ...$compilation, style: 'clean',   }) }
-  function play_naked()   { $kompl.play({ ...$compilation, style: 'naked',   }) }
+  function play_style( $style ) { $kompl.play({ ...$compilation, style: $style, title: $compilation.title + ' - ' + $style }) }
 
   function small  ()      { $kompl.size('small')   }
   function medium ()      { $kompl.size('medium')  }
@@ -38,68 +37,24 @@
 
 </script>
 
-<table>
-  <tr>
-    <th width='0%' >Action</th>
-    <th width='70%' >Effect</th>
-  </tr>
-  <tr>
-    <td><button onclick="$kompl.reset()">Reset</button></td>
-    <td>Reset all stored Kompl data</td>
-  </tr>
-  <tr>
-    <td><button onclick="$kompl.clear()">Close/Clear</button></td>
-    <td>Clear compilation currently in-play</td>
-  </tr>
-  <tr>
-    <td><button onclick="play_rich()">Play - RICH</button></td>
-    <td>Play - with <i>size</i>, <i>close</i>, <i>place</i>, <i>home</i></td>
-  </tr>
-  <tr>
-    <td><button onclick="play_choice()">Play - CHOICE</button></td>
-    <td>Play - with <i>size</i>, <i>close</i>, <i>home</i></td>
-  </tr>
-  <tr>
-    <td><button onclick="play_clean()">Play - CLEAN</button></td>
-    <td>Play - with <i>home</i></td>
-  </tr>
-  <tr>
-    <td><button onclick="play_naked()">Play - NAKED</button></td>
-    <td>Play - no controls except navigation</td>
-  </tr>
-  <!--
-  <tr>
-    <td>
-      <button onclick="tl()">TL</button>
-      <button onclick="tc()">TC</button>
-      <button onclick="tr()">TR</button><br>
-      <button onclick="bl()">BL</button>
-      <button onclick="bc()">BC</button>
-      <button onclick="br()">BR</button>
-    </td>
-    <td>Control placement - User preference.</td>
-  </tr>
-  -->
-  <tr>
-    <td>
-      <button onclick="small()">Small</button>
-      <button onclick="medium()">Medium</button>
-      <button onclick="large()">Large</button><br>
-    </td>
-    <td>Control Sizing</td>
-  </tr>
+{{#table-piped th_rows=0 caption="Kompilation STYLE testing..." }}
 
-</table>
+| {{#button}} Reset           => $kompl.reset()         {{/button}} | Reset all Kompl storage               |
+| {{#button}} Clear           => $kompl.clear()         {{/button}} | Clear compilation currently in-play   |
 
-<!--
-{{#list-ul title="List of Fruit" }}
-Apples
-Pears
-Peaches
-Cream
-{{/list-ul}}
--->
+| {{#button}} Play Rich       => play_style('Rich')     {{/button}} | Rich - all user controls   |
+| {{#button}} Play Choice     => play_style('Choice')   {{/button}} | Choice - all user controls, except placer   |
+| {{#button}} Play Clean      => play_style('Clean')    {{/button}} | Clean - no placer, sizer or closer - you still get Homer   |
+| {{#button}} Play Naked      => play_style('Naked')    {{/button}} | Naked - no user controls   |
+
+| {{#button}} Play ZAM        =>  play_style('ZAM')     {{/button}} | ZAM - Malcolm's defaults   |
+| {{#button}} Play Unknown    =>  play_style('Unknown') {{/button}} | Unknown - a style that doesnt exist  |
+
+
+{{/table-piped }}
 
 {{> partial-heredivs }}
+
+<!-- style.hbs ends -->
 
 {{/layout-page}}
