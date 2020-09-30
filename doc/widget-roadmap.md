@@ -33,10 +33,10 @@ Generally in `fix-xxx` branch - but use  `master` if trivial.
 
 Generally in `master` branch - but use  `fix-xxx` branch if significant.
 
-* `npm version` semver bumping
+* auto-zip
 * gpg signature
 * github draft-release integration
-* fix code-indent
+* auto-deploy to websites on release?
 * get prettier working for TS
 * switch from `npm run` to `gulp` for more flexibility
 

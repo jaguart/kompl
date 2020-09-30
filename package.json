@@ -8,7 +8,7 @@
   "main": "dist/kompl.bundle.js",
   "esmodule": "dist/kompl.js",
   "module": "dist/kompl.module.js",
-  "types": "dist/kompl.d.ts",
+  "types": "dist-types/kompl.d.ts",
   "unpkg": "dist/kompl.umd.js",
   "scripts": {
     "clean": "find dist -type f | xargs rm",
@@ -18,11 +18,11 @@
     "lint-html": "html-minifier-lint src/*.html",
     "lint-assets": "echo no lint for assets",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-ts & npm run build-css & npm run build-html & npm run build-assets &",
-    "build-ts": "microbundle build -f modern",
+    "build": "npm run build-ts & npm run build-css & npm run build-html-hbs & npm run build-assets & npm run build-html-src",
+    "build-ts": "microbundle build -f modern --no-sourcemap",
     "build-css": "postcss src/*.css > dist/kompl.bundle.css",
-    "build-html-old": "gulp build_html",
-    "build-html": "ts-node src/generate-html.ts",
+    "build-html-src": "gulp build_html",
+    "build-html-hbs": "ts-node src/generate-html.ts",
     "build-assets": "gulp build_assets",
     "dev": "npm-watch",
     "watch": "npm-watch",
@@ -41,11 +41,11 @@
       "patterns": "src",
       "extensions": "css"
     },
-    "build-html-old": {
+    "build-html-src": {
       "patterns": "src",
       "extensions": "html"
     },
-    "build-html": {
+    "build-html-hbs": {
       "patterns": [
         "src/views",
         "src/views/partials",

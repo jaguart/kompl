@@ -85,6 +85,9 @@ dist
 # historic distribution assets
 dist-assets
 
+# typescript generated types
+dist-types
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js
