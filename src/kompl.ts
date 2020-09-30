@@ -15,16 +15,17 @@
 // -----------------------------------------------------------------------------
 // Missing DOM interface details?
 // Weirdly, the VS Code lib.dom.d.ts has this, but the node_modules doesn't
-/* Not currently used - but keep for future
-  declare global {
+/* Not currently used - but keep for future */
+declare global {
     interface Window {
       scrollTop: number
+      $kompl:Kompilation
     }
     interface Document {
       scrollTop: number
     }
   }
-*/
+/* -- */
 
 import { dirname, onlyUniqueSting, CSS } from './jaguart-util-css'
 
@@ -156,6 +157,7 @@ export class Kompilation {
     // Kompilation.say('playing...')
 
     if ( arg.style ) {
+      arg.style = arg.style.toLowerCase()
       if ( Kompilation.STYLE[arg.style as keyof KomplStyleSet] ) {
         arg.options = { ...Kompilation.STYLE[arg.style as keyof KomplStyleSet], ...arg.options }
       }
@@ -473,7 +475,7 @@ export class Kompilation {
           ? Number.parseFloat( this.#options.show )
           : this.#options.show
         $show = Number.isNaN( $show ) ? 0 : $show
-        if ( $show >= 1 && $show <= 100 ) $show = $show / 100
+        if ( $show > 1 && $show <= 100 ) $show = $show / 100
         if ( $show >= 0.01 && $show <= 1.00 ) {
           this.#_show_at = $show
           this._setShowPX()
