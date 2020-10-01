@@ -2,11 +2,6 @@
 
 <!-- style.hbs -->
 
-<style>
-
-
-</style>
-
 <script>
   // for ESlint HTML plugin
   var $kompl, $
@@ -15,11 +10,7 @@
     title: 'Jeffs Style Compilation',
     slugs: [
       '/kompl/style.html',
-      '/kompl/index.html',
-      '/t1/index.php/p1',
-      '/t1/index.php/p2',
-      '/t1/index.php/p3',
-      '/kompl/show.html',
+      {{> partial-kompl-slugs }}
     ],
   }
 

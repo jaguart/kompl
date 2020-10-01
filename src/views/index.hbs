@@ -6,16 +6,13 @@
   // for ESlint HTML plugin
   var $kompl, $
 
+  let $margin = 4
+
   let $compilation = {
     title: 'Jeffs Main Test Compilation',
     slugs: [
       '/kompl/index.html',
-      '/t1/index.php/p1',
-      '/t1/index.php/p2',
-      '/t1/index.php/p3',
-      '/kompl/index.html',
-      '/kompl/show.html',
-      '/kompl/style.html',
+      {{> partial-kompl-slugs }}
     ],
     // no options - set elsewhere
   }
@@ -96,9 +93,14 @@
 | {{#button}} Closer  => closer_on()   {{/button}}  \
   {{#button}} Off     => closer_off()  {{/button}}  | Closer - endable/disable                      |
 
+| {{#button}} + => $kompl.options({margin: ++$margin }) {{/button}}  \
+  {{#button}} - => $kompl.options({margin: --$margin }) {{/button}}  | Margin: +/-                  |
+
 {{/table-piped }}
 
 {{> partial-heredivs }}
+
+{{> partial-lorum }}
 
 <!-- index.hbs ends -->
 

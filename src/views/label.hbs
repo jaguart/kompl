@@ -1,0 +1,63 @@
+{{#> layout-page  page_title="Label Tests" page_heading="Kompl LABEL Tests" }}
+
+<!-- label.hbs -->
+
+<style>
+  .btn {
+    border: 1px solid grey;
+    min-width: 6em;
+    margin: 4px 16px !important;
+    background-color: rgba( 255, 128, 128, 0.10);
+  }
+
+  .btn:hover {
+    border: 1px solid black;
+    background-color: rgba( 255, 128, 128, 0.20);
+  }
+</style>
+
+<script>
+  // for ESlint HTML plugin
+  var $kompl, $
+
+  let $compilation = {
+    title: 'Jeffs Label Compilation',
+    slugs: [
+      '/kompl/label.html',
+      {{> partial-kompl-slugs }}
+    ],
+  }
+
+  let $prevo = { label: '<< Prev', css: 'btn', }
+  let $nexto = { label: 'Next >>', css: 'btn', }
+
+  function play_label( $prev, $next ) { $kompl.play({ ...$compilation, prev: $prev, next: $next, }) }
+
+  // visual clue that above has compiled :)
+  // Does not depend on jQuery - maybe it should
+  document.addEventListener('DOMContentLoaded', function (ev) {
+    $('#greeting').text('Tadah: '+Date.now()).addClass('purple')
+  })
+
+</script>
+
+{{#table-piped th_rows=0 caption="Kompilation LABEL testing..." }}
+
+| {{#button}} Reset           => $kompl.reset()             {{/button}} | Reset all Kompl storage               |
+| {{#button}} Clear           => $kompl.clear()             {{/button}} | Clear compilation currently in-play   |
+
+| {{#button}} Play &lt;&lt; Left    => play_label('<< Left')              {{/button}} | &lt;&lt; Left - string                     |
+| {{#button}} Play Right &gt;&gt;   => play_label(null, 'Right >>')       {{/button}} | Right &gt;&gt; - string                    |
+| {{#button}} Play &lt;&lt; Left/Right &gt;&gt; => play_label('<< Left', 'Right >>' ) {{/button}} | &lt;&lt; Left / Right &gt;&gt; - string         |
+
+| {{#button}} Play Lefto        => play_label($prevo,null)          {{/button}} | Prev - with CSS                       |
+| {{#button}} Play Righto       => play_label(null,$nexto)          {{/button}} | Next - with CSS                       |
+| {{#button}} Play LeftO/RightO => play_label($prevo,$nexto)        {{/button}} | Prev / Next - with CSS                |
+
+{{/table-piped }}
+
+{{> partial-heredivs }}
+
+<!-- style.hbs ends -->
+
+{{/layout-page}}
