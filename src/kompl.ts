@@ -38,16 +38,26 @@ interface KomplDefinition {
   origin?   : string          //  HOME URL of the Kompilation, Dafaults to current page.
   style?    : string          //  Name of an option style: clear | rich etc.
   options?  : KomplOptions    //  OPTIONS that set presentation and behaviour.
+  next?     : string | KomplNavControl //  NEXT element
+  prev?     : string | KomplNavControl //  PREV element
 }
 
 interface KomplOptions {
   place?    : string          // widget placement - tl | tc | tr | bl | bc | br
   size?     : string          // widget size - small | medium | large
   show?     : string|number   // show - number: at-scroll, string: in this element
+  margin?   : number          // add a margin around the widget - PX
   homer?    : boolean         // origin link on title
   closer?   : boolean         // show closer on bar
   sizer?    : boolean         // show sizer on bar
   placer?   : boolean         // placement-click regions
+}
+
+interface KomplNavControl {
+  img?      : string          // filename of image
+  label?    : string          // label - takes precedence over img
+  style?    : string          // style - takes precedence over css
+  css?      : string          // css classname - optional extra
 }
 
 interface KomplStyleSet {
@@ -81,6 +91,10 @@ export class Kompilation {
   static readonly KomplStoragePlace       = 'kompl-place'
   static readonly KomplStorageSize        = 'kompl-size'
 
+  // Defaults for IMG nav elements
+  static readonly KomplNavPrev : KomplNavControl = { img: Kompilation.KomplAssetSVGUp, style: 'transform: rotate(-90deg);', css: '', }
+  static readonly KomplNavNext : KomplNavControl = { img: Kompilation.KomplAssetSVGUp, style: 'transform: rotate( 90deg);', css: '', }
+
   // Storage Expire seconds - maybe 3 days for a weekend, instead of 1?
   static readonly KomplStorageExpire      = 86400
 
@@ -89,6 +103,7 @@ export class Kompilation {
     place:    'bc',       // bottom-center
     size:     'medium',   // think about mobile, large?
     show:     0.50,       // visible half-way through document
+    margin:   4,          // 4px margin around control
     homer:    true,
     closer:   true,
     sizer:    true,
@@ -109,10 +124,12 @@ export class Kompilation {
   static URL_BASE = '/.well-known/'
 
   // -------------------------------------------------------------------------
-  // Kompilation instance properties - all hard-privates
-  #origin = ''
-  #title  = ''
-  #slugs: string[] = []
+  // Kompilation definition properties - all hard-privates
+  #origin                     = ''
+  #title                      = ''
+  #slugs    : string[]        = []
+  #el_prev  : KomplNavControl = { ...Kompilation.KomplNavPrev  }
+  #el_next  : KomplNavControl = { ...Kompilation.KomplNavNext  }
 
   // Initialise to DEFAULTS using a spread
   #options = { ... Kompilation.DEFAULTS }
@@ -182,6 +199,14 @@ export class Kompilation {
       ? arg.options = { ...Kompilation.DEFAULTS, ...arg.options, ...$shorts }
       : arg.options = { ...Kompilation.DEFAULTS, ...$shorts }
 
+    // options for the next / prev elements
+    // If string - then this is the label
+    // Always initialise both to prevent in-play options from continuing
+    if ( typeof arg.prev == 'string' ) arg.prev = { label: arg.prev, style: '', css: 'kompl-prev', img: '', }
+    if ( typeof arg.next == 'string' ) arg.next = { label: arg.next, style: '', css: 'kompl-next', img: '', }
+    if ( arg.prev && !arg.next )       arg.next = { ...arg.prev, label: 'Next', css: ( arg.prev.css == 'kompl-prev' ? 'kompl-next' : arg.prev.css ) }
+    if ( arg.next && !arg.prev )       arg.prev = { ...arg.next, label: 'Prev', css: ( arg.next.css == 'kompl-next' ? 'kompl-prev' : arg.next.css ) }
+
     //if ( arg ) this._createCompilation( arg )
     this._createCompilation( arg )
 
@@ -231,6 +256,8 @@ export class Kompilation {
     this.#origin    = ''
     this.#title     = ''
     this.#slugs     = []
+    this.#el_prev   = { ...Kompilation.KomplNavPrev }
+    this.#el_next   = { ...Kompilation.KomplNavNext }
     this.#options   = { ... Kompilation.DEFAULTS }
     this.#_index    = undefined
     this.#_widget   = undefined
@@ -346,7 +373,11 @@ export class Kompilation {
                         ? Object.values(arg.slugs)
                         : [])
 
-    this.#slugs = this.#slugs.filter(onlyUniqueSting)
+    this.#slugs     = this.#slugs.filter(onlyUniqueSting)
+
+    // DONT let string labels get this far - see $kompl.play() for arg cleanup
+    this.#el_prev   = typeof arg.prev == 'object' ? arg.prev : { ...Kompilation.KomplNavPrev }
+    this.#el_next   = typeof arg.next == 'object' ? arg.next : { ...Kompilation.KomplNavNext }
 
     // This call has NO side-effects - just sets options for later evaluation
     this._setOptions( arg.options )
@@ -379,26 +410,51 @@ export class Kompilation {
 
     if ( typeof this.#_index === 'number' ) {
 
+      const $have_prev  = this.#_index > 0
+
+      const $prev_el    = this.#el_prev.label
+          ? `<span style="${this.#el_prev.style}">${ this.#el_prev.label }</span>`
+          : `<img  style="${this.#el_prev.style}" src="${ Kompilation.URL_BASE + this.#el_prev.img }">`
+
+      const $prev_css    = this.#el_prev.css
+          ? `class="${this.#el_prev.css}"`
+          : ''
+
       // Note includes the href tag - no-href means no-cursor etc.
-      const $have_prev = this.#_index > 0
       const $prev_href  = $have_prev
           ? `href="${ this.#slugs[this.#_index-1] }"`
           : ''
+
       // Note STYLE takes precedence over CSS - and these are fixed.
       const $prev_style = $have_prev
-          ? 'transform:rotate(-90deg);'
-          : 'transform:rotate(-90deg);filter:opacity(30%);'
-      const $prev_html  = `<a ${ $prev_href }><img src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGUp }" style="${$prev_style}" ></a>`
+          ? ''
+          : 'style="filter:opacity(30%);"'
+
+      const $prev_html  = `<a ${$prev_css} ${$prev_style} ${$prev_href}>${$prev_el}</a>`
 
 
       const $have_next = this.#_index < this.#slugs.length-1
+      const $next_el   = this.#el_next.label
+          ? `<span style="${this.#el_next.style}">${ this.#el_next.label }</span>`
+          : `<img  style="${this.#el_next.style}" src="${ Kompilation.URL_BASE + this.#el_next.img }">`
+
+      const $next_css    = this.#el_next.css
+          ? `class="${this.#el_next.css}"`
+          : ''
+
+      // Note includes the href tag - no-href means no-cursor etc.
       const $next_href  = $have_next
           ? `href="${ this.#slugs[this.#_index+1] }"`
           : ''
-      const $next_style  = $have_next
-          ? 'style="transform: rotate(90deg);"'
-          : 'style="transform: rotate(90deg); filter: opacity(30%);"'
-      const $next_html  = `<a ${ $next_href }><img src="${ Kompilation.URL_BASE + Kompilation.KomplAssetSVGUp }" ${$next_style} ></a>`
+
+      // Note STYLE takes precedence over CSS - and these are fixed.
+      const $next_style = $have_next
+          ? ''
+          : 'style="filter:opacity(30%);"'
+
+      const $next_html  = `<a ${$next_css} ${$next_style} ${$next_href}>${$next_el}</a>`
+
+
 
       const $last_html  = `<a href="${ this.#slugs[this.#slugs.length-1] }">${ this.#slugs.length.toString() }</a>`
 
@@ -525,9 +581,16 @@ export class Kompilation {
       const $size_css   = Kompilation.__getSizeCSSClass( this.#options.size )
       const $place_css  = Kompilation.__getPlaceCSSClass( this.#options.place )
 
+      // Does this happen??
+      if ( this.#_widget ) {
+        this.#_widget.remove();
+        this.#_widget = undefined;
+      }
+
       this.#_widget = $('<div>',{
           id:     'kompl',
           class:  `kompl-compilation kompl-hide ${ $place_css } ${ $size_css }`,
+          style:  `margin: ${this.#options.margin}px;`
         })
       this.#_widget.html( this._getNavInnerHTML() )
 
@@ -594,8 +657,10 @@ export class Kompilation {
   }
 
   // called when $kompl.options() makes changes
+  // TODO: cope with a change in MARGIN, sigh
   private _refreshNavigation() : void {
     if ( this.#_widget ) {
+      this.#_widget.css('margin', this.#options.margin+'px')
       this.#_widget.html( this._getNavInnerHTML() );
       this._showSpacer()
     }
@@ -617,6 +682,8 @@ export class Kompilation {
         title:    this.#title,
         slugs:    this.#slugs,
         created:  Math.round(Date.now()/1000),
+        prev:     this.#el_prev,
+        next:     this.#el_next,
       })
     )
   }
@@ -660,6 +727,9 @@ export class Kompilation {
   //  - do NOT persist options
   private _setOptions ( arg : KomplOptions | undefined ) : void {
     if ( arg ) {
+      if ( arg.margin && arg.margin > 24  ) arg.margin = 24
+      if ( arg.margin && arg.margin < -24 ) arg.margin = -24
+
       // Kompilation.say('opting...')
       // for (const [$key, $value] of Object.entries(arg)) {
       //    Kompilation.say(`arg: ${$key}: ${typeof($value)} = ${$value}`)
@@ -724,10 +794,10 @@ export class Kompilation {
   }
 
   private static warn( message: string, trace = false ) {
-  // eslint-disable-next-line no-console
-  console.log( `kompl: ${message}` +
-    (trace ? ' at ' + Error('stack-trace').stack : '')
-    )
+    // eslint-disable-next-line no-console
+    console.log( `kompl: ${message}` +
+      (trace ? ' at ' + Error('stack-trace').stack : '')
+      )
   }
 
   private _addWindowsEventHandlers () {
