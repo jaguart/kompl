@@ -38,9 +38,10 @@ You can see the widget in operation by clicking on the **buttons** on this page:
 You can read the documentation and examples here:
 * [Anatomy of Kompl](doc/widget-anatomy.md) - Taxonomy and overview.
 * [Kompl Usage Examples](doc/example-usage.md) - Learn by example.
-* [Using the STYLE argument](doc/example-style.md) - Named preset options.
-* [Using the SHOW argument](doc/example-show.md) - Positioning Kompl on the pages.
-* [Using the OPTIONS argument](doc/example-options.md) - Details of all available options.
+* [The STYLE argument](doc/example-style.md) - Named preset options.
+* [The SHOW argument](doc/example-show.md) - Positioning Kompl on the pages.
+* [The OPTIONS argument](doc/example-options.md) - Details of all available options.
+* [The NEXT/PREV arguments](doc/example-label.md) - Details of NEXT / PREV arguments.
 * [Roadmap - planned features](doc/widget-roadmap.md) - bugs, features, enhancments.
 
 

@@ -55,6 +55,15 @@ There are six placement options:
 * **bc** - bottom-center
 * **br** - bottom-right - *default*
 
+
+Note that you can also control the **margin** surrounding the widget using the `margin:` option. You should specify a number from -24 to +24 - it will always be treated as a `px` value. The default is 4px.
+```javascript
+$kompl.play({
+  /* title, slugs etc */
+  margin: 8,  // 8px margin around widget.
+})
+```
+
 ## User Controls
 
 There are four User controls that can be enabled or disabled:
@@ -80,7 +89,8 @@ There are four User controls that can be enabled or disabled:
 * [Kompl README](../README.md) - Overview and installation.
 * [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
 * [Kompl Usage Examples](example-usage.md) - Learn by example.
-* [Using the STYLE argument](example-style.md) - Named preset options.
-* [Using the SHOW argument](example-show.md) - Positioning Kompl on the pages.
-* [Using the OPTIONS argument](example-options.md) - Details of all available options.
+* [The STYLE argument](example-style.md) - Named preset options.
+* [The SHOW argument](example-show.md) - Positioning Kompl on the pages.
+* [The OPTIONS argument](example-options.md) - Details of all available options.
+* [The NEXT/PREV arguments](example-label.md) - Details of NEXT / PREV arguments.
 * [Roadmap - planned features](widget-roadmap.md) - bugs, features, enhancments.

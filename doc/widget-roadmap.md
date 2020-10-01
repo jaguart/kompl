@@ -17,12 +17,6 @@ Generally in `fix-xxx` branch - but use  `master` if trivial.
 * vn.n.1
 * also major review of widget HTML
 
-### `add-labels` : Prev: label, Next: label
-* v0.n
-* replace the SVG icons with the specified text / html
-* additional styling if necessary
-* can set either or both - YHBW
-
 ### `add-builder` : Add PLAY controls into page
 * Ghost blogging enhancement?
 * embedded markers => create styled PLAY buttons/links?

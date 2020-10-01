@@ -66,7 +66,8 @@ and then in **ALL** your documents...
 * [Kompl README](../README.md) - Overview and installation.
 * [Anatomy of Kompl](widget-anatomy.md) - Taxonomy and overview.
 * [Kompl Usage Examples](example-usage.md) - Learn by example.
-* [Using the STYLE argument](example-style.md) - Named preset options.
-* [Using the SHOW argument](example-show.md) - Positioning Kompl on the pages.
-* [Using the OPTIONS argument](example-options.md) - Details of all available options.
+* [The STYLE argument](example-style.md) - Named preset options.
+* [The SHOW argument](example-show.md) - Positioning Kompl on the pages.
+* [The OPTIONS argument](example-options.md) - Details of all available options.
+* [The NEXT/PREV arguments](example-label.md) - Details of NEXT / PREV arguments.
 * [Roadmap - planned features](widget-roadmap.md) - bugs, features, enhancments.
