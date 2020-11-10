@@ -47,6 +47,13 @@
   function sizer_on   () { $kompl.options({sizer:true,})    }
   function sizer_off  () { $kompl.options({sizer:false,})   }
 
+
+  function descr_on   () { $kompl.options({descr:true,})   }
+  function descr_off  () { $kompl.options({descr:false,})   }
+
+  function prev_on    () { $kompl.options({goprev:true,})   }
+  function prev_off   () { $kompl.options({goprev:false,})   }
+
   // visual clue that above has compiled :)
   // Does not depend on jQuery - maybe it should
   document.addEventListener('DOMContentLoaded', function (ev) {
@@ -82,16 +89,23 @@
   {{#button}} BR   => br()  {{/button}}       | Position/Place widget                               |
 
 | {{#button}} Placer  => placer_on()  {{/button}}   \
-  {{#button}} Off     => placer_off() {{/button}}   | Placer - endable/disable                      |
+  {{#button}} Off     => placer_off() {{/button}}   | Placer - enable/disable                      |
 
 | {{#button}} Homer   => homer_on()   {{/button}}   \
-  {{#button}} Off     => homer_off()  {{/button}}   | Homer - endable/disable                       |
+  {{#button}} Off     => homer_off()  {{/button}}   | Homer - enable/disable                       |
 
 | {{#button}} Sizer   => sizer_on()   {{/button}}   \
-  {{#button}} Off     => sizer_off()  {{/button}}   | Sizer - endable/disable                       |
+  {{#button}} Off     => sizer_off()  {{/button}}   | Sizer - endble/disable                       |
 
 | {{#button}} Closer  => closer_on()   {{/button}}  \
-  {{#button}} Off     => closer_off()  {{/button}}  | Closer - endable/disable                      |
+  {{#button}} Off     => closer_off()  {{/button}}  | Closer - enable/disable                      |
+
+| {{#button}} Go Prev  => prev_on()   {{/button}}  \
+  {{#button}} Off      => prev_off()  {{/button}}  | Prev - enable/disable                      |
+
+| {{#button}} Description  => descr_on()   {{/button}}  \
+  {{#button}} Off      => descr_off()  {{/button}}  | Description - enable/disable                      |
+
 
 | {{#button}} + => $kompl.options({margin: ++$margin }) {{/button}}  \
   {{#button}} - => $kompl.options({margin: --$margin }) {{/button}}  | Margin: +/-                  |

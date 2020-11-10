@@ -82,6 +82,15 @@ There are four User controls that can be enabled or disabled:
       })
 ```
 
+## Fully Managed
+
+There are two further options to further manage your user's experience:
+* **description** - by default Kompl displays a description - e.g. `1 of 15` - you can remove this by setting the **description** option to false.
+* **backward** - by default, Kompl displays a **< Prev** control enabling the user to return to a previous page. You can remove this control by setting the **backward** option to false.
+
+These two options are both set to *false* when you use the **onward** style shortcut.
+
+
 ---
 
 ### Documentation

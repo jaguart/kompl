@@ -51,6 +51,8 @@ interface KomplOptions {
   closer?   : boolean         // show closer on bar
   sizer?    : boolean         // show sizer on bar
   placer?   : boolean         // placement-click regions
+  description?    : boolean         // description - 1 to 3 of 5
+  backward?   : boolean         // show prev navigation
 }
 
 interface KomplNavControl {
@@ -65,6 +67,7 @@ interface KomplStyleSet {
   choice    : KomplOptions    // no placer, has homer, sizer and closer
   clean     : KomplOptions    // only homer
   naked     : KomplOptions    // no user controls
+  onward    : KomplOptions    // Forward only, no going back
   zam       : KomplOptions    // Malcolm's presets
 }
 
@@ -100,22 +103,25 @@ export class Kompilation {
 
   // Kompilation.DEFAULT_OPTIONS
   static readonly DEFAULTS : KomplOptions = {
-    place:    'bc',       // bottom-center
-    size:     'medium',   // think about mobile, large?
-    show:     0.50,       // visible half-way through document
-    margin:   4,          // 4px margin around control
-    homer:    true,
-    closer:   true,
-    sizer:    true,
-    placer:   true,
+    place:        'bc',       // bottom-center
+    size:         'medium',   // think about mobile, large?
+    show:         0.50,       // visible half-way through document
+    margin:       4,          // 4px margin around control
+    homer:        true,       // home to origin of list
+    closer:       true,       // show close control
+    sizer:        true,       // show S M L sizer control
+    placer:       true,       // show clickable placement borders
+    description:  true,       // show description of position - e.g. 1 of 5
+    backward:     true,       // show prev control
   }
 
   static readonly STYLE : KomplStyleSet = {
-    rich    : { homer: true,  closer: true,  sizer: true,  placer: true  },
-    choice  : { homer: true,  closer: true,  sizer: true,  placer: false },
-    clean   : { homer: true,  closer: false, sizer: false, placer: false },
-    naked   : { homer: false, closer: false, sizer: false, placer: false },
-    zam     : { homer: true,  closer: false, sizer: false, placer: false, size: 'large', place: 'bc', show: 0.90 },
+    rich    : { homer: true,  closer: true,  sizer: true,  placer: true,  },
+    choice  : { homer: true,  closer: true,  sizer: true,  placer: false, },
+    clean   : { homer: true,  closer: false, sizer: false, placer: false, },
+    naked   : { homer: false, closer: false, sizer: false, placer: false, },
+    onward  : { homer: false, closer: false, sizer: false, placer: false, description: false, backward: false, },
+    zam     : { homer: false, closer: false, sizer: false, placer: false, size: 'large', place: 'bc', show: 0.90, description: false, backward: false, },
   }
 
   // Kompilation.URL_BASE
@@ -430,8 +436,9 @@ export class Kompilation {
           ? ''
           : 'style="filter:opacity(30%);"'
 
-      const $prev_html  = `<a ${$prev_css} ${$prev_style} ${$prev_href}>${$prev_el}</a>`
-
+      const $prev_html  = this.#options.backward
+          ? `<a ${$prev_css} ${$prev_style} ${$prev_href}>${$prev_el}</a>`
+          : ''
 
       const $have_next = this.#_index < this.#slugs.length-1
       const $next_el   = this.#el_next.label
@@ -458,7 +465,9 @@ export class Kompilation {
 
       const $last_html  = `<a href="${ this.#slugs[this.#slugs.length-1] }">${ this.#slugs.length.toString() }</a>`
 
-      const $descr = `<div class="kompl-descr"><b>${this.#_index+1}</b> of ${$last_html}</div>`
+      const $descr = this.#options.description
+        ? `<div class="kompl-descr"><b>${this.#_index+1}</b> of ${$last_html}</div>`
+        : ''
 
       const $sizer = this.#options.sizer ?
       `

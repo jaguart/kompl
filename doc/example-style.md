@@ -7,6 +7,7 @@ The current STYLE presets are:
   * **choice** - User can choose SIZE and has access to CLOSE
   * **clean** - only the clickable-Title is enabled
   * **naked** - no User controls, just simple navigation.
+  * **onward** - no User controls, no description, no Prev - just simple *FORWARD* navigation.
 
 Here's what they look like:
 
@@ -42,6 +43,7 @@ You can combine STYLE and individual OPTIONS - OPTIONS will take precedence.
     function show_choice()  { $kompl.play({ ...$show, style: 'choice',  }) }
     function show_clean()   { $kompl.play({ ...$show, style: 'clean',   }) }
     function show_naked()   { $kompl.play({ ...$show, style: 'naked',   }) }
+    function show_onwardd() { $kompl.play({ ...$show, style: 'onward',   }) }
 
     // clean - large, bottom-center
     function show_clean_big()   {
