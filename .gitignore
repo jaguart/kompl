@@ -111,3 +111,5 @@ dist-types
 
 # Visual Studio Code settings
 .vscode
+kompl.workspace.code-workspace
+
